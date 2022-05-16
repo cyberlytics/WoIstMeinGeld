@@ -1,0 +1,21 @@
+# node.js as base image
+FROM node:16
+
+RUN mkdir -p /usr/src/app
+RUN mkdir -p /usr/src/app/frontend
+
+WORKDIR /usr/src/app/frontend
+
+COPY package*.json ./
+COPY yarn.lock ./
+RUN npm install -s --no-progress yarn && \
+    yarn
+
+# FIXME need to copy project but vite server fails with Error: spawn xdg-open ENOENT
+# this passing of ENV might be the issue inside vite https://maxschmitt.me/posts/error-spawn-node-enoent-node-js-child-process/
+# COPY . . 
+
+EXPOSE 3000
+
+# optional: , "--host", "127.0.0.1"
+CMD ["yarn", "start"]

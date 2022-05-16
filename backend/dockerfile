@@ -1,0 +1,21 @@
+# node.js as base image
+FROM node
+
+RUN mkdir -p /usr/src/app
+RUN mkdir -p /usr/src/app/backend
+
+WORKDIR /usr/src/app/backend
+
+COPY package*.json ./
+COPY yarn.lock ./
+RUN npm install -s --no-progress yarn && \
+    yarn
+
+COPY . .
+
+EXPOSE $NODE_DOCKER_PORT
+
+RUN git clone https://github.com/vishnubob/wait-for-it && \
+    cp ./wait-for-it/wait-for-it.sh ./
+
+CMD ["./wait-for-it.sh", "db:3306", "-t", "10", "--","yarn", "serve"]

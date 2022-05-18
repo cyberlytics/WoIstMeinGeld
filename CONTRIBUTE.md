@@ -20,13 +20,30 @@
 
 Die `.env` Datei muss im root Verzeichnis angelegt werden und die 3 Variablen `MYSQL_ROOT_PASSWORD`, `MYSQL_USER` und `MYSQL_PASSWORD` beinhalten.
 
-Das Projekt kann mit
+Die Datenbank kann mit
 
 ```cmd
 docker-compose up --build --force-recreate
 ```
 
 aus dem root directory heraus gestartet werden. Docker liest darauf die `docker-compose.yml` ein und stellt die definierten Services als Container zur Verfügung. Auf der Datenbank werden bei Start die `.sql`-Scripts `schema.sql` und `data.sql` in dieser Reihenfolge ausgeführt.
+
+Um die Datenbank zu starten, muss eine weitere `.env` Datei im Ordner `backend` erstellt werden, welche die Daten aus der `.env` Datei
+enthält und die Variable `MYSQL_HOST` auf den Wert `localhost` gesetzt werden.
+
+Das Backend kann dann im `backend` Ordner mit dem Befehl
+
+```cmd
+yarn serve
+```
+
+gestartet werden.
+
+Um das Frontend zu starten, muss im `frontend`-Ordner der Befehl
+
+```cmd
+yarn start
+```
 
 Um die Docker-Umgebung wieder zu schließen:
 

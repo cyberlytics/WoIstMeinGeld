@@ -12,12 +12,9 @@ export class PersonsController {
             return res.status(422).json(errors.array());
         }
 
-        const payload = matchedData(req, {
-            locations: ["query"],
-        }) as PersonAddModel; // FIXME payload is empty but should contain query param
-        // maybe because of type casting?
-        // TODO: not sure if necessary might be checked by above already
-        if (!payload.name) {
+        const { name } = req.body;
+
+        if (!name) {
             res.status(400).send({
                 message: "Content can not be empty!",
             });
@@ -25,7 +22,7 @@ export class PersonsController {
         }
 
         Person.create({
-            name: payload.name,
+            name: name,
         })
             .then((d) => {
                 res.send(d);

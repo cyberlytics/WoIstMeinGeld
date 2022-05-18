@@ -5,6 +5,7 @@ import friendship from "./friendship.model";
 
 const seq = new Sequelize(dbCfg.DB, dbCfg.USER, dbCfg.PASSWORD, {
     host: dbCfg.HOST,
+    port: Number(dbCfg.PORT) || 3306,
     pool: dbCfg.pool,
     dialect: "mysql",
 });

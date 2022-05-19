@@ -1,9 +1,9 @@
 INSERT INTO person(name, createdAt, updatedAt)
 VALUES
-	("Hans", GETDATE(), GETDATE()),
-	("Franz", GETDATE(), GETDATE()),
-	("Sepp", GETDATE(), GETDATE()),
-	("Dieter", GETDATE(), GETDATE());
+	("Hans", NOW(), NOW()),
+	("Franz", NOW(), NOW()),
+	("Sepp", NOW(), NOW()),
+	("Dieter", NOW(), NOW());
 
 INSERT INTO friendship(person1ID, person2ID)
 VALUES

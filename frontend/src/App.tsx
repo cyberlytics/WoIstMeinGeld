@@ -1,6 +1,6 @@
 import { Button, Typography } from "@mui/material";
 import { useState } from "react";
-import postFetch from "./postFetchWrapper";
+import { FetchService } from "./FetchService";
 
 interface IMessage {
     message: string;
@@ -10,9 +10,8 @@ export function App() {
     const [message, setMessage] = useState<IMessage | null>(null);
 
     function handleClick() {
-        fetch("http://localhost:8080/")
-            .then((response) => response.json())
-            .then((responseAsJson) => setMessage(responseAsJson))
+        FetchService.get("http://localhost:8080/")
+            .then((response) => setMessage(response))
             .catch((reason) => console.error(reason));
     }
 
@@ -21,12 +20,9 @@ export function App() {
             return;
         }
 
-        const jsonBody = JSON.stringify({ name: message.message });
-
         // Route für POST und JSON-Objekt übergeben, um das Objekt an diese URL zu schicken
-        postFetch("http://localhost:8080/addPerson", jsonBody)
-            .then((response) => response.json())
-            .then((responseAsJson) => console.log(responseAsJson))
+        FetchService.post<IMessage>("http://localhost:8080/addPerson", { name: message.message })
+            .then((response) => console.log(response))
             .catch((reason) => console.error(reason));
     }
 

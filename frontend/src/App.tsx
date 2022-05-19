@@ -1,6 +1,8 @@
 import { Button, Typography } from "@mui/material";
 import { useState } from "react";
+import AppBar from "./AppBar";
 import postFetch from "./postFetchWrapper";
+import { SignUpDialog } from "./SignUp";
 
 interface IMessage {
     message: string;
@@ -32,6 +34,7 @@ export function App() {
 
     return (
         <div>
+            <AppBar />
             <Button variant="contained" onClick={handleClick}>
                 Lade Message
             </Button>
@@ -39,6 +42,7 @@ export function App() {
             <Button variant="contained" onClick={handleAddPerson}>
                 Person hinzufügen
             </Button>
+            <SignUpDialog show={false}></SignUpDialog>
         </div>
     );
 }

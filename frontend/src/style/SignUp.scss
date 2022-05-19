@@ -1,0 +1,38 @@
+.signUpContainer {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.signUpContainerInner {
+    width: 350px;
+    padding: 20px;
+    text-align: center;
+    border-radius: 25px;
+
+    background-color: #181d25;
+    .signUpItems {
+        margin: 10px;
+    }
+    .block {
+        height: 40px;
+        width: 350px;
+        display: grid;
+        grid-template-columns: 1fr 25px 1fr;
+        grid-template-rows: 1fr;
+    }
+    hr {
+        margin: auto 10px;
+        border: 1.5px solid #aeb4bc;
+    }
+
+    #text {
+        margin: auto 0;
+        color: #aeb4bc;
+    }
+
+    #heading {
+        color: #ffffff;
+    }
+}

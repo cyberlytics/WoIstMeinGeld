@@ -1,5 +1,6 @@
 import { Button, Typography } from "@mui/material";
 import { useState } from "react";
+import postFetch from "./postFetchWrapper";
 
 interface IMessage {
     message: string;
@@ -20,14 +21,10 @@ export function App() {
             return;
         }
 
-        const params = new URLSearchParams();
-        params.append("name", message.message);
+        const jsonBody = JSON.stringify({ name: message.message });
 
-        fetch("http://localhost:8080/addPerson", {
-            method: "POST",
-            body: params.toString(),
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        })
+        // Route für POST und JSON-Objekt übergeben, um das Objekt an diese URL zu schicken
+        postFetch("http://localhost:8080/addPerson", jsonBody)
             .then((response) => response.json())
             .then((responseAsJson) => console.log(responseAsJson))
             .catch((reason) => console.error(reason));

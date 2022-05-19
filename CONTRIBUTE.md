@@ -51,6 +51,10 @@ Um die Docker-Umgebung wieder zu schließen:
 docker-compose down
 ```
 
+# Mock-Up
+
+[Link zum Mock-Up](https://www.figma.com/file/1dwgzqNWNSoUldoULhP86K/WoIstMeinGeld?node-id=0%3A1) der Anwendung in Figma:
+
 # Quellen
 
 Zum Nachlesen hier eine Sammlung an nützlicher Links:

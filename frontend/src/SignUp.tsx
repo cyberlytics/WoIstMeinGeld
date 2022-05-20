@@ -1,87 +1,46 @@
 import { Button, TextField, Typography } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
-
-const registerButtonTheme = createTheme({
-    palette: {
-        primary: {
-            main: "#EFB90B",
-        },
-    },
-});
-
-const logInButtonTheme = createTheme({
-    palette: {
-        primary: {
-            main: "#FFFFFF",
-        },
-    },
-});
-
-const textFieldTheme = createTheme({
-    palette: {
-        primary: {
-            main: "#AEB4BC",
-        },
-    },
-});
+import CustomButton from "./CustomButton";
+import CustomTextField from "./CustomTextField";
 
 interface ISignUpDialog {
-    show: boolean;
+    setShow(show: boolean): void;
 }
 
 export function SignUpDialog(props: ISignUpDialog) {
-    const { show } = props;
-    const [open, openDialog] = useState(true);
+    const { setShow } = props;
 
     return (
         <div>
-            {open && (
-                <div className="signUpContainer">
-                    <div className="signUpContainerInner">
-                        <Typography variant="h5" className="signUpItems" id="heading">
-                            Registrieren
-                        </Typography>
-                        <ThemeProvider theme={textFieldTheme}>
-                            <TextField
-                                variant="outlined"
-                                label="Name"
-                                className="signUpItems"
-                                sx={{ input: { color: "#AEB4BC" } }}
-                                InputLabelProps={{
-                                    style: { color: "#AEB4BC" },
-                                }}
-                            />
-                            <TextField
-                                label="Passwort"
-                                type="password"
-                                className="signUpItems"
-                                sx={{ input: { color: "#AEB4BC" } }}
-                                InputLabelProps={{
-                                    style: { color: "#AEB4BC" },
-                                }}
-                            />
-                        </ThemeProvider>
-                        <ThemeProvider theme={registerButtonTheme}>
-                            <Button variant="contained" className="signUpItems">
-                                Registrieren
-                            </Button>
-                        </ThemeProvider>
-                        <div className="block">
-                            <hr />
-                            <Typography className="signUpItems" id="text">
-                                oder
-                            </Typography>
-                            <hr />
-                        </div>
-                        <ThemeProvider theme={logInButtonTheme}>
-                            <Button variant="contained" className="signUpItems" onClick={() => openDialog(show)}>
-                                Einloggen
-                            </Button>
-                        </ThemeProvider>
+            <div className="signUpContainer">
+                <div className="signUpContainerInner">
+                    <Typography variant="h5" className="signUpItems" id="heading">
+                        Registrieren
+                    </Typography>
+                    <CustomTextField color="primaryButton" variant="outlined" label="Name" className="signUpItems" />
+                    <CustomTextField label="Passwort" type="password" className="signUpItems" />
+                    <Button
+                        color="primaryButton"
+                        variant="contained"
+                        className="signUpItems"
+                        sx={{ color: "secondaryFont.main" }}
+                    >
+                        Registrieren
+                    </Button>
+                    <div className="block">
+                        <Typography className="separator">oder</Typography>
                     </div>
+                    <Button
+                        color="fontWhite"
+                        variant="contained"
+                        className="signUpItems"
+                        onClick={() => setShow(false)}
+                        sx={{ color: "secondaryFont.main" }}
+                    >
+                        Einloggen
+                    </Button>
                 </div>
-            )}
+            </div>
         </div>
     );
 }

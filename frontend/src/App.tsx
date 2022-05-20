@@ -2,7 +2,8 @@ import { Button, ThemeProvider, Typography } from "@mui/material";
 import { useState } from "react";
 import AppBar from "./AppBar";
 import postFetch from "./postFetchWrapper";
-import { SignUpDialog } from "./SignUp";
+import { SignInDialog } from "./SignInDialog";
+import { SignUpDialog } from "./SignUpDialog";
 import theme from "./ThemeProvider";
 
 interface IMessage {
@@ -49,7 +50,11 @@ export function App() {
                 <Button variant="contained" onClick={handleAddPerson}>
                     Person hinzufügen
                 </Button> */}
-                {showLogin ? <SignUpDialog setShow={handleShow}></SignUpDialog> : <Typography>oof</Typography>}
+                {showLogin ? (
+                    <SignInDialog setShow={handleShow}></SignInDialog>
+                ) : (
+                    <SignUpDialog setShow={handleShow}></SignUpDialog>
+                )}
             </ThemeProvider>
         </div>
     );

@@ -1,18 +1,18 @@
-.signUpContainer {
+.signUpInContainer {
     margin-top: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.signUpContainerInner {
+.signUpInContainerInner {
     width: 350px;
     padding: 20px;
     text-align: center;
     border-radius: 25px;
 
     background-color: #181d25;
-    .signUpItems {
+    .signUpInItems {
         margin: 10px;
     }
 

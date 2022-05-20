@@ -2,9 +2,11 @@ import { Button, ThemeProvider, Typography } from "@mui/material";
 import { useState } from "react";
 import AppBar from "./AppBar";
 import postFetch from "./postFetchWrapper";
+import { PageRoutes } from "./Routes";
 import { SignInDialog } from "./SignInDialog";
 import { SignUpDialog } from "./SignUpDialog";
 import theme from "./ThemeProvider";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 interface IMessage {
     message: string;
@@ -50,11 +52,14 @@ export function App() {
                 <Button variant="contained" onClick={handleAddPerson}>
                     Person hinzufügen
                 </Button> */}
-                {showLogin ? (
-                    <SignInDialog setShow={handleShow}></SignInDialog>
-                ) : (
-                    <SignUpDialog setShow={handleShow}></SignUpDialog>
-                )}
+                <BrowserRouter>
+                    <Routes>
+                        <Route path={PageRoutes.signIn} element={<SignInDialog />} />
+                        <Route path={PageRoutes.signUp} element={<SignUpDialog />} />
+                        <Route path={PageRoutes.home} element={<SignInDialog />} />
+                        <Route path={PageRoutes.default} element={<Navigate to={PageRoutes.signIn} replace />} />
+                    </Routes>
+                </BrowserRouter>
             </ThemeProvider>
         </div>
     );

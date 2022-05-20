@@ -1,12 +1,10 @@
 import { Button, Typography } from "@mui/material";
 import CustomTextField from "./CustomTextField";
+import { useNavigate } from "react-router-dom";
+import { PageRoutes } from "./Routes";
 
-interface ISignUpDialog {
-    setShow(show: boolean): void;
-}
-
-export function SignUpDialog(props: ISignUpDialog) {
-    const { setShow } = props;
+export function SignUpDialog() {
+    const navigate = useNavigate();
 
     return (
         <div className="signUpInContainer">
@@ -31,7 +29,7 @@ export function SignUpDialog(props: ISignUpDialog) {
                     color="fontWhite"
                     variant="contained"
                     className="signUpInItems"
-                    onClick={() => setShow(true)}
+                    onClick={() => navigate(PageRoutes.signIn)}
                     sx={{ color: "secondaryFont.main" }}
                 >
                     Einloggen

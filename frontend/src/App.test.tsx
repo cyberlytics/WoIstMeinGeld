@@ -13,12 +13,9 @@ describe("App component", () => {
     test("button click increases counter", async () => {
         const user = userEvent.setup();
         const result = render(<App />);
-        const button = result.getByRole("button");
+        const button = result.getAllByRole("button");
 
-        expect(button).toHaveTextContent("1");
-
-        await user.click(button);
-
-        expect(button).toHaveTextContent("2");
+        expect(button[0]).toHaveTextContent("Einloggen");
+        expect(button[1]).toHaveTextContent("Registrieren");
     });
 });

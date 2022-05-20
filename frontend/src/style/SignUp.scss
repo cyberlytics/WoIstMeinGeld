@@ -15,17 +15,6 @@
     .signUpItems {
         margin: 10px;
     }
-    .block {
-        height: 40px;
-        width: 350px;
-        display: grid;
-        grid-template-columns: 1fr 25px 1fr;
-        grid-template-rows: 1fr;
-    }
-    hr {
-        margin: auto 10px;
-        border: 1.5px solid #aeb4bc;
-    }
 
     #text {
         margin: auto 0;
@@ -35,4 +24,27 @@
     #heading {
         color: #ffffff;
     }
+}
+
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #aeb4bc;
+    padding: 0 10%;
+}
+
+.separator::before,
+.separator::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #aeb4bc;
+}
+
+.separator:not(:empty)::before {
+    margin-right: 0.5em;
+}
+
+.separator:not(:empty)::after {
+    margin-left: 0.5em;
 }

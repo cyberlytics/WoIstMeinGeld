@@ -1,6 +1,9 @@
 import { Button, Typography } from "@mui/material";
 import { useState } from "react";
+import ExpenseDialog from "./components/ExpenseDialog";
 import { FetchService } from "./FetchService";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 
 interface IMessage {
     message: string;
@@ -27,14 +30,17 @@ export function App() {
     }
 
     return (
-        <div>
-            <Button variant="contained" onClick={handleClick}>
-                Lade Message
-            </Button>
-            <Typography>{message ? message.message : "Noch keine Message"}</Typography>
-            <Button variant="contained" onClick={handleAddPerson}>
-                Person hinzufügen
-            </Button>
-        </div>
+        <LocalizationProvider dateAdapter={AdapterMoment}>
+            <div>
+                <Button variant="contained" onClick={handleClick}>
+                    Lade Message
+                </Button>
+                <Typography>{message ? message.message : "Noch keine Message"}</Typography>
+                <Button variant="contained" onClick={handleAddPerson}>
+                    Person hinzufügen
+                </Button>
+                <ExpenseDialog />
+            </div>
+        </LocalizationProvider>
     );
 }

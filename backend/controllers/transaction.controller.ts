@@ -11,7 +11,7 @@ export class TransactionController {
             return res.status(422).json(errors.array());
         }
 
-        Transaction.findAll()
+        Transaction.findAll({ order: [["time", "DESC"]] })
             .then((d) => {
                 res.send(d);
             })

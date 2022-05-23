@@ -1,7 +1,7 @@
-import { IconButton, ListItem, ListItemText } from "@mui/material";
-import { formatMoney } from "./format/formatMoney";
-import { formatTime } from "./format/formatTime";
-import { Transaction } from "./models/Transaction";
+import { ListItem, ListItemText } from "@mui/material";
+import { formatMoney } from "../format/formatMoney";
+import { formatTime } from "../format/formatTime";
+import { Transaction } from "../models/Transaction";
 
 interface Props {
     transaction: Transaction;
@@ -12,6 +12,7 @@ export function TransactionListItem(props: Props) {
 
     return (
         <ListItem
+            divider={true}
             secondaryAction={
                 <ListItemText
                     primary={formatMoney(amount)}

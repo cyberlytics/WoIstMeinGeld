@@ -31,7 +31,7 @@ export class PersonService {
 
     login({ name }: PersonAddModel) {
         return Person.findOne({ where: { name } }).then((u) => {
-            const { id, name } = u!;
+            const { id, name } = u;
             return { token: jwt.sign({ id, name }, this._jwtSecret) };
         });
     }

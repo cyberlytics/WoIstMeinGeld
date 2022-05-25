@@ -42,9 +42,7 @@ export function SignInDialog() {
                 <Button variant="contained" className="signUpInItems" onClick={getResource}>
                     Get
                 </Button>
-                <div className="block">
-                    <Typography className="separator">oder</Typography>
-                </div>
+                <Typography className="separator">oder</Typography>
                 <Button
                     variant="contained"
                     color="secondary"

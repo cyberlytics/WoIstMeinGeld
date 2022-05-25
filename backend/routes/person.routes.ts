@@ -31,6 +31,6 @@ personRouter.post("/signIn", personRules["forLogin"], async (req, res) => {
     if (cookie === undefined) {
         res.cookie("token", token.token, {
             httpOnly: true,
-        }).send();
+        }).send(token);
     }
 });

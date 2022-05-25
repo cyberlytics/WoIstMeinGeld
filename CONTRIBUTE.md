@@ -1,63 +1,8 @@
-# Übersicht
-
-```
-.
-├── _backend
-│   └── dockerfile.sql
-├── _db
-│   ├── data.sql
-│   └── schema.sql
-├── _frontend
-│   ├── _public
-│   ├── _src
-│   ├── index.html
-│   └── dockerfile
-├── .env
-└── docker-compose.yml
-```
-
-**Wichtig:**
-
-Die `.env` Datei muss im root Verzeichnis angelegt werden und die 3 Variablen `MYSQL_ROOT_PASSWORD`, `MYSQL_USER` und `MYSQL_PASSWORD` beinhalten.
-
-Die Datenbank kann mit
-
-```cmd
-docker-compose up --build --force-recreate
-```
-
-aus dem root directory heraus gestartet werden. Docker liest darauf die `docker-compose.yml` ein und stellt die definierten Services als Container zur Verfügung. Auf der Datenbank werden bei Start die `.sql`-Scripts `schema.sql` und `data.sql` in dieser Reihenfolge ausgeführt.
-
-Um die Datenbank zu starten, muss eine weitere `.env` Datei im Ordner `backend` erstellt werden, welche die Daten aus der `.env` Datei
-enthält und die Variable `MYSQL_HOST` auf den Wert `localhost` gesetzt werden.
-
-Das Backend kann dann im `backend` Ordner mit dem Befehl
-
-```cmd
-yarn serve
-```
-
-gestartet werden.
-
-Um das Frontend zu starten, muss im `frontend`-Ordner der Befehl
-
-```cmd
-yarn start
-```
-
-Um die Docker-Umgebung wieder zu schließen:
-
-```cmd
-docker-compose down
-```
-
 # Mock-Up
 
-[Link zum Mock-Up](https://www.figma.com/file/1dwgzqNWNSoUldoULhP86K/WoIstMeinGeld?node-id=0%3A1) der Anwendung in Figma:
+[Mockup in Figma](https://www.figma.com/file/1dwgzqNWNSoUldoULhP86K/WoIstMeinGeld?node-id=0%3A1)
 
-# Quellen
-
-Zum Nachlesen hier eine Sammlung an nützlicher Links:
+# Nützliche Quellen
 
 -   [BenzKoder React Node Express](https://www.bezkoder.com/react-node-express-mysql/)
 -   [BenzKoder Rest APIs with Express & MySQL](https://www.bezkoder.com/node-js-rest-api-express-mysql/)

@@ -1,8 +1,12 @@
-INSERT INTO person (name, createdAt, updatedAt) VALUES ("Hans", GETDATE(), GETDATE());
-INSERT INTO person (name, createdAt, updatedAt) VALUES ("Frans", GETDATE(), GETDATE());
-INSERT INTO person (name, createdAt, updatedAt) VALUES ("Sepp", GETDATE(), GETDATE());
-INSERT INTO person (name, createdAt, updatedAt) VALUES ("Dieter", GETDATE(), GETDATE());
+INSERT INTO person(name, password, createdAt, updatedAt)
+VALUES
+	("Hans", "password", NOW(), NOW()),
+	("Franz", "password", NOW(), NOW()),
+	("Sepp", "password", NOW(), NOW()),
+	("Dieter", "password", NOW(), NOW());
 
-INSERT INTO friendship (person1ID, person2ID) VALUES (1, 2);
-INSERT INTO friendship (person1ID, person2ID) VALUES (1, 3);
-INSERT INTO friendship (person1ID, person2ID) VALUES (3, 4);
+INSERT INTO friendship(person1ID, person2ID)
+VALUES
+	(1, 2),
+	(1, 3),
+	(1, 4);

@@ -2,9 +2,28 @@ import { Button, Typography } from "@mui/material";
 import CustomTextField from "./CustomTextField";
 import { useNavigate } from "react-router-dom";
 import { PageRoutes } from "./Routes";
+import postFetch from "./postFetchWrapper";
 
 export function SignUpDialog() {
     const navigate = useNavigate();
+
+    const registerUser = () => {
+        const inputName = document.getElementById("Name") as HTMLInputElement | null;
+        const inputPassword = document.getElementById("Password") as HTMLInputElement | null;
+
+        if (inputName && inputPassword) {
+            const name = inputName.value;
+            const password = inputPassword.value;
+
+            const jsonBody = JSON.stringify({ name: name, password: password });
+
+            // Route für POST und JSON-Objekt übergeben, um das Objekt an diese URL zu schicken
+            postFetch("http://localhost:8080/signUp", jsonBody)
+                .then((response) => response.json())
+                .then((responseAsJson) => console.log(responseAsJson))
+                .catch((reason) => console.error(reason));
+        }
+    };
 
     return (
         <div className="signUpInContainer">
@@ -12,12 +31,19 @@ export function SignUpDialog() {
                 <Typography variant="h5" className="signUpInItems" id="heading">
                     Registrieren
                 </Typography>
-                <CustomTextField color="primaryButton" variant="outlined" label="Name" className="signUpInItems" />
-                <CustomTextField label="Passwort" type="password" className="signUpInItems" />
+                <CustomTextField
+                    id="Name"
+                    color="primaryButton"
+                    variant="outlined"
+                    label="Name"
+                    className="signUpInItems"
+                />
+                <CustomTextField id="Password" label="Passwort" type="password" className="signUpInItems" />
                 <Button
                     color="primaryButton"
                     variant="contained"
                     className="signUpInItems"
+                    onClick={registerUser}
                     sx={{ color: "secondaryFont.main" }}
                 >
                     Registrieren

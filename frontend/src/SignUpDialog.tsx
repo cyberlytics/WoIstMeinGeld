@@ -1,5 +1,4 @@
-import { Button, Typography } from "@mui/material";
-import CustomTextField from "./CustomTextField";
+import { Button, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { PageRoutes } from "./Routes";
 import { FetchService } from "./FetchService";
@@ -30,32 +29,19 @@ export function SignUpDialog() {
                 <Typography variant="h5" className="signUpInItems" id="heading">
                     Registrieren
                 </Typography>
-                <CustomTextField
-                    id="Name"
-                    color="primaryButton"
-                    variant="outlined"
-                    label="Name"
-                    className="signUpInItems"
-                />
-                <CustomTextField id="Password" label="Passwort" type="password" className="signUpInItems" />
-                <Button
-                    color="primaryButton"
-                    variant="contained"
-                    className="signUpInItems"
-                    onClick={registerUser}
-                    sx={{ color: "secondaryFont.main" }}
-                >
+                <TextField id="Name" variant="outlined" label="Name" className="signUpInItems" />
+                <TextField id="Password" label="Passwort" type="password" className="signUpInItems" />
+                <Button variant="contained" className="signUpInItems" onClick={registerUser}>
                     Registrieren
                 </Button>
                 <div className="block">
                     <Typography className="separator">oder</Typography>
                 </div>
                 <Button
-                    color="fontWhite"
                     variant="contained"
+                    color="secondary"
                     className="signUpInItems"
                     onClick={() => navigate(PageRoutes.signIn)}
-                    sx={{ color: "secondaryFont.main" }}
                 >
                     Einloggen
                 </Button>

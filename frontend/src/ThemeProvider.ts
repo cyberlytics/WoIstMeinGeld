@@ -49,16 +49,16 @@ const theme = createTheme({
         fontFamily: ["Lato", "sans-serif"].join(","),
     },
     palette: {
+        mode: "dark",
         inherit: {
             main: "#FFF",
         },
         primary: {
-            main: "#383A44",
-            dark: "#27282f",
+            main: "#EFB90B",
         },
         secondary: {
-            main: "#181D25",
-            dark: "#10141a",
+            main: "#FFFFFF",
+            contrastText: "#232532",
         },
         fontWhite: {
             main: "#FFFFFF",

@@ -1,10 +1,10 @@
-<<<<<<< HEAD
-INSERT INTO person(name, createdAt, updatedAt)
+INSERT INTO person(name, password, createdAt, updatedAt)
 VALUES
-	("Hans", NOW(), NOW()),
-	("Franz", NOW(), NOW()),
-	("Sepp", NOW(), NOW()),
-	("Dieter", NOW(), NOW());
+	("Hans", "password", NOW(), NOW()),
+	("Franz", "password", NOW(), NOW()),
+	("Sepp", "password", NOW(), NOW()),
+	("Dieter", "password", NOW(), NOW());
+
 
 INSERT INTO transaction(group_id, creditor_id, description, time, amount, createdAt, updatedAt)
 VALUES
@@ -19,17 +19,3 @@ VALUES
 -- 	(1, 2),
 -- 	(1, 3),
 -- 	(1, 4);
-=======
-INSERT INTO person(name, password, createdAt, updatedAt)
-VALUES
-	("Hans", "password", NOW(), NOW()),
-	("Franz", "password", NOW(), NOW()),
-	("Sepp", "password", NOW(), NOW()),
-	("Dieter", "password", NOW(), NOW());
-
-INSERT INTO friendship(person1ID, person2ID)
-VALUES
-	(1, 2),
-	(1, 3),
-	(1, 4);
->>>>>>> 1-Peter-Meter-SignUp-Page

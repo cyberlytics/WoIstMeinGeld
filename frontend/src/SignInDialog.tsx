@@ -1,7 +1,7 @@
 import { Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import CustomTextField from "./CustomTextField";
-import postFetch from "./postFetchWrapper";
+import { FetchService } from "./FetchService";
 import { PageRoutes } from "./Routes";
 
 export function SignInDialog() {
@@ -15,17 +15,16 @@ export function SignInDialog() {
             const name = inputName.value;
             const password = inputPassword.value;
 
-            const jsonBody = JSON.stringify({ name: name, password: password });
+            const jsonBody = { name: name, password: password };
 
             // Route für POST und JSON-Objekt übergeben, um das Objekt an diese URL zu schicken
-            postFetch("http://localhost:8080/signIn", jsonBody).catch((reason) => console.error(reason));
+            FetchService.post("http://localhost:8080/signIn", jsonBody)
+                .then((response) => console.log(response))
+                .catch((reason) => console.error(reason));
         }
     };
     const getResource = () => {
-        fetch("http://localhost:8080/some-protected-resource", {
-            credentials: "include",
-        })
-            .then((response) => response.json())
+        FetchService.get("http://localhost:8080/some-protected-resource")
             .then((responseAsJson) => console.log(responseAsJson))
             .catch((reason) => console.error(reason));
     };

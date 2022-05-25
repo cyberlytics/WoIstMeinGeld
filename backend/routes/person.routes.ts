@@ -29,9 +29,8 @@ personRouter.post("/signIn", personRules["forLogin"], async (req, res) => {
     // check if client sent cookie
     const cookie = req.cookies.token;
     if (cookie === undefined) {
-        res.writeHead(200, {
-            "Set-Cookie": "token=" + token.token + "; HttpOnly",
-            "Access-Control-Allow-Credentials": "true",
+        res.cookie("token", token.token, {
+            httpOnly: true,
         }).send();
     }
 });

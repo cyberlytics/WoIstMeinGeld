@@ -2,7 +2,7 @@ import { Button, Typography } from "@mui/material";
 import CustomTextField from "./CustomTextField";
 import { useNavigate } from "react-router-dom";
 import { PageRoutes } from "./Routes";
-import postFetch from "./postFetchWrapper";
+import { FetchService } from "./FetchService";
 
 export function SignUpDialog() {
     const navigate = useNavigate();
@@ -15,12 +15,11 @@ export function SignUpDialog() {
             const name = inputName.value;
             const password = inputPassword.value;
 
-            const jsonBody = JSON.stringify({ name: name, password: password });
+            const jsonBody = { name: name, password: password };
 
             // Route für POST und JSON-Objekt übergeben, um das Objekt an diese URL zu schicken
-            postFetch("http://localhost:8080/signUp", jsonBody)
-                .then((response) => response.json())
-                .then((responseAsJson) => console.log(responseAsJson))
+            FetchService.post("http://localhost:8080/signUp", jsonBody)
+                .then((response) => console.log(response))
                 .catch((reason) => console.error(reason));
         }
     };

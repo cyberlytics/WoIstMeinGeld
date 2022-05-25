@@ -1,17 +1,13 @@
 import { Button, ThemeProvider, Typography } from "@mui/material";
 import { useState } from "react";
-<<<<<<< HEAD
 import { FetchService } from "./FetchService";
 import { TransactionList } from "./components/TransactionList";
-=======
 import AppBar from "./AppBar";
-import postFetch from "./postFetchWrapper";
 import { PageRoutes } from "./Routes";
 import { SignInDialog } from "./SignInDialog";
 import { SignUpDialog } from "./SignUpDialog";
 import theme from "./ThemeProvider";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
->>>>>>> 1-Peter-Meter-SignUp-Page
 
 interface IMessage {
     message: string;
@@ -33,7 +29,7 @@ export function App() {
         }
 
         // Route für POST und JSON-Objekt übergeben, um das Objekt an diese URL zu schicken
-        FetchService.post<IMessage>("http://localhost:8080/addPerson", { name: message.message })
+        FetchService.post("http://localhost:8080/addPerson", { name: message.message })
             .then((response) => console.log(response))
             .catch((reason) => console.error(reason));
     }
@@ -44,16 +40,6 @@ export function App() {
 
     return (
         <div>
-<<<<<<< HEAD
-            <Button variant="contained" onClick={handleClick}>
-                Lade Message
-            </Button>
-            <Typography>{message ? message.message : "Noch keine Message"}</Typography>
-            <Button variant="contained" onClick={handleAddPerson}>
-                Person hinzufügen
-            </Button>
-            <TransactionList />
-=======
             <ThemeProvider theme={theme}>
                 <AppBar />
                 {/* <Button variant="contained" onClick={handleClick}>
@@ -72,7 +58,6 @@ export function App() {
                     </Routes>
                 </BrowserRouter>
             </ThemeProvider>
->>>>>>> 1-Peter-Meter-SignUp-Page
         </div>
     );
 }

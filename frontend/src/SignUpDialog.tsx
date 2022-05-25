@@ -34,9 +34,7 @@ export function SignUpDialog() {
                 <Button variant="contained" className="signUpInItems" onClick={registerUser}>
                     Registrieren
                 </Button>
-                <div className="block">
-                    <Typography className="separator">oder</Typography>
-                </div>
+                <Typography className="separator">oder</Typography>
                 <Button
                     variant="contained"
                     color="secondary"

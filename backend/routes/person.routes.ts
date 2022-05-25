@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Request, Response, Router } from "express";
 import { validationResult } from "express-validator/check";
 import { PersonService } from "../authentication/person.service";
 import { personRules } from "../authentication/loginRegisterRules";
@@ -6,15 +6,14 @@ import { personRules } from "../authentication/loginRegisterRules";
 export const personRouter = Router();
 const personService = new PersonService();
 
-personRouter.post("/signUp", personRules["forRegister"], (req, res) => {
+personRouter.post("/signUp", personRules["forRegister"], async (req, res) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) return res.status(422).json(errors.array());
 
     const payload = req.body;
-    const user = personService.register(payload);
-
-    return user.then((u) => res.json(u));
+    await personService.register(payload);
+    loginAndCreateCookie(payload, res, req);
 });
 
 personRouter.post("/signIn", personRules["forLogin"], async (req, res) => {
@@ -23,14 +22,21 @@ personRouter.post("/signIn", personRules["forLogin"], async (req, res) => {
     if (!errors.isEmpty()) return res.status(422).json(errors.array());
 
     const payload = req.body;
+    loginAndCreateCookie(payload, res, req);
+});
+
+const loginAndCreateCookie = async (payload, response: Response, request: Request) => {
+    console.log(payload);
     const tokenPromise = personService.login(payload);
     const token = await tokenPromise;
 
     // check if client sent cookie
-    const cookie = req.cookies.token;
+    const cookie = request.cookies.token;
     if (cookie === undefined) {
-        res.cookie("token", token.token, {
-            httpOnly: true,
-        }).send(token);
+        response
+            .cookie("token", token.token, {
+                httpOnly: true,
+            })
+            .send(token);
     }
-});
+};

@@ -19,7 +19,8 @@
         "@mui/x-date-pickers": "^5.0.0-alpha.4",
         "moment": "^2.29.3",
         "react": "^18.1.0",
-        "react-dom": "^18.1.0"
+        "react-dom": "^18.1.0",
+        "react-router-dom": "^6.3.0"
     },
     "devDependencies": {
         "@testing-library/jest-dom": "^5.16.4",

@@ -45,7 +45,7 @@ services:
         image: mysql
         command: --default-authentication-plugin=mysql_native_password
         ports:
-            - "${MYSQL_PORT-3306}:${MYSQL_PORT-3306}"
+            - "${MYSQL_PORT-3306}:3306"
         container_name: database-docker
         restart: always
         # necessary to fix a sql db error

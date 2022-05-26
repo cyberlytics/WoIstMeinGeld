@@ -8,11 +8,13 @@ import { Sequelize, DataTypes, Model, InferAttributes, InferCreationAttributes, 
 
 export interface PersonAddModel {
     name: string;
+    password: string;
 }
 
 export interface PersonModel extends Model<InferAttributes<PersonModel>, InferCreationAttributes<PersonModel>> {
     id: CreationOptional<number>;
     name: string;
+    password: string;
 }
 
 export default (seq: Sequelize) => {
@@ -28,6 +30,9 @@ export default (seq: Sequelize) => {
             },
             name: {
                 type: DataTypes.STRING(100),
+            },
+            password: {
+                type: DataTypes.STRING(64),
             },
         },
         { freezeTableName: true }

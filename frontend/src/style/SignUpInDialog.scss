@@ -1,0 +1,44 @@
+.signUpInContainer {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.signUpInContainerInner {
+    width: 350px;
+    padding: 20px;
+    text-align: center;
+    border-radius: 25px;
+
+    background-color: #181d25;
+    .signUpInItems {
+        margin: 10px;
+    }
+
+    #heading {
+        color: #ffffff;
+    }
+}
+
+.separator {
+    display: flex;
+    align-items: center;
+    color: #aeb4bc;
+    padding: 0 10%;
+}
+
+.separator::before,
+.separator::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #aeb4bc;
+}
+
+.separator:not(:empty)::before {
+    margin-right: 0.5em;
+}
+
+.separator:not(:empty)::after {
+    margin-left: 0.5em;
+}

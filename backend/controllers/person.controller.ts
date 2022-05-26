@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
-import { matchedData, validationResult } from "express-validator";
+import { validationResult } from "express-validator";
 import db from "../models";
-import { PersonAddModel } from "../models/person.model";
 
 const Person = db.persons;
 
@@ -12,9 +11,9 @@ export class PersonsController {
             return res.status(422).json(errors.array());
         }
 
-        const { name } = req.body;
+        const { name, password } = req.body;
 
-        if (!name) {
+        if (!name || !password) {
             res.status(400).send({
                 message: "Content can not be empty!",
             });
@@ -23,6 +22,7 @@ export class PersonsController {
 
         Person.create({
             name: name,
+            password: password,
         })
             .then((d) => {
                 res.send(d);

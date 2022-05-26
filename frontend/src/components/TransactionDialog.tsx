@@ -7,6 +7,7 @@ import DialogActions from "@mui/material/DialogActions";
 import {
     Checkbox,
     FormControl,
+    IconButton,
     InputAdornment,
     InputLabel,
     List,
@@ -22,6 +23,7 @@ import {
 import { useState } from "react";
 import { DatePicker } from "@mui/x-date-pickers";
 import moment from "moment";
+import { Add } from "@mui/icons-material";
 
 export interface DialogTitleProps {
     id: string;
@@ -46,7 +48,7 @@ const people: Person[] = [
     { id: 8, name: "Ralph Hubbard" },
 ];
 
-export default function ExpenseDialog() {
+export default function TransactionDialog() {
     const [open, setOpen] = useState(false);
     const [creditor, setCreditor] = useState("");
     const [debtors, setDebtors] = useState<Person[]>([]);
@@ -61,10 +63,10 @@ export default function ExpenseDialog() {
     };
 
     return (
-        <div>
-            <Button variant="outlined" onClick={handleClickOpen}>
-                Open dialog
-            </Button>
+        <div className="dialogContainer">
+            <IconButton className="openDialogButton" onClick={handleClickOpen}>
+                <Add style={{ color: "black" }} />
+            </IconButton>
             <Dialog
                 onClose={handleClose}
                 open={open}
@@ -137,7 +139,7 @@ export default function ExpenseDialog() {
                     </FormControl>
                 </DialogContent>
                 <DialogActions>
-                    <Button autoFocus onClick={handleClose}>
+                    <Button autoFocus variant="contained" onClick={handleClose}>
                         Anlegen
                     </Button>
                     <Button autoFocus onClick={handleClose}>

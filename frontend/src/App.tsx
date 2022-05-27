@@ -1,8 +1,8 @@
 import { ThemeProvider } from "@mui/material";
-import AppBar from "./AppBar";
+import AppBar from "./components/AppBar";
 import { PageRoutes } from "./Routes";
-import { SignInDialog } from "./SignInDialog";
-import { SignUpDialog } from "./SignUpDialog";
+import { SignInDialog } from "./components/SignInDialog";
+import { SignUpDialog } from "./components/SignUpDialog";
 import theme from "./ThemeProvider";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 

@@ -4,7 +4,7 @@ import express from "express";
 import cors, { CorsOptions } from "cors";
 import db from "./models";
 import * as routes from "./routes";
-import { tokenGuard } from "./authentication/token_checker";
+import { tokenGuard } from "./authentication/tokenChecker";
 import cookieParser from "cookie-parser";
 
 const app = express();

@@ -10,7 +10,7 @@ oder Kollegen zu bewahren.
 
 Installieren von Node, Yarn, Docker Desktop und VS Code + Prettier Extension.
 
-Im Wurzelverzeichnis eine `.env` Datei mit folgenden Parametern erstellen und diese auch nach /backend kopieren.
+In /sys-src eine `.env` Datei mit folgenden Parametern erstellen und diese auch nach /sys-src/backend kopieren.
 
 | Parameter           | Bedeutung                   |
 | ------------------- | --------------------------- |
@@ -25,7 +25,7 @@ Im Wurzelverzeichnis eine `.env` Datei mit folgenden Parametern erstellen und di
 
 ## Datenbank
 
-Datenbank kann gestartet werden, indem Docker Desktop geöffnet und folgender Befehl im Wurzelverzeichnis ausgeführt wird:
+Datenbank kann gestartet werden, indem Docker Desktop geöffnet und folgender Befehl in /sys-src ausgeführt wird:
 
 ```cmd
 docker-compose up --build --force-recreate
@@ -68,3 +68,27 @@ yarn test
 ```cmd
 yarn test-ui
 ```
+
+## Dokumentation
+
+Beim ersten Erzeugen der pdf-Datei unbedingt Folgendes in /sys-doc eingeben, da sonst das Glossar verschwindet:
+
+```cmd
+ pdflatex Architektur
+```
+
+Um das Glossar zu erstellen:
+
+```cmd
+makeglossaries Architektur
+```
+
+Und anschließend noch einmal
+
+```cmd
+pdflatex Architektur
+```
+
+Sollte nichts am Glossar geändert worden sein, reicht normalerweise das Speichern der geänderten .tex-Datei aus, um die pdf-Datei zu erneuern.
+
+Grafiken, die im Dokument verwendet werden sollen, müssen in /sys-doc/images gespeichert werden

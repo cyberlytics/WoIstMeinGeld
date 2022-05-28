@@ -1,0 +1,10 @@
+/*
+
+!.gitignore
+
+!*.tex
+!*.pdf
+!*.docx
+!/images
+!*.cls
+!*.drawio

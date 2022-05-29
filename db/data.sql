@@ -14,11 +14,11 @@ VALUES
 	(0, 3, "Kinoticket", "2022-05-07 13:57:57", 9, NOW(), NOW()),
 	(0, 2, "Benzin", "2022-04-17 13:57:57", 120.55, NOW(), NOW());
 
-INSERT INTO debtor(transaction_id, person_id, createdAt, updatedAt)
+INSERT INTO debtor(transaction_id, person_id)
 VALUES
-	(1, 1, NOW(), NOW()),
-	(1, 4, NOW(), NOW()),
-	(2, 1, NOW(), NOW()),
-	(2, 2, NOW(), NOW()),
-	(2, 3, NOW(), NOW()),
-	(2, 4, NOW(), NOW());
+	(1, 1),
+	(1, 4),
+	(2, 1),
+	(2, 2),
+	(2, 3),
+	(2, 4);

@@ -36,7 +36,17 @@ interface Person {
     name: string;
 }
 
-// mockup Data
+interface AddTransaction {
+    group_id: number;
+    creditor_id: number;
+    description: string;
+    //** time in ISOString */
+    time: string;
+    amount: number;
+    debtors: number[];
+}
+
+// FIXME mock data needs to come from outside (group members)
 const people: Person[] = [
     { id: 1, name: "Oliver Hansen" },
     { id: 2, name: "Van Henry" },
@@ -53,13 +63,33 @@ export default function TransactionDialog() {
     const [creditor, setCreditor] = useState("");
     const [debtors, setDebtors] = useState<Person[]>([]);
     const [date, setDate] = useState(moment());
+    const [description, setDescription] = useState("");
+    const [amount, setAmount] = useState("");
 
     const handleClickOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const handleSave = () => {
+        const payload: AddTransaction = {
+            group_id: 1, // FIXME needs to come from outside this component
+            creditor_id: Number.parseInt(creditor),
+            description,
+            time: date.toISOString(),
+            amount: Number.parseFloat(amount),
+            // FIXME empty debtors array doesn't cause db error but should not be allowed
+            debtors: debtors.map((d) => d.id),
+        };
+        // TODO edit and use FetchService
+        fetch("http://localhost:8080/createTransaction", {
+            method: "POST",
+            body: JSON.stringify(payload),
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+        }).then((res) => (res.ok ? handleClose() : console.error(res.status, res.statusText)));
+    };
 
-    const handleChange = (person: Person) => {
-        if (!debtors.includes(person)) setDebtors([...debtors, person]);
-        else setDebtors(debtors.filter((p) => p.id != person.id));
+    const switchDebtor = (person: Person) => {
+        if (debtors.includes(person)) setDebtors(debtors.filter((d) => d !== person));
+        else setDebtors([...debtors, person]);
     };
 
     return (
@@ -75,9 +105,16 @@ export default function TransactionDialog() {
                     width: "100%",
                 }}
             >
-                <DialogTitle>Neue Ausgabe </DialogTitle>
+                <DialogTitle>Neue Ausgabe</DialogTitle>
                 <DialogContent dividers>
-                    <TextField sx={{ mb: 1.5 }} fullWidth label="Verwendungszweck" variant="outlined" />
+                    <TextField
+                        value={description}
+                        onChange={(e) => setDescription(e.currentTarget.value)}
+                        sx={{ mb: 1.5 }}
+                        fullWidth
+                        label="Verwendungszweck"
+                        variant="outlined"
+                    />
 
                     <FormControl fullWidth sx={{ mb: 1.5 }}>
                         <InputLabel>Gläubiger</InputLabel>
@@ -91,6 +128,8 @@ export default function TransactionDialog() {
                     </FormControl>
 
                     <TextField
+                        value={amount}
+                        onChange={(e) => setAmount(e.currentTarget.value)}
                         sx={{ mb: 1.5 }}
                         fullWidth
                         label="Betrag"
@@ -121,11 +160,12 @@ export default function TransactionDialog() {
                             {people.map((person) => {
                                 return (
                                     <ListItem key={person.id} disablePadding>
-                                        <ListItemButton onClick={() => handleChange(person)} dense>
+                                        <ListItemButton onClick={() => switchDebtor(person)} dense>
                                             <ListItemIcon>
                                                 <Checkbox
+                                                    key={person.id}
                                                     edge="start"
-                                                    checked={debtors.indexOf(person) > -1}
+                                                    checked={debtors.includes(person)}
                                                     tabIndex={-1}
                                                     disableRipple
                                                 />
@@ -139,7 +179,7 @@ export default function TransactionDialog() {
                     </FormControl>
                 </DialogContent>
                 <DialogActions>
-                    <Button autoFocus variant="contained" onClick={handleClose}>
+                    <Button autoFocus variant="contained" onClick={handleSave}>
                         Anlegen
                     </Button>
                     <Button autoFocus onClick={handleClose}>

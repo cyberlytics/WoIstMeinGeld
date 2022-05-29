@@ -11,13 +11,20 @@ export function SignInDialog() {
     const [isValidName, setIsValidName] = useState(true);
     const [isValidPassword, setIsValidPassword] = useState(true);
     const checkResponse = (response: any) => {
-        response = response[0]["msg"];
-        if (response.includes("404")) {
+        if (response.token !== undefined) {
+            setPasswordErrorText("");
+            setNameErrorText("");
+            setIsValidName(true);
+            setIsValidPassword(true);
+            return;
+        }
+        const responseCode = response[0]["msg"];
+        if (responseCode.includes("404")) {
             setIsValidPassword(true);
             setPasswordErrorText("");
             setIsValidName(false);
             setNameErrorText("Ungültiger Nutzername!");
-        } else if (response.includes("401")) {
+        } else if (responseCode.includes("401")) {
             setIsValidName(true);
             setNameErrorText("");
             setIsValidPassword(false);
@@ -42,7 +49,7 @@ export function SignInDialog() {
 
             // Route für POST und JSON-Objekt übergeben, um das Objekt an diese URL zu schicken
             FetchService.post("http://localhost:8080/signIn", jsonBody)
-                .then((response) => console.log(checkResponse(response)))
+                .then((response) => checkResponse(response))
                 .catch((reason) => console.error(reason));
         }
     };

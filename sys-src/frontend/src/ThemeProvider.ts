@@ -60,6 +60,9 @@ const theme = createTheme({
             main: "#FFFFFF",
             contrastText: "#232532",
         },
+        error: {
+            main: "#F6455D",
+        },
         fontWhite: {
             main: "#FFFFFF",
             dark: "#b3b3b3",

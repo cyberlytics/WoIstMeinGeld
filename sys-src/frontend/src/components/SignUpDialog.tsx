@@ -9,8 +9,13 @@ export function SignUpDialog() {
     const [errorText, setErrorText] = useState("");
     const [isValidInput, setIsValidInput] = useState(true);
     const checkResponse = (response: any) => {
-        response = response[0]["msg"];
-        if (response.includes("409")) {
+        if (response.token !== undefined) {
+            setIsValidInput(true);
+            setErrorText("");
+            return;
+        }
+        const responseCode = response[0]["msg"];
+        if (responseCode.includes("409")) {
             setIsValidInput(false);
             setErrorText("Nutzername bereits vergeben!");
         } else {

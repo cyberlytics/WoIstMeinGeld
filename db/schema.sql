@@ -22,8 +22,6 @@ CREATE TABLE transaction(
 
 ;-- association person - transaction for debtor
 CREATE TABLE debtor(
-    `createdAt` DATETIME NOT NULL,
-    `updatedAt` DATETIME NOT NULL,
     `person_id` int UNSIGNED,
     `transaction_id` int UNSIGNED,
     PRIMARY KEY (`person_id`, `transaction_id`),

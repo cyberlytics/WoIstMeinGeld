@@ -8,7 +8,7 @@ export const personRouter = Router();
 personRouter.post("/signUp", checkRegister, async (req, res) => {
     const errors = validationResult(req);
 
-    if (!errors.isEmpty()) return res.status(422).json(errors.array());
+    if (!errors.isEmpty()) return res.json(errors.array());
 
     const payload = req.body;
     await PersonService.register(payload);
@@ -18,7 +18,7 @@ personRouter.post("/signUp", checkRegister, async (req, res) => {
 personRouter.post("/signIn", checkLogin, (req, res) => {
     const errors = validationResult(req);
 
-    if (!errors.isEmpty()) return res.status(422).json(errors.array());
+    if (!errors.isEmpty()) return res.json(errors.array());
 
     const payload = req.body;
     loginAndCreateCookie(payload, res, req);

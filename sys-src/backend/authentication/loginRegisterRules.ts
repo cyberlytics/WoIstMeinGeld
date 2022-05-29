@@ -8,7 +8,7 @@ export const checkRegister = [
     check("name").custom((name) =>
         Person.findOne({ where: { name } }).then((u) => {
             if (u) {
-                throw new Error("Name already in use");
+                throw new Error("409 name already exists"); 
             }
         })
     ),
@@ -18,7 +18,7 @@ export const checkLogin = [
     check("name").custom((name) =>
         Person.findOne({ where: { name } }).then((u) => {
             if (!u) {
-                throw new Error("Name doesn't exist");
+                throw new Error("404 name doesn't exist"); 
             }
         })
     ),
@@ -27,7 +27,7 @@ export const checkLogin = [
             bcrypt.compare(password, u.password)
         );
         if (!isPasswordCorrect) {
-            throw new Error("Password is incorrect");
+            throw new Error("401 invalid password"); 
         }
     }),
 ];

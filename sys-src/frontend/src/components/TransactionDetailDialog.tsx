@@ -26,8 +26,6 @@ interface Props {
 export function TransactionDetailDialog(props: Props) {
     const { open, transaction, onClose, onDelete } = props;
 
-    const demoDebtors = ["Claire Anlage", "Rita aus Weiden", "Peter Meter", "Anna Nass"];
-
     return (
         <Dialog open={open} onClose={onClose}>
             <DialogTitle>{transaction?.description}</DialogTitle>
@@ -60,14 +58,14 @@ export function TransactionDetailDialog(props: Props) {
                 </List>
                 <Typography color="textSecondary">Schuldner</Typography>
                 <List dense>
-                    {demoDebtors.map((debtor) => (
-                        <ListItem key={debtor} disableGutters>
+                    {transaction?.debtors.map((debtor) => (
+                        <ListItem key={debtor.id} disableGutters>
                             <ListItemAvatar>
                                 <Avatar>
                                     <Person />
                                 </Avatar>
                             </ListItemAvatar>
-                            <ListItemText primary={debtor} />
+                            <ListItemText primary={debtor.name} />
                         </ListItem>
                     ))}
                 </List>

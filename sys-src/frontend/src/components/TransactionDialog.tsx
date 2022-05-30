@@ -24,6 +24,7 @@ import { useState } from "react";
 import { DatePicker } from "@mui/x-date-pickers";
 import moment from "moment";
 import { Add } from "@mui/icons-material";
+import { FetchService } from "../FetchService";
 
 export interface DialogTitleProps {
     id: string;
@@ -79,12 +80,9 @@ export default function TransactionDialog() {
             debtors: debtors.map((d) => d.id),
         };
         // TODO edit and use FetchService
-        fetch("http://localhost:8080/createTransaction", {
-            method: "POST",
-            body: JSON.stringify(payload),
-            credentials: "include",
-            headers: { "Content-Type": "application/json" },
-        }).then((res) => (res.ok ? handleClose() : console.error(res.status, res.statusText)));
+        FetchService.post("http://localhost:8080/createTransaction", payload)
+            .then((res) => (res.ok ? handleClose() : console.error(res.status, res.statusText)))
+            .catch((reason) => console.error(reason));
     };
 
     const switchDebtor = (person: Person) => {

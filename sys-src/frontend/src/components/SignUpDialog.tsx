@@ -36,6 +36,7 @@ export function SignUpDialog() {
 
             // Route für POST und JSON-Objekt übergeben, um das Objekt an diese URL zu schicken
             FetchService.post("http://localhost:8080/signUp", jsonBody)
+                .then((response) => response.json())
                 .then((response) => checkResponse(response))
                 .catch((reason) => console.error(reason));
         }

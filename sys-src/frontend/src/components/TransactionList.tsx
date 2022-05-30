@@ -10,8 +10,9 @@ export function TransactionList() {
 
     useEffect(() => {
         FetchService.get("http://localhost:8080/findAllTransactions")
+            .then((response) => response.json())
             .then((transactions: Transaction[]) => setTransactions(transactions))
-            .catch(console.error);
+            .catch((reason) => console.error(reason));
     }, []);
 
     if (transactions === null) {

@@ -49,12 +49,14 @@ export function SignInDialog() {
 
             // Route für POST und JSON-Objekt übergeben, um das Objekt an diese URL zu schicken
             FetchService.post("http://localhost:8080/signIn", jsonBody)
+                .then((response) => response.json())
                 .then((response) => checkResponse(response))
                 .catch((reason) => console.error(reason));
         }
     };
     // const getResource = () => {
     //     FetchService.get("http://localhost:8080/some-protected-resource")
+    //         .then((response) => response.json())
     //         .then((responseAsJson) => console.log(responseAsJson))
     //         .catch((reason) => console.error(reason));
     // };

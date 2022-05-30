@@ -1,7 +1,17 @@
 /**
  * This is the ts counterpart to the sql table transaction
  */
-import { Sequelize, DataTypes, Model, InferAttributes, InferCreationAttributes, CreationOptional } from "sequelize";
+import {
+    Sequelize,
+    DataTypes,
+    Model,
+    InferAttributes,
+    InferCreationAttributes,
+    CreationOptional,
+    BelongsToManyAddAssociationsMixin,
+    BelongsToManyHasAssociationMixin,
+} from "sequelize";
+import { PersonModel } from "./person.model";
 
 export interface TransactionModel
     extends Model<InferAttributes<TransactionModel>, InferCreationAttributes<TransactionModel>> {
@@ -11,6 +21,9 @@ export interface TransactionModel
     description: string;
     time: string;
     amount: number;
+    // virtual associations for TS
+    debtors: BelongsToManyHasAssociationMixin<PersonModel, number>;
+    addDebtors: BelongsToManyAddAssociationsMixin<PersonModel, number>;
 }
 
 export default (seq: Sequelize) => {

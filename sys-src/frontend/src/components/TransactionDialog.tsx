@@ -22,7 +22,6 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { DatePicker } from "@mui/x-date-pickers";
-import moment from "moment";
 import { Add } from "@mui/icons-material";
 import { FetchService } from "../FetchService";
 
@@ -63,7 +62,7 @@ export default function TransactionDialog() {
     const [open, setOpen] = useState(false);
     const [creditor, setCreditor] = useState("");
     const [debtors, setDebtors] = useState<Person[]>([]);
-    const [date, setDate] = useState(moment());
+    const [date, setDate] = useState(new Date());
     const [description, setDescription] = useState("");
     const [amount, setAmount] = useState("");
 

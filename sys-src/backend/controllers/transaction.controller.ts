@@ -11,7 +11,13 @@ export class TransactionController {
             return res.status(422).json(errors.array());
         }
 
-        Transaction.findAll({ order: [["time", "DESC"]], include: ["creditor", "debitors"] })
+        Transaction.findAll({
+            order: [["time", "DESC"]],
+            include: [
+                { association: "creditor", attributes: ["id", "name"] },
+                { association: "debtors", attributes: ["id", "name"] },
+            ],
+        })
             .then((d) => {
                 res.send(d);
             })

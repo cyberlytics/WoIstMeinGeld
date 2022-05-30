@@ -40,4 +40,17 @@ export class PersonService {
             });
         }) as Promise<boolean>;
     }
+
+    static async getIdAndNameFromToken(token: string) {
+        return new Promise((resolve, reject) => {
+            jwt.verify(token, this._jwtSecret, (err, decoded) => {
+                if (err) {
+                    resolve(undefined);
+                    return;
+                }
+                resolve(decoded);
+                return;
+            });
+        });
+    }
 }

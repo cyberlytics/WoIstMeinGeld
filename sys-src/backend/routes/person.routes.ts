@@ -22,6 +22,11 @@ personRouter.post("/signIn", checkLogin, (req, res) => {
 
     const payload = req.body;
     loginAndCreateCookie(payload, res, req);
+    PersonService.getIdAndNameFromToken(req.cookies.token).then((value) => {
+        if (value !== undefined) {
+            console.log(value);
+        }
+    });
 });
 
 const loginAndCreateCookie = async (payload, response: Response, request: Request) => {

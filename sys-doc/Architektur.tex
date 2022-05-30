@@ -177,16 +177,17 @@
     name=User-Story,
     description={Technik zur Beschreibung eines Eintrags in den Product Backlog zur Erleichterung der Kommunikation zwischen Kunden und Entwickler-Team}
 }
+\newglossaryentry{Hot-Reloading}
+{
+    name=Hot-Reloading,
+    description={Die vorgenommenen Änderungen werden gelesen und Komponenten dort neu geladen, wo sie geändert wurden}
+}
+\newglossaryentry{JWT}{
+    name=JSON Webtoken,
+    description={Token, das ermöglicht, Daten zwischen zwei Parteien sicher auszutauschen}
+}
 
 \makeglossaries
-
-%TODO: Abbildung, Abbildungsverweise, Glossar
-
-
-
-
-
-
 
 \begin{document}
 
@@ -229,9 +230,9 @@
     Doch auch bei der Umsetzung dieser Anwendung kann es einige Hürden geben, die es zu überwinden gibt.
 \end{abstract}
 
-\begin{IEEEkeywords}
-    component, formatting, style, styling, insert
-\end{IEEEkeywords}
+% \begin{IEEEkeywords}
+%     component, formatting, style, styling, insert
+% \end{IEEEkeywords}
 
 \section{Einleitung}
 Um den Überblick zu bewahren, wer wem wie viel Geld nach einem Ausflug oder Urlaub mit Freunden schuldet,
@@ -276,10 +277,11 @@ Wichtig ist hier also ein System zu entwickeln, welches nicht nur optisch anspre
 Dabei sollte man immer im Hinterkopf haben, dass der User die Benutzung der Anwendung nicht nur erlernen, sondern verstehen muss.
 Das heißt, dass die Benutzung so intuitiv und einfach wie möglich ist.
 
-\section{Lösungsstrategie}
-Die kommt noch...
-
 \section{Architekturentscheidung}
+\subsection{Lösungsstrategie}
+Die Ziele, die verfolgt werden, lassen sich mit den Technologien verknüpfen, die verwendet werden.
+In der Tabelle (vgl. Tabelle~\ref{tab:loesungsstrategie}) kann man erkennen, welche Technologie für die Erreichung eines Architekturziels eingesetzt wurde.
+
 Um die Architekturentscheidungen, die getroffen wurden, möglichst detailliert herausarbeiten zu können, wurde
 das System in drei Bereiche unterteilt:
 \subsection{Frontend}
@@ -326,7 +328,7 @@ Zudem gibt es Richtlinien für das Testen der Software:
     \item Wichtig ist auch, dass Komponenten untereinander getestet werden. Das heißt, dass der Autor sein Werk nicht manuell selbst testet, da hier die Wahrscheinlichkeit, Fehler zu finden, geringer ist.
 \end{itemize}
 Außerdem wird MUI als Komponenten-Bibliothek für das Frontend verwendet, um kostbare Zeit beim Design zu sparen.
-Falls Icons verwendet werden, werden die Martial-Icons benutzt. Zu finden sind diese hier: \url{https://fonts.google.com/icons?selected=Material+Icons}.
+Falls Icons verwendet werden, werden die Material-Icons benutzt. Zu finden sind diese hier: \url{https://fonts.google.com/icons?selected=Material+Icons}.
 \subsection{Organisatorische Randbedingungen}
 Um einen reibungslosen Ablauf zu gewährleisten, wird jede Woche Montag im \gls{Weekly-Meeting} nach der Feedback-Session besprochen, was es an Aufgaben gibt und was in der kommenden Woche getan werden muss.
 Anwesend sollten alle Mitglieder sein, sofern sie nicht durch Krankheit oder sonstige Notfälle verhindert sind.
@@ -350,10 +352,33 @@ Jedes Mitglied ist dazu angehalten, zu prüfen, ob folgende Richtlinien eingehal
     \item Methoden, Variablen und Ordnernamen werden in ,,\gls{camelCase}'' geschrieben.
     \item Für Typen, Klassen und React-Komponenten gilt hingegen ,,\gls{PascalCase}''.
 \end{itemize}
-
+\begin{table*}
+    \centering
+    \begin{tabular}{|r|l|}
+        \hline
+        Architekturziel                                                                       & Zugeordneter Architekturansatz               \\\hline
+        Im Backend sind keine anderen Programmierfähigkeiten als im Frontend notwendig.       & NodeJS                                       \\
+        Während der Entwicklungszeit gibt es eine statische Typisierung.                      & TypeScript                                   \\
+        REST-API weist geringen Implementierungsaufwand auf.                                  & Express.js                                   \\
+        Die Daten werden in einer relationalen Datenbank gespeichert und bereitgestellt.      & MySQL                                        \\
+        Der Zugriff auf die MySQL-Datenbank ist schnell, sicher und ohne SQL-Befehle möglich. & Sequelize                                    \\
+        Die Webseite hat einen modularen Aufbau.                                              & React                                        \\
+        Nutzer werden authentifiziert.                                                        & \gls{JWT} als Cookie im Frontend gespeichert \\
+        Effizientes Kompilieren und \gls{Hot-Reloading} bei der Entwicklung des Frontends.    & Vite                                         \\
+        Frontend und Backend werden automatisiert getestet.                                   & Vitest und Jest                              \\
+        Stylesheets sind übersichlicher definiert.                                            & SCSS                                         \\
+        Das Aussehen der Webseite ist einheitlich.                                            & Material UI                                  \\
+        Die Entwicklung der Webseite ist zeitsparender.                                       & Material UI                                  \\
+        Einheitliche Versionierung der Datenbank und Einspielen der Testdateien.              & Docker                                       \\
+        Das Codeformat ist einheitlich.                                                       & Prettier                                     \\\hline
+    \end{tabular}
+    \caption{Dem Architekturziel ist jeweils eine Technologie zugeordnet}
+    \label{tab:loesungsstrategie}
+\end{table*}
 \section{Ausblick}
 wird noch eingefügt...
 
+\newpage
 \printglossary[style=altlist,title=Glossar]
 % \begin{thebibliography}{00}
 % \end{thebibliography}

@@ -16,6 +16,9 @@ const transactions = transaction(seq);
 // define relationships
 const debtors = debtor(seq, persons, transactions);
 
+persons.hasMany(transactions, { as: "creditor", foreignKey: "creditor_id" });
+transactions.belongsTo(persons, { as: "creditor", foreignKey: "creditor_id" });
+
 const db = {
     sequelize: seq,
     persons,

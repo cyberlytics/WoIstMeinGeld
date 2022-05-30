@@ -39,7 +39,7 @@ export function TransactionDetailDialog(props: Props) {
                                 <Person />
                             </Avatar>
                         </ListItemAvatar>
-                        <ListItemText primary={transaction?.creditor_id} secondary="Bezahlt von" />
+                        <ListItemText primary={transaction?.creditor.name} secondary="Bezahlt von" />
                     </ListItem>
                     <ListItem disableGutters>
                         <ListItemAvatar>

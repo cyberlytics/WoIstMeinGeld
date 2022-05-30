@@ -1,19 +1,19 @@
 import { ThemeProvider } from "@mui/material";
-import AppBar from "./components/AppBar";
 import { PageRoutes } from "./Routes";
 import { SignInDialog } from "./components/SignInDialog";
 import { SignUpDialog } from "./components/SignUpDialog";
 import theme from "./ThemeProvider";
-import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { TransactionList } from "./components/TransactionList";
 import { LocalizationProvider } from "@mui/x-date-pickers";
+import deLocale from "date-fns/locale/de";
 
 export function App() {
     return (
         <div>
             <ThemeProvider theme={theme}>
-                <LocalizationProvider dateAdapter={AdapterMoment}>
+                <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={deLocale}>
                     <BrowserRouter>
                         <Routes>
                             <Route path={PageRoutes.signIn} element={<SignInDialog />} />

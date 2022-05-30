@@ -7,4 +7,5 @@ export interface Transaction {
     amount: number;
     time: string;
     creditor: Person;
+    debtors: Person[];
 }

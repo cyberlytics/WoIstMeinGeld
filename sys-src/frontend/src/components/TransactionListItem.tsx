@@ -10,7 +10,7 @@ interface Props {
 
 export function TransactionListItem(props: Props) {
     const { transaction, onClick } = props;
-    const { description, creditor_id, amount, time } = transaction;
+    const { description, creditor, amount, time } = transaction;
 
     return (
         <ListItem
@@ -25,7 +25,7 @@ export function TransactionListItem(props: Props) {
             }
         >
             <ListItemButton onClick={() => onClick(transaction)}>
-                <ListItemText primary={description} secondary={`Bezahlt von ${creditor_id}`} />
+                <ListItemText primary={description} secondary={`Bezahlt von ${creditor.name}`} />
             </ListItemButton>
         </ListItem>
     );

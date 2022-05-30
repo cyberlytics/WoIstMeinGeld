@@ -1,8 +1,8 @@
 import { Sequelize } from "sequelize";
 import dbCfg from "../config/db.config";
 import person from "./person.model";
-import friendship from "./friendship.model";
 import transaction from "./transaction.model";
+import debtor from "./debtor.model";
 
 const seq = new Sequelize(dbCfg.DB, dbCfg.USER, dbCfg.PASSWORD, {
     host: dbCfg.HOST,
@@ -11,11 +11,16 @@ const seq = new Sequelize(dbCfg.DB, dbCfg.USER, dbCfg.PASSWORD, {
     dialect: "mysql",
 });
 
+const persons = person(seq);
+const transactions = transaction(seq);
+// define relationships
+const debtors = debtor(seq, persons, transactions);
+
 const db = {
     sequelize: seq,
-    persons: person(seq),
-    transactions: transaction(seq),
-    friendships: friendship(seq),
+    persons,
+    transactions,
+    debtors,
 };
 
 export default db;

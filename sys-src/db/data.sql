@@ -14,8 +14,11 @@ VALUES
 	(0, 3, "Kinoticket", "2022-05-07 13:57:57", 9, NOW(), NOW()),
 	(0, 2, "Benzin", "2022-04-17 13:57:57", 120.55, NOW(), NOW());
 
--- INSERT INTO friendship(person1ID, person2ID)
--- VALUES
--- 	(1, 2),
--- 	(1, 3),
--- 	(1, 4);
+INSERT INTO debtor(transaction_id, person_id)
+VALUES
+	(1, 1),
+	(1, 4),
+	(2, 1),
+	(2, 2),
+	(2, 3),
+	(2, 4);

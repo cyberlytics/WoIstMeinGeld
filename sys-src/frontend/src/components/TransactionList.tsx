@@ -1,7 +1,8 @@
-import { List, Typography } from "@mui/material";
+import { Button, List, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { FetchService } from "../FetchService";
 import { Transaction } from "../models/Transaction";
+import TransactionDialog from "./TransactionDialog";
 import { TransactionListItem } from "./TransactionListItem";
 
 export function TransactionList() {
@@ -18,10 +19,13 @@ export function TransactionList() {
     }
 
     return (
-        <List>
-            {transactions.map((transaction) => (
-                <TransactionListItem key={transaction.id} transaction={transaction} />
-            ))}
-        </List>
+        <>
+            <List>
+                {transactions.map((transaction) => (
+                    <TransactionListItem key={transaction.id} transaction={transaction} />
+                ))}
+            </List>
+            <TransactionDialog />
+        </>
     );
 }

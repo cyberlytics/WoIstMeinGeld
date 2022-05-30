@@ -20,8 +20,11 @@ CREATE TABLE transaction(
     PRIMARY KEY (id)
 );
 
-CREATE TABLE friendship(
-    person1ID int UNSIGNED NOT NULL,
-    person2ID int UNSIGNED NOT NULL,
-    PRIMARY KEY (person1ID, person2ID)
-);
+;-- association person - transaction for debtor
+CREATE TABLE debtor(
+    `person_id` int UNSIGNED,
+    `transaction_id` int UNSIGNED,
+    PRIMARY KEY (`person_id`, `transaction_id`),
+    FOREIGN KEY (`person_id`) REFERENCES `person` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (`transaction_id`) REFERENCES `transaction` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+)

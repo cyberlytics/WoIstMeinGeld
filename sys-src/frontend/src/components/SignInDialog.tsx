@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FetchService } from "../FetchService";
 import { PageRoutes } from "../Routes";
+import TitleAppBar from "./AppBar";
 
 export function SignInDialog() {
     const navigate = useNavigate();
@@ -54,51 +55,45 @@ export function SignInDialog() {
                 .catch((reason) => console.error(reason));
         }
     };
-    // const getResource = () => {
-    //     FetchService.get("http://localhost:8080/some-protected-resource")
-    //         .then((response) => response.json())
-    //         .then((responseAsJson) => console.log(responseAsJson))
-    //         .catch((reason) => console.error(reason));
-    // };
 
     return (
-        <div className="signUpInContainer">
-            <div className="signUpInContainerInner">
-                <Typography variant="h5" className="signUpInItems" id="heading">
-                    Einloggen
-                </Typography>
-                <TextField
-                    id="Name"
-                    variant="outlined"
-                    label="Name"
-                    className="signUpInItems"
-                    helperText={nameErrorText}
-                    error={!isValidName}
-                />
-                <TextField
-                    id="Password"
-                    label="Passwort"
-                    type="password"
-                    className="signUpInItems"
-                    helperText={passwordErrorText}
-                    error={!isValidPassword}
-                />
-                <Button variant="contained" className="signUpInItems" onClick={loginUser}>
-                    Einloggen
-                </Button>
-                {/* <Button variant="contained" className="signUpInItems" onClick={getResource}>
-                    Get
-                </Button> */}
-                <Typography className="separator">oder</Typography>
-                <Button
-                    variant="contained"
-                    color="secondary"
-                    className="signUpInItems"
-                    onClick={() => navigate(PageRoutes.signUp)}
-                >
-                    Registrieren
-                </Button>
+        <>
+            <TitleAppBar />
+            <div className="signUpInContainer">
+                <div className="signUpInContainerInner">
+                    <Typography variant="h5" className="signUpInItems" id="heading">
+                        Einloggen
+                    </Typography>
+                    <TextField
+                        id="Name"
+                        variant="outlined"
+                        label="Name"
+                        className="signUpInItems"
+                        helperText={nameErrorText}
+                        error={!isValidName}
+                    />
+                    <TextField
+                        id="Password"
+                        label="Passwort"
+                        type="password"
+                        className="signUpInItems"
+                        helperText={passwordErrorText}
+                        error={!isValidPassword}
+                    />
+                    <Button variant="contained" className="signUpInItems" onClick={loginUser}>
+                        Einloggen
+                    </Button>
+                    <Typography className="separator">oder</Typography>
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        className="signUpInItems"
+                        onClick={() => navigate(PageRoutes.signUp)}
+                    >
+                        Registrieren
+                    </Button>
+                </div>
             </div>
-        </div>
+        </>
     );
 }

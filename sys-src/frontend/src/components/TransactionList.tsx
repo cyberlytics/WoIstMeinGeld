@@ -12,10 +12,7 @@ export function TransactionList() {
     const [openedTransaction, setOpenedTransaction] = useState<Transaction | null>(null);
 
     useEffect(() => {
-        FetchService.get("http://localhost:8080/findAllTransactions")
-            .then((response) => response.json())
-            .then((transactions: Transaction[]) => setTransactions(transactions))
-            .catch((reason) => console.error(reason));
+        findAllTransactions();
     }, []);
 
     function openDetailsDialog(transaction: Transaction) {
@@ -27,9 +24,19 @@ export function TransactionList() {
         setDetailsOpen(false);
     }
 
+    function findAllTransactions() {
+        FetchService.get("http://localhost:8080/findAllTransactions")
+            .then((response) => response.json())
+            .then((transactions: Transaction[]) => setTransactions(transactions))
+            .catch((reason) => console.error(reason));
+    }
+
     function deleteOpenedTransaction() {
         if (openedTransaction) {
-            // TODO: delete transaction
+            FetchService.delete("http://localhost:8080/deleteTransaction", { id: openedTransaction.id })
+                .then((response) => response.json())
+                .then(() => findAllTransactions())
+                .catch((reason) => console.error(reason));
             setDetailsOpen(false);
         }
     }

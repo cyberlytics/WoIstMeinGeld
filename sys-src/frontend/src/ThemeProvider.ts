@@ -3,6 +3,7 @@ import { createTheme } from "@mui/material/styles";
 declare module "@mui/material/styles" {
     interface Palette {
         fontWhite: Palette["primary"];
+        backgroundDark: Palette["primary"];
         notFilledGray: Palette["primary"];
         primaryButton: Palette["primary"];
         secondaryFont: Palette["primary"];
@@ -14,6 +15,7 @@ declare module "@mui/material/styles" {
     interface PaletteOptions {
         fontWhite: PaletteOptions["primary"];
         notFilledGray: PaletteOptions["primary"];
+        backgroundDark: PaletteOptions["primary"];
         primaryButton: PaletteOptions["primary"];
         secondaryFont: PaletteOptions["primary"];
         foregroundGray: PaletteOptions["primary"];
@@ -29,18 +31,6 @@ declare module "@mui/material/Button" {
         primaryButton: true;
         fontWhite: true;
         badRed: true;
-    }
-}
-
-declare module "@mui/material/TextField" {
-    interface TextFieldPropsColorOverrides {
-        primaryButton: true;
-    }
-}
-
-declare module "@mui/material/InputLabel" {
-    interface InputLabelPropsColorOverrides {
-        primaryButton: true;
     }
 }
 
@@ -62,6 +52,9 @@ const theme = createTheme({
         },
         error: {
             main: "#F6455D",
+        },
+        backgroundDark: {
+            main: "#181D25",
         },
         fontWhite: {
             main: "#FFFFFF",

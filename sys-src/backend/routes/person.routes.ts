@@ -29,6 +29,15 @@ personRouter.post("/signIn", checkLogin, (req, res) => {
     });
 });
 
+personRouter.post("/signOut", (req, res) => {
+    // check if client has cookie
+    const cookie = req.cookies.token;
+    if (cookie !== undefined) {
+        res.clearCookie("token");
+        res.send({ msg: "Cookie cleared!" });
+    }
+});
+
 const loginAndCreateCookie = async (payload, response: Response, request: Request) => {
     const tokenPromise = PersonService.login(payload);
     const token = await tokenPromise;

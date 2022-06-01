@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { PageRoutes } from "../Routes";
 import { FetchService } from "../FetchService";
 import { useState } from "react";
+import TitleAppBar from "./AppBar";
 
 export function SignUpDialog() {
     const navigate = useNavigate();
@@ -43,33 +44,36 @@ export function SignUpDialog() {
     };
 
     return (
-        <div className="signUpInContainer">
-            <div className="signUpInContainerInner">
-                <Typography variant="h5" className="signUpInItems" id="heading">
-                    Registrieren
-                </Typography>
-                <TextField
-                    id="Name"
-                    variant="outlined"
-                    label="Name"
-                    className="signUpInItems"
-                    helperText={errorText}
-                    error={!isValidInput}
-                />
-                <TextField id="Password" label="Passwort" type="password" className="signUpInItems" />
-                <Button variant="contained" className="signUpInItems" onClick={registerUser}>
-                    Registrieren
-                </Button>
-                <Typography className="separator">oder</Typography>
-                <Button
-                    variant="contained"
-                    color="secondary"
-                    className="signUpInItems"
-                    onClick={() => navigate(PageRoutes.signIn)}
-                >
-                    Einloggen
-                </Button>
+        <>
+            <TitleAppBar />
+            <div className="signUpInContainer">
+                <div className="signUpInContainerInner">
+                    <Typography variant="h5" className="signUpInItems" id="heading">
+                        Registrieren
+                    </Typography>
+                    <TextField
+                        id="Name"
+                        variant="outlined"
+                        label="Name"
+                        className="signUpInItems"
+                        helperText={errorText}
+                        error={!isValidInput}
+                    />
+                    <TextField id="Password" label="Passwort" type="password" className="signUpInItems" />
+                    <Button variant="contained" className="signUpInItems" onClick={registerUser}>
+                        Registrieren
+                    </Button>
+                    <Typography className="separator">oder</Typography>
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        className="signUpInItems"
+                        onClick={() => navigate(PageRoutes.signIn)}
+                    >
+                        Einloggen
+                    </Button>
+                </div>
             </div>
-        </div>
+        </>
     );
 }

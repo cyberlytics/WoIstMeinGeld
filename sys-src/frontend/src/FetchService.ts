@@ -14,4 +14,13 @@ export class FetchService {
             headers: { "Content-Type": "application/json" },
         });
     }
+
+    public static delete<T = any>(url: string, body: any): Promise<Response> {
+        return fetch(url, {
+            method: "DELETE",
+            body: JSON.stringify(body),
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+        });
+    }
 }

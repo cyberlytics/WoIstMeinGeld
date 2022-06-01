@@ -1,9 +1,9 @@
 INSERT INTO person(name, password, createdAt, updatedAt)
 VALUES
-	("Hans", "password", NOW(), NOW()),
-	("Franz", "password", NOW(), NOW()),
-	("Sepp", "password", NOW(), NOW()),
-	("Dieter", "password", NOW(), NOW());
+	("Hans", "$2b$12$ju4TuKYylh5XOemqgibGhu7OCb6O83Xstp44mFkt4d4NOTWCoFL2y", NOW(), NOW()),
+	("Franz", "$2b$12$1Ilp1wAvk7Au3Fe6EGS9WuPul9JeCjEOO7W.2l4GhQ5J.mVDqTfOa", NOW(), NOW()),
+	("Sepp", "$2b$12$1eYnk6lLCkPMS5WwefqSBuMSbclagz.SXjgn4ERJZTRRjLUvq.muK", NOW(), NOW()),
+	("Dieter", "$2b$12$KHNR3xUWshZkZPtMJfPovuKb6qpa2A67pJKgiui3OzbhMifgvQF0G", NOW(), NOW());
 
 
 INSERT INTO transaction(group_id, creditor_id, description, time, amount, createdAt, updatedAt)

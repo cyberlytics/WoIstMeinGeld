@@ -1,18 +1,21 @@
-import { ListItem, ListItemText } from "@mui/material";
+import { ListItem, ListItemButton, ListItemText } from "@mui/material";
 import { formatMoney } from "../format/formatMoney";
 import { formatTime } from "../format/formatTime";
 import { Transaction } from "../models/Transaction";
 
 interface Props {
     transaction: Transaction;
+    onClick(transaction: Transaction): void;
 }
 
 export function TransactionListItem(props: Props) {
-    const { description, creditor_id, amount, time } = props.transaction;
+    const { transaction, onClick } = props;
+    const { description, creditor, amount, time } = transaction;
 
     return (
         <ListItem
-            divider={true}
+            divider
+            disablePadding
             secondaryAction={
                 <ListItemText
                     primary={formatMoney(amount)}
@@ -21,7 +24,9 @@ export function TransactionListItem(props: Props) {
                 />
             }
         >
-            <ListItemText primary={description} secondary={`Bezahlt von ${creditor_id}`} />
+            <ListItemButton onClick={() => onClick(transaction)}>
+                <ListItemText primary={description} secondary={`Bezahlt von ${creditor.name}`} />
+            </ListItemButton>
         </ListItem>
     );
 }

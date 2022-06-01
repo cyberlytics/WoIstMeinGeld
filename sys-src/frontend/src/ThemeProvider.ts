@@ -10,7 +10,6 @@ declare module "@mui/material/styles" {
         foregroundGray: Palette["primary"];
         badRed: Palette["primary"];
         goodGreen: Palette["primary"];
-        inherit: Palette["primary"];
     }
     interface PaletteOptions {
         fontWhite: PaletteOptions["primary"];
@@ -21,7 +20,6 @@ declare module "@mui/material/styles" {
         foregroundGray: PaletteOptions["primary"];
         badRed: PaletteOptions["primary"];
         goodGreen: PaletteOptions["primary"];
-        inherit: PaletteOptions["primary"];
     }
 }
 
@@ -40,9 +38,6 @@ const theme = createTheme({
     },
     palette: {
         mode: "dark",
-        inherit: {
-            main: "#FFF",
-        },
         primary: {
             main: "#EFB90B",
         },

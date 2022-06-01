@@ -1,13 +1,66 @@
 import AppBar from "@mui/material/AppBar";
-import { Typography } from "@mui/material";
+import { IconButton, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
+import { useState } from "react";
+import { MoreVert } from "@mui/icons-material";
+import { FetchService } from "../FetchService";
+import { PageRoutes } from "../Routes";
+import { useNavigate } from "react-router-dom";
 
-const AppBarGeld = () => {
+const TitleAppBar = () => {
+    const navigate = useNavigate();
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+    const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleLogOut = () => {
+        FetchService.post("http://localhost:8080/signOut", {})
+            .then((response) => response.json())
+            .then((response) => {
+                console.log(response);
+                navigate(PageRoutes.signIn);
+                handleClose();
+            })
+            .catch((reason) => console.error(reason));
+    };
+
     return (
         <AppBar position="static">
-            <Typography className="appBarTitle" variant="h4" align="center">
-                Wo ist mein Geld?
-            </Typography>
+            <Toolbar sx={{ backgroundColor: "backgroundDark.main" }}>
+                <Typography className="appBarTitle" variant="h4" align="center" component="div" sx={{ flexGrow: 1 }}>
+                    Wo ist mein Geld?
+                </Typography>
+                <div>
+                    <IconButton size="small" onClick={handleMenu}>
+                        <MoreVert fontSize="large" color="primary" />
+                    </IconButton>
+                    <Menu
+                        id="menu-appbar"
+                        anchorEl={anchorEl}
+                        anchorOrigin={{
+                            vertical: "top",
+                            horizontal: "right",
+                        }}
+                        keepMounted
+                        transformOrigin={{
+                            vertical: "top",
+                            horizontal: "right",
+                        }}
+                        open={Boolean(anchorEl)}
+                        onClose={handleClose}
+                    >
+                        <MenuItem onClick={handleLogOut} color="error">
+                            <Typography color="error">Ausloggen</Typography>
+                        </MenuItem>
+                    </Menu>
+                </div>
+            </Toolbar>
         </AppBar>
     );
 };
-export default AppBarGeld;
+export default TitleAppBar;

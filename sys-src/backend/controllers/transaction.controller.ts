@@ -23,7 +23,7 @@ export class TransactionController {
             })
             .catch((e) => {
                 res.status(500).send({
-                    message: e.message || "Error occured on creating person.",
+                    message: e.message || "Error occured on finding transactions.",
                 });
             });
     }

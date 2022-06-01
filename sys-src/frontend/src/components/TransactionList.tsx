@@ -11,6 +11,13 @@ export function TransactionList() {
     const [detailsOpen, setDetailsOpen] = useState(false);
     const [openedTransaction, setOpenedTransaction] = useState<Transaction | null>(null);
 
+    function findAllTransactions() {
+        FetchService.get("http://localhost:8080/findAllTransactions")
+            .then((response) => response.json())
+            .then((transactions: Transaction[]) => setTransactions(transactions))
+            .catch((reason) => console.error(reason));
+    }
+
     useEffect(() => {
         findAllTransactions();
     }, []);
@@ -24,17 +31,9 @@ export function TransactionList() {
         setDetailsOpen(false);
     }
 
-    function findAllTransactions() {
-        FetchService.get("http://localhost:8080/findAllTransactions")
-            .then((response) => response.json())
-            .then((transactions: Transaction[]) => setTransactions(transactions))
-            .catch((reason) => console.error(reason));
-    }
-
     function deleteOpenedTransaction() {
         if (openedTransaction) {
             FetchService.delete("http://localhost:8080/deleteTransaction", { id: openedTransaction.id })
-                .then((response) => response.json())
                 .then(() => findAllTransactions())
                 .catch((reason) => console.error(reason));
             setDetailsOpen(false);
@@ -42,16 +41,26 @@ export function TransactionList() {
     }
 
     if (transactions === null) {
-        return <Typography color="textSecondary">Ausgaben werden geladen...</Typography>;
+        return null;
     }
 
     return (
         <>
-            <List>
-                {transactions.map((transaction) => (
-                    <TransactionListItem key={transaction.id} transaction={transaction} onClick={openDetailsDialog} />
-                ))}
-            </List>
+            {transactions.length ? (
+                <List>
+                    {transactions.map((transaction) => (
+                        <TransactionListItem
+                            key={transaction.id}
+                            transaction={transaction}
+                            onClick={openDetailsDialog}
+                        />
+                    ))}
+                </List>
+            ) : (
+                <Typography variant="h5" align="center" style={{ padding: "20px" }}>
+                    Keine Ausgaben vorhanden
+                </Typography>
+            )}
             <TransactionDetailDialog
                 open={detailsOpen}
                 transaction={openedTransaction}

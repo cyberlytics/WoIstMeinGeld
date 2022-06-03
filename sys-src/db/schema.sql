@@ -28,3 +28,18 @@ CREATE TABLE debtor(
     FOREIGN KEY (`person_id`) REFERENCES `person` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (`transaction_id`) REFERENCES `transaction` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 )
+
+CREATE TABLE group(
+    id int UNSIGNED NOT NULL AUTO_INCREMENT,
+    name varchar(100) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+;-- association person - transaction for debtor
+CREATE TABLE group_user(
+    `person_id` int UNSIGNED,
+    `group_id` int UNSIGNED,
+    PRIMARY KEY (`person_id`, `group_id`),
+    FOREIGN KEY (`person_id`) REFERENCES `person` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (`group_id`) REFERENCES `group` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+)

@@ -1,3 +1,3 @@
 export { PersonsController } from "./person.controller";
 export { TransactionController } from "./transaction.controller";
-export { GroupController } from "./group.controller";
+export { UserGroupController } from "./group.controller";

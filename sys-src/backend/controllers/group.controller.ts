@@ -2,15 +2,15 @@ import { Request, Response } from "express";
 import { Result, validationResult } from "express-validator";
 import db from "../models";
 
-const Group = db.groups;
+const UserGroup = db.usergroups;
 
-export class GroupController {
+export class UserGroupController {
     public findAll(req: Request, res: Response) {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(422).json(errors.array());
         }
-        Group.findAll({ order: ["name"], include: [{ association: "group_users", attributes: ["group_id"] }] })
+        UserGroup.findAll({ order: ["name"], include: [{ association: "group_users", attributes: ["usergroup_id"] }] })
             .then((d) => {
                 res.send(d);
             })
@@ -19,7 +19,7 @@ export class GroupController {
             });
     }
 
-    static get groupAttributes() {
+    static get userGroupAttributes() {
         return ["id", "name"];
     }
 
@@ -31,19 +31,19 @@ export class GroupController {
         const q = req.query;
         if (q.id) {
             let groupId = Number(q.id);
-            Group.findByPk(groupId, {
-                include: { association: "group_users", attributes: ["group_id"] },
-                attributes: GroupController.groupAttributes,
+            UserGroup.findByPk(groupId, {
+                include: { association: "group_users", attributes: ["usergroup_id"] },
+                attributes: UserGroupController.userGroupAttributes,
             })
                 .then((t: any) => {
                     res.send(t);
                 })
                 .catch((e) => {
                     res.status(500).send({
-                        message: e.message || "Error occured on creating person.",
+                        message: e.message || "Error occurred on finding group.",
                     });
                 });
         }
     }
 }
-export default GroupController;
+export default UserGroupController;

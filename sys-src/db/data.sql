@@ -22,3 +22,17 @@ VALUES
 	(2, 2),
 	(2, 3),
 	(2, 4);
+
+INSERT INTO group(name)
+VALUES	
+	("Gruppe 1");
+	("Urlaub");
+	("Cocktailabend");
+
+
+INSERT INTO group_user(person_id, group_id)
+VALUES
+	(1, 2);
+	(1, 1);
+	(1, 3);
+

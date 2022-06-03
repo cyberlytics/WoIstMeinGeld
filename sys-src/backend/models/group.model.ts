@@ -10,7 +10,8 @@ import {
 } from "sequelize";
 import { PersonModel } from "./person.model";
 
-export interface GroupModel extends Model<InferAttributes<GroupModel>, InferCreationAttributes<GroupModel>> {
+export interface UserGroupModel
+    extends Model<InferAttributes<UserGroupModel>, InferCreationAttributes<UserGroupModel>> {
     id: CreationOptional<number>;
     name: string;
     group_users: BelongsToManyHasAssociationMixin<PersonModel, number>;
@@ -18,8 +19,8 @@ export interface GroupModel extends Model<InferAttributes<GroupModel>, InferCrea
 }
 
 export default (seq: Sequelize) => {
-    const Group = seq.define<GroupModel>(
-        "transaction",
+    const UserGroup = seq.define<UserGroupModel>(
+        "group",
         {
             id: {
                 type: DataTypes.INTEGER.UNSIGNED,
@@ -32,5 +33,5 @@ export default (seq: Sequelize) => {
         },
         { freezeTableName: true }
     );
-    return Group;
+    return UserGroup;
 };

@@ -80,11 +80,12 @@ export function SignInDialog() {
                         helperText={passwordErrorText}
                         error={!isValidPassword}
                     />
-                    <Button variant="contained" className="signUpInItems" onClick={loginUser}>
+                    <Button role="signInButton" variant="contained" className="signUpInItems" onClick={loginUser}>
                         Einloggen
                     </Button>
                     <Typography className="separator">oder</Typography>
                     <Button
+                        role="signInButton"
                         variant="contained"
                         color="secondary"
                         className="signUpInItems"

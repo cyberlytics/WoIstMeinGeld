@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
 import { BrowserRouter as Router } from "react-router-dom";
-import { SignInDialog } from "./components/SignInDialog";
+import { SignInDialog } from "../components/SignInDialog";
 
 describe("SignInDialog Component", () => {
     test("contains textfields and buttons", () => {
@@ -9,7 +9,7 @@ describe("SignInDialog Component", () => {
                 <SignInDialog />
             </Router>
         );
-        const button = result.getAllByRole("button");
+        const button = result.getAllByRole("signInButton");
 
         expect(result.getByLabelText("Name")).toBeInTheDocument();
         expect(result.getByLabelText("Passwort")).toBeInTheDocument();
@@ -23,7 +23,7 @@ describe("SignInDialog Component", () => {
                 <SignInDialog />
             </Router>
         );
-        const button = result.getAllByRole("button");
+        const button = result.getAllByRole("signInButton");
         expect(button[0]).toBeEnabled();
         expect(button[1]).toBeEnabled();
     });

@@ -24,40 +24,5 @@ export class UserGroupController {
     static get userGroupAttributes() {
         return ["id", "name"];
     }
-
-    public getGroups(req: Request, res: Response) {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(422).json(errors.array());
-        }
-        PersonService.getIdAndNameFromToken(req.cookies.token).then((value: IPerson) => {
-            if (value !== undefined) {
-                const personId = value.id;
-                GroupUser.findAll({
-                    where: { person_id: personId },
-                    attributes: [],
-                    include: [
-                        {
-                            model: UserGroup,
-                            required: true,
-                            attributes: ["name", "id"],
-                        },
-                    ],
-                })
-                    .then((t: any) => {
-                        const ret = [];
-                        t.forEach((element) => {
-                            ret.push(element.usergroup);
-                        });
-                        res.send(ret);
-                    })
-                    .catch((e) => {
-                        res.status(500).send({
-                            message: e.message || "Error occurred on finding group.",
-                        });
-                    });
-            }
-        });
-    }
 }
 export default UserGroupController;

@@ -24,9 +24,6 @@ const group_users = groupUser(seq, persons, usergroups);
 persons.hasMany(transactions, { as: "creditor", foreignKey: "creditor_id" });
 transactions.belongsTo(persons, { as: "creditor", foreignKey: "creditor_id" });
 
-usergroups.hasMany(group_users, { foreignKey: "usergroup_id" });
-group_users.belongsTo(usergroups, { foreignKey: "usergroup_id" });
-
 const db = {
     sequelize: seq,
     persons,

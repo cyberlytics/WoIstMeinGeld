@@ -1,8 +1,9 @@
 import { Router } from "express";
+import { PersonsController } from "../controllers";
 import UserGroupController from "../controllers/userGroup.controller";
 
 export const UserGroupRouter = Router();
-const usergroupController = new UserGroupController();
-UserGroupRouter.get("/getGroups", usergroupController.getGroups);
+const personController = new PersonsController();
+UserGroupRouter.get("/getGroups", personController.getGroups);
 
 export default UserGroupRouter;

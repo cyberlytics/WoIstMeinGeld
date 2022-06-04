@@ -100,7 +100,7 @@ export default function TransactionDialog() {
 
     return (
         <div className="dialogContainer">
-            <IconButton className="openDialogButton" onClick={handleClickOpen}>
+            <IconButton aria-label="openDialogButton" className="openDialogButton" onClick={handleClickOpen}>
                 <Add style={{ color: "black" }} />
             </IconButton>
             <Dialog

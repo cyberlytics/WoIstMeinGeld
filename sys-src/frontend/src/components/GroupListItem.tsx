@@ -10,10 +10,9 @@ export function GroupListItem(props: Props) {
     const { name } = group;
 
     return (
-        <ListItem
-            divider
-            disablePadding
-            secondaryAction={<ListItemText primary={name} style={{ textAlign: "right" }} />}
-        ></ListItem>
+        <ListItem className="listItem">
+            {" "}
+            <ListItemText primary={name} style={{ padding: "10px" }} />
+        </ListItem>
     );
 }

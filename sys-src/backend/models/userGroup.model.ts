@@ -15,12 +15,12 @@ export interface UserGroupModel
     id: CreationOptional<number>;
     name: string;
     group_users: BelongsToManyHasAssociationMixin<PersonModel, number>;
-    addGroupUser: BelongsToManyAddAssociationsMixin<PersonModel, number>;
+    addGroupUsers: BelongsToManyAddAssociationsMixin<PersonModel, number>;
 }
 
 export default (seq: Sequelize) => {
     const UserGroup = seq.define<UserGroupModel>(
-        "group",
+        "usergroup",
         {
             id: {
                 type: DataTypes.INTEGER.UNSIGNED,

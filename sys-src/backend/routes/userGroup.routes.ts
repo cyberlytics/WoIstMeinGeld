@@ -1,5 +1,5 @@
 import { Router } from "express";
-import UserGroupController from "../controllers/group.controller";
+import UserGroupController from "../controllers/userGroup.controller";
 
 export const UserGroupRouter = Router();
 const usergroupController = new UserGroupController();

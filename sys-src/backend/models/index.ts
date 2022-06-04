@@ -3,7 +3,7 @@ import dbCfg from "../config/db.config";
 import person from "./person.model";
 import transaction from "./transaction.model";
 import debtor from "./debtor.model";
-import userGroup from "./group.model";
+import userGroup from "./userGroup.model";
 import groupUser from "./group_user.model";
 
 const seq = new Sequelize(dbCfg.DB, dbCfg.USER, dbCfg.PASSWORD, {
@@ -17,19 +17,22 @@ const persons = person(seq);
 const transactions = transaction(seq);
 // define relationships
 const debtors = debtor(seq, persons, transactions);
-const groups = userGroup(seq);
+const usergroups = userGroup(seq);
 
-const group_users = groupUser(seq, persons, groups);
+const group_users = groupUser(seq, persons, usergroups);
 
 persons.hasMany(transactions, { as: "creditor", foreignKey: "creditor_id" });
 transactions.belongsTo(persons, { as: "creditor", foreignKey: "creditor_id" });
+
+usergroups.hasMany(group_users);
+group_users.belongsTo(usergroups);
 
 const db = {
     sequelize: seq,
     persons,
     transactions,
     debtors,
-    usergroups: groups,
+    usergroups,
     group_users,
 };
 

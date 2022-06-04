@@ -32,10 +32,12 @@ CREATE TABLE debtor(
 CREATE TABLE usergroup(
     id int UNSIGNED NOT NULL AUTO_INCREMENT,
     name varchar(100) NOT NULL,
+    createdAt datetime NOT NULL,
+    updatedAt datetime NOT NULL,
     PRIMARY KEY (id)
 );
 
-CREATE TABLE group_user(
+CREATE TABLE group_users(
     `person_id` int UNSIGNED,
     `usergroup_id` int UNSIGNED,
     PRIMARY KEY (`person_id`, `usergroup_id`),

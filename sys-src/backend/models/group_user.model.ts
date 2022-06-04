@@ -1,6 +1,6 @@
 import { ModelCtor, Sequelize } from "sequelize/types";
 import { PersonModel } from "./person.model";
-import { UserGroupModel } from "./group.model";
+import { UserGroupModel } from "./userGroup.model";
 
 export default (seq: Sequelize, persons: ModelCtor<PersonModel>, groups: ModelCtor<UserGroupModel>) => {
     const GroupUser = seq.define("group_users", {}, { timestamps: false, freezeTableName: true });
@@ -10,7 +10,7 @@ export default (seq: Sequelize, persons: ModelCtor<PersonModel>, groups: ModelCt
     });
     groups.belongsToMany(persons, {
         through: GroupUser,
-        as: "group_users",
+        as: "group_to_user",
         foreignKey: "usergroup_id",
     });
     return GroupUser;

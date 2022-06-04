@@ -22,16 +22,18 @@ VALUES
 	(2, 3),
 	(2, 4);
 
-INSERT INTO usergroup(name)
+INSERT INTO usergroup(name, createdAt, updatedAt)
 VALUES	
-	("Gruppe 1"),
-	("Urlaub"),
-	("Cocktailabend");
+	("Gruppe 1",NOW(), NOW()),
+	("Urlaub", NOW(), NOW()),
+	("Cocktailabend", NOW(), NOW());
 
 
-INSERT INTO group_user(person_id, usergroup_id)
+INSERT INTO group_users(person_id, usergroup_id)
 VALUES
 	(1, 2),
 	(1, 1),
-	(1, 3);
+	(1, 3),
+	(2, 3),
+	(3, 2);
 

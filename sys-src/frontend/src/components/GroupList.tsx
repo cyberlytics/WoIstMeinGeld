@@ -9,12 +9,13 @@ export function GroupList() {
     function findGroups() {
         FetchService.get("http://localhost:8080/getGroups")
             .then((response) => response.json())
-            .then((groups: Group[]) => setGroups(groups))
+            .then((groups: Group[]) => console.log(groups))
             .catch((reason) => console.error(reason));
     }
 
     useEffect(() => {
         findGroups();
+        console.log(groups);
     }, []);
 
     if (groups === null) {

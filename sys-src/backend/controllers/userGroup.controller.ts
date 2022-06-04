@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Result, validationResult } from "express-validator";
+import { validationResult } from "express-validator";
 import { IPerson, PersonService } from "../authentication/person.service";
 import db from "../models";
 
@@ -33,13 +33,25 @@ export class UserGroupController {
         PersonService.getIdAndNameFromToken(req.cookies.token).then((value: IPerson) => {
             if (value !== undefined) {
                 const personId = value.id;
-                GroupUser.findAll({ include: UserGroup })
+                GroupUser.findAll({
+                    where: { person_id: personId },
+                    attributes: [],
+                    include: [
+                        {
+                            model: UserGroup,
+                            required: true,
+                            attributes: ["name", "id"],
+                        },
+                    ],
+                })
                     .then((t: any) => {
-                        console.log(t);
-                        res.send(t);
+                        const ret = [];
+                        t.forEach((element) => {
+                            ret.push(element.usergroup);
+                        });
+                        res.send(ret);
                     })
                     .catch((e) => {
-                        console.log(e);
                         res.status(500).send({
                             message: e.message || "Error occurred on finding group.",
                         });

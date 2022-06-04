@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FetchService } from "../FetchService";
 import { PageRoutes } from "../Routes";
-import TitleAppBar from "./AppBar";
+import TitleAppBar from "./TitleAppBar";
 
 export function SignInDialog() {
     const navigate = useNavigate();

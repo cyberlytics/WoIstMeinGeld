@@ -5,7 +5,8 @@
     "main": "server.js",
     "scripts": {
         "serve": "npx tsc && node ./dist/server",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "jest",
+        "coverage": "jest --coverage"
     },
     "keywords": [
         "nodejs",
@@ -20,9 +21,12 @@
         "@types/cors": "^2.8.12",
         "@types/express": "^4.17.13",
         "@types/express-validator": "^3.0.0",
+        "@types/jest": "^28.1.1",
         "@types/mysql": "^2.15.21",
         "@types/node": "^17.0.35",
         "@types/sequelize": "^4.28.13",
+        "jest": "^28.1.0",
+        "ts-jest": "^28.0.4",
         "ts-node": "^10.7.0",
         "typescript": "^4.6.4"
     },

@@ -68,13 +68,38 @@ export default function TransactionDialog() {
     const [date, setDate] = useState(new Date());
     const [description, setDescription] = useState("");
     const [amount, setAmount] = useState("");
-    const [error, setError] = useState(false);
+    const [errorCre, setErrorCre] = useState(false);
+    const [errorDeb, setErrorDeb] = useState(false);
+    const [errorDat, setErrorDat] = useState(false);
+    const [errorDes, setErrorDes] = useState(false);
+    const [errorAmo, setErrorAmo] = useState(false);
 
     const handleClickOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const handleSave = () => {
+        //reset all errors
+        setErrorCre(false);
+        setErrorDeb(false);
+        setErrorDat(false);
+        setErrorDes(false);
+        setErrorAmo(false);
+        //check if all information is present
         if (!(creditor && debtors.length > 0 && date && description && amount)) {
-            setError(true);
+            if (!creditor) {
+                setErrorCre(true);
+            }
+            if (!(debtors.length > 0)) {
+                setErrorDeb(true);
+            }
+            if (!date) {
+                setErrorDat(true);
+            }
+            if (!description) {
+                setErrorDes(true);
+            }
+            if (!amount) {
+                setErrorAmo(true);
+            }
             return;
         }
 
@@ -84,7 +109,6 @@ export default function TransactionDialog() {
             description,
             time: date.toISOString(),
             amount: Number.parseFloat(amount),
-            // FIXME empty debtors array doesn't cause db error but should not be allowed
             debtors: debtors.map((d) => d.id),
         };
 
@@ -115,16 +139,18 @@ export default function TransactionDialog() {
                 <DialogContent dividers>
                     <TextField
                         required
-                        error={error}
+                        error={errorDes}
                         value={description}
                         onChange={(e) => setDescription(e.currentTarget.value)}
                         sx={{ mb: 1.5 }}
                         fullWidth
                         label="Verwendungszweck"
                         variant="outlined"
+                        InputLabelProps={{ shrink: true }}
+                        inputProps={{ "data-testid": "Verwendungszweck" }}
                     />
 
-                    <FormControl fullWidth sx={{ mb: 1.5 }} required error={error}>
+                    <FormControl fullWidth sx={{ mb: 1.5 }} required error={errorCre}>
                         <InputLabel>Gläubiger</InputLabel>
                         <Select value={creditor} label="Gläubiger" onChange={(e) => setCreditor(e.target.value)}>
                             {people.map((person) => (
@@ -137,7 +163,7 @@ export default function TransactionDialog() {
 
                     <TextField
                         required
-                        error={error}
+                        error={errorAmo}
                         value={amount}
                         onChange={(e) => setAmount(e.currentTarget.value)}
                         sx={{ mb: 1.5 }}
@@ -155,11 +181,11 @@ export default function TransactionDialog() {
                         mask="__.__.____"
                         onChange={(newValue) => setDate(newValue!)}
                         renderInput={(params) => (
-                            <TextField {...params} required error={error} sx={{ mb: 1.5 }} fullWidth />
+                            <TextField {...params} required error={errorDat} sx={{ mb: 1.5 }} fullWidth />
                         )}
                     />
 
-                    <FormControl fullWidth sx={{ mb: 1.5 }} required error={error}>
+                    <FormControl fullWidth sx={{ mb: 1.5 }} required error={errorDeb}>
                         <FormLabel>Schuldner</FormLabel>
                         <FormGroup>
                             <List

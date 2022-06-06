@@ -5,6 +5,12 @@ import db from "../models";
 
 const Person = db.persons;
 
+export interface IPerson {
+    id: number;
+    name: string;
+    iat: number;
+}
+
 export class PersonService {
     private static readonly _saltRounds = 12;
     private static readonly _jwtSecret = "fnewfuiewngewuifgneguien21757z95z19489123";

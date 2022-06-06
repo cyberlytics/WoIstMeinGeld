@@ -27,4 +27,20 @@ CREATE TABLE debtor(
     PRIMARY KEY (`person_id`, `transaction_id`),
     FOREIGN KEY (`person_id`) REFERENCES `person` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (`transaction_id`) REFERENCES `transaction` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-)
+);
+
+CREATE TABLE usergroup(
+    id int UNSIGNED NOT NULL AUTO_INCREMENT,
+    name varchar(100) NOT NULL,
+    createdAt datetime NOT NULL,
+    updatedAt datetime NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE group_users(
+    `person_id` int UNSIGNED,
+    `usergroup_id` int UNSIGNED,
+    PRIMARY KEY (`person_id`, `usergroup_id`),
+    FOREIGN KEY (`person_id`) REFERENCES `person` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (`usergroup_id`) REFERENCES `usergroup` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+);

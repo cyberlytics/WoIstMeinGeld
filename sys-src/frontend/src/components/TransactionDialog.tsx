@@ -103,6 +103,11 @@ export default function TransactionDialog() {
 
     useEffect(() => {
         setError(false);
+        setDescription("");
+        setCreditor("");
+        setAmount(0);
+        setDate(new Date());
+        setDebtors([]);
     }, [open]);
 
     return (
@@ -129,7 +134,7 @@ export default function TransactionDialog() {
                         fullWidth
                         label="Verwendungszweck"
                         variant="outlined"
-                        inputProps={{ "data-testid": "Verwendungszweck" }}
+                        inputProps={{ "data-testid": "Verwendungszweck", error: { error } }}
                     />
 
                     <FormControl fullWidth sx={{ mb: 1.5 }} required error={error && creditor.length <= 0}>

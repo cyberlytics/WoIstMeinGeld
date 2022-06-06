@@ -212,7 +212,7 @@ export default function TransactionDialog() {
                     <Button autoFocus variant="contained" onClick={handleSave}>
                         Anlegen
                     </Button>
-                    <Button autoFocus onClick={handleClose}>
+                    <Button autoFocus onClick={handleClose} color="secondary">
                         Abbrechen
                     </Button>
                 </DialogActions>

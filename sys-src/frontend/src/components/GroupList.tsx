@@ -4,6 +4,7 @@ import { FetchService } from "../FetchService";
 import { Group } from "../models/Group";
 import TitleAppBar from "./TitleAppBar";
 import { GroupListItem } from "./GroupListItem";
+import AddGroupDialog from "./AddGroupDialog";
 
 export function GroupList() {
     const [groups, setGroups] = useState<Group[] | null>(null);
@@ -41,6 +42,7 @@ export function GroupList() {
                     </Typography>
                 )}
             </div>
+            <AddGroupDialog />
         </>
     );
 }

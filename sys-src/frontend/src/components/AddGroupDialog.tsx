@@ -13,7 +13,7 @@ import {
     Typography,
 } from "@mui/material";
 import { Add } from "@mui/icons-material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { FetchService } from "../FetchService";
@@ -33,6 +33,8 @@ export default function AddGroupDialog() {
     const [groupName, setGroupName] = useState("");
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [groupNameJoin, setGroupNameJoin] = useState("");
+    const [error, setError] = useState(false);
+    const [text, setText] = useState("");
 
     const handleClickOpen = () => {
         setAnchorEl(null);
@@ -74,15 +76,40 @@ export default function AddGroupDialog() {
         setAnchorEl(null);
     };
 
+    const handleError = (reason: number) => {
+        if (reason == 422) {
+            setText("Die Angegebene Gruppe Existiert nicht!");
+            setError(true);
+        }
+        if (reason == 0) {
+            setText("Die Eingabe darf nicht leer sein");
+            setError(true);
+        }
+    };
+
     const handleJoin = () => {
+        //reset errors
+        setError(false);
+        if (groupNameJoin == "") {
+            handleError(0);
+            return;
+        }
+
         const payload: AddGroup = {
             name: groupNameJoin,
         };
         console.log(payload);
         FetchService.post("http://localhost:8080/addToGroup", payload)
-            .then((res) => (res.ok ? handleCloseJoin() : console.error(res.status, res.statusText)))
-            .catch((reason) => console.error(reason));
+            .then((res) => (res.ok ? handleCloseJoin() : handleError(res.status)))
+            .catch((reason) => handleError(reason));
     };
+
+    //to clear textfiled after pressing Button "abbrechen"
+    useEffect(() => {
+        setError(false);
+        setGroupNameJoin("");
+        setText("");
+    }, [openJoin]);
 
     return (
         <div className="groupDialogContainer">
@@ -170,8 +197,10 @@ export default function AddGroupDialog() {
                 <DialogContent dividers>
                     <TextField
                         fullWidth
+                        error={error}
                         sx={{ mb: 1.5 }}
                         label="Gruppenname"
+                        helperText={text}
                         value={groupNameJoin}
                         onChange={(e) => setGroupNameJoin(e.currentTarget.value)}
                     ></TextField>

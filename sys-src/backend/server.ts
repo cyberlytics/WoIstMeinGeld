@@ -23,6 +23,7 @@ db.sequelize.sync();
 // check https://gorrion.io/blog/node-express-js-typescript-sequelize/ for jwt guard
 app.use("/", routes.personRouter);
 app.use("/", routes.transactionRouter);
+app.use("/", routes.UserGroupRouter);
 
 app.get("/", (req, res) => {
     res.json({ message: "Hello World!" });

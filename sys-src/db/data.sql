@@ -5,7 +5,6 @@ VALUES
 	("Sepp", "$2b$12$1eYnk6lLCkPMS5WwefqSBuMSbclagz.SXjgn4ERJZTRRjLUvq.muK", NOW(), NOW()),
 	("Dieter", "$2b$12$KHNR3xUWshZkZPtMJfPovuKb6qpa2A67pJKgiui3OzbhMifgvQF0G", NOW(), NOW());
 
-
 INSERT INTO transaction(group_id, creditor_id, description, time, amount, createdAt, updatedAt)
 VALUES
 	(0, 1, "Eis essen", "2022-05-23 13:57:57", 12, NOW(), NOW()),
@@ -22,3 +21,19 @@ VALUES
 	(2, 2),
 	(2, 3),
 	(2, 4);
+
+INSERT INTO usergroup(name, createdAt, updatedAt)
+VALUES	
+	("Gruppe 1",NOW(), NOW()),
+	("Urlaub", NOW(), NOW()),
+	("Cocktailabend", NOW(), NOW());
+
+
+INSERT INTO group_users(person_id, usergroup_id)
+VALUES
+	(1, 2),
+	(1, 1),
+	(1, 3),
+	(2, 3),
+	(3, 2);
+

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FetchService } from "../FetchService";
 import { PageRoutes } from "../Routes";
-import TitleAppBar from "./AppBar";
+import TitleAppBar from "./TitleAppBar";
 
 export function SignInDialog() {
     const navigate = useNavigate();
@@ -17,6 +17,7 @@ export function SignInDialog() {
             setNameErrorText("");
             setIsValidName(true);
             setIsValidPassword(true);
+            navigate(PageRoutes.group);
             return;
         }
         const responseCode = response[0]["msg"];
@@ -35,6 +36,7 @@ export function SignInDialog() {
             setNameErrorText("");
             setIsValidName(true);
             setIsValidPassword(true);
+            navigate(PageRoutes.group);
         }
     };
 
@@ -80,11 +82,12 @@ export function SignInDialog() {
                         helperText={passwordErrorText}
                         error={!isValidPassword}
                     />
-                    <Button variant="contained" className="signUpInItems" onClick={loginUser}>
+                    <Button role="signInButton" variant="contained" className="signUpInItems" onClick={loginUser}>
                         Einloggen
                     </Button>
                     <Typography className="separator">oder</Typography>
                     <Button
+                        role="signInButton"
                         variant="contained"
                         color="secondary"
                         className="signUpInItems"

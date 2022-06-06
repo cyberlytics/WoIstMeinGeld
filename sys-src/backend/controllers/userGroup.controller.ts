@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { validationResult } from "express-validator";
+import { Result, validationResult } from "express-validator";
 import { IPerson, PersonService } from "../authentication/person.service";
 import db from "../models";
 
@@ -21,8 +21,26 @@ export class UserGroupController {
             });
     }
 
-    static get userGroupAttributes() {
-        return ["id", "name"];
+    public async createGroup(req: Request, res: Response) {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json(errors.array());
+        }
+        const resultWithError = (e: any) => res.status(422).send(e.message);
+        const { name, creator_id } = req.body;
+        UserGroup.create({
+            name,
+        })
+            .then((t) => {
+                t.addGroupToUser(creator_id)
+                    .then((t) => {
+                        res.status(201).send();
+                    })
+                    .catch((e) => {
+                        resultWithError(e);
+                    });
+            })
+            .catch(resultWithError);
     }
 }
 export default UserGroupController;

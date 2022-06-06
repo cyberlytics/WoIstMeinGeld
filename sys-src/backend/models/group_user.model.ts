@@ -10,7 +10,7 @@ export default (seq: Sequelize, persons: ModelCtor<PersonModel>, groups: ModelCt
     });
     groups.belongsToMany(persons, {
         through: GroupUser,
-        as: "group_to_user",
+        as: "groupToUser",
         foreignKey: "usergroup_id",
     });
     return GroupUser;

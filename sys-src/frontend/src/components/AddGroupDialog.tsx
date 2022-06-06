@@ -1,6 +1,5 @@
 import {
     Alert,
-    AlertTitle,
     Button,
     Dialog,
     DialogActions,
@@ -17,12 +16,11 @@ import { useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { FetchService } from "../FetchService";
-import id from "date-fns/esm/locale/id/index.js";
-import { Person } from "../models/Person";
+import { useNavigate } from "react-router-dom";
 
 interface AddGroup {
     name: string;
-    creator_id: number;
+    creator_id?: number;
 }
 
 export default function AddGroupDialog() {
@@ -31,6 +29,7 @@ export default function AddGroupDialog() {
     const [isCopied, setIsCopied] = useState(false);
     const [groupName, setGroupName] = useState("");
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const navigate = useNavigate();
 
     const handleClickOpen = () => {
         setAnchorEl(null);
@@ -54,11 +53,17 @@ export default function AddGroupDialog() {
     const handleSave = () => {
         const payload: AddGroup = {
             name: groupName,
-            creator_id: 1, //TODO kapier ich nicht
         };
         console.log(payload);
         FetchService.post("http://localhost:8080/createGroup", payload)
-            .then((res) => (res.ok ? handleClose() : console.error(res.status, res.statusText)))
+            .then((res) => {
+                if (res.ok) {
+                    handleClose();
+                    navigate(0);
+                } else {
+                    console.error(res.status, res.statusText);
+                }
+            })
             .catch((reason) => console.error(reason));
     };
 

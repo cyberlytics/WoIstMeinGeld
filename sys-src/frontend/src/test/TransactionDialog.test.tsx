@@ -1,4 +1,4 @@
-import { fireEvent, getByLabelText, getByText, render, screen } from "@testing-library/react";
+import { fireEvent, getByLabelText, getByTestId, getByText, render, screen } from "@testing-library/react";
 import { describe, expect, test } from "vitest";
 import TransactionDialog from "../components/TransactionDialog";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -68,7 +68,7 @@ describe("TransactionDialog", () => {
         expect(screen.getByRole("dialog").getAttribute("open")).toBeFalsy;
     });
 
-    test("if dialog shows an error when as user-iput is missing", async () => {
+    test("if dialog shows an error when user-iput is missing", async () => {
         const { container } = render(
             <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={deLocale}>
                 <TransactionDialog />
@@ -81,12 +81,11 @@ describe("TransactionDialog", () => {
         // find the Home MenuItem
         const menuItem = screen.getByRole("dialog");
 
+        //try to create new transaction
         const buttonCreate = getByText(menuItem, "Anlegen");
         fireEvent.click(buttonCreate);
 
-        const descriptionInput = getByText(menuItem, "Verwendungszweck");
-
-        // check if error
-        expect(await getByText(menuItem, "Verwendungszweck").getAttribute("error")).toBeTruthy();
+        // check if error appears
+        expect(await getByTestId(menuItem, "Verwendungszweck").getAttribute("error")).toBeTruthy();
     });
 });

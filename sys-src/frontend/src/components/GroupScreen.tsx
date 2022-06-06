@@ -1,6 +1,6 @@
 import { Description, SyncAlt } from "@mui/icons-material";
 import { AppBar, Tab, Tabs } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { FetchService } from "../FetchService";
 import { Transaction } from "../models/Transaction";
@@ -9,7 +9,9 @@ import TitleAppBar from "./TitleAppBar";
 import { TransactionList } from "./TransactionList";
 
 export function GroupScreen() {
-    const { groupId } = useParams(); // TODO: use it to distinguish between groups
+    const groupId = Number.parseInt(useParams().group || "0");
+    const group = useMemo(() => ({ id: groupId, name: "Testgruppe" }), [groupId]); // TODO: get group information
+
     const [activeTab, setActiveTab] = useState(0);
     const [transactions, setTransactions] = useState<Transaction[] | null>(null);
 
@@ -38,7 +40,7 @@ export function GroupScreen() {
                     {activeTab === 0 ? (
                         <TransactionList transactions={transactions} onReload={findAllTransactions} />
                     ) : (
-                        <RepaymentList transactions={transactions} onReload={findAllTransactions} />
+                        <RepaymentList group={group} transactions={transactions} onReload={findAllTransactions} />
                     )}
                 </div>
             )}

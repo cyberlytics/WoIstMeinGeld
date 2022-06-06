@@ -22,15 +22,17 @@ import { Person } from "../models/Person";
 
 interface AddGroup {
     name: string;
-    creator_id: number;
+    creator_id?: number;
 }
 
 export default function AddGroupDialog() {
     const [open, setOpen] = useState(false);
+    const [openJoin, setOpenJoin] = useState(false);
     const [groupLink, setGroupLink] = useState("");
     const [isCopied, setIsCopied] = useState(false);
     const [groupName, setGroupName] = useState("");
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [groupNameJoin, setGroupNameJoin] = useState("");
 
     const handleClickOpen = () => {
         setAnchorEl(null);
@@ -62,6 +64,26 @@ export default function AddGroupDialog() {
             .catch((reason) => console.error(reason));
     };
 
+    const handleClickOpenJoin = () => {
+        setAnchorEl(null);
+        setOpenJoin(true);
+    };
+
+    const handleCloseJoin = () => {
+        setOpenJoin(false);
+        setAnchorEl(null);
+    };
+
+    const handleJoin = () => {
+        const payload: AddGroup = {
+            name: groupNameJoin,
+        };
+        console.log(payload);
+        FetchService.post("http://localhost:8080/addToGroup", payload)
+            .then((res) => (res.ok ? handleCloseJoin() : console.error(res.status, res.statusText)))
+            .catch((reason) => console.error(reason));
+    };
+
     return (
         <div className="groupDialogContainer">
             <div>
@@ -86,7 +108,7 @@ export default function AddGroupDialog() {
                     <MenuItem onClick={handleClickOpen}>
                         <Typography>Neue Gruppe</Typography>
                     </MenuItem>
-                    <MenuItem>
+                    <MenuItem onClick={handleClickOpenJoin}>
                         <Typography>Gruppe beitreten</Typography>
                     </MenuItem>
                 </Menu>
@@ -131,6 +153,34 @@ export default function AddGroupDialog() {
                         Gruppe erstellen
                     </Button>
                     <Button variant="text" onClick={handleClose} color="secondary">
+                        Abbrechen
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            <Dialog
+                onClose={handleCloseJoin}
+                open={openJoin}
+                fullWidth
+                sx={{
+                    overflowX: "hidden",
+                    width: "100%",
+                }}
+            >
+                <DialogTitle>Gruppe beitreten</DialogTitle>
+                <DialogContent dividers>
+                    <TextField
+                        fullWidth
+                        sx={{ mb: 1.5 }}
+                        label="Gruppenname"
+                        value={groupNameJoin}
+                        onChange={(e) => setGroupNameJoin(e.currentTarget.value)}
+                    ></TextField>
+                </DialogContent>
+                <DialogActions>
+                    <Button variant="contained" onClick={handleJoin}>
+                        Gruppe beitreten
+                    </Button>
+                    <Button variant="text" onClick={handleCloseJoin} color="secondary">
                         Abbrechen
                     </Button>
                 </DialogActions>

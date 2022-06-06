@@ -13,7 +13,7 @@ describe("SignUpDialog", () => {
             </Router>
         );
 
-        const buttons = screen.getAllByRole("button");
+        const buttons = screen.getAllByRole("signUpButton");
         expect(buttons[0]).toHaveTextContent("Registrieren");
         expect(buttons[1]).toHaveTextContent("Einloggen");
         expect(buttons[0]).toBeEnabled();
@@ -31,7 +31,7 @@ describe("SignUpDialog", () => {
             </Router>
         );
 
-        const logInButton = screen.getAllByRole("button")[1];
+        const logInButton = screen.getAllByRole("signUpButton")[1];
         fireEvent.click(logInButton);
         expect(history.location.pathname).toBe("/signIn");
     });

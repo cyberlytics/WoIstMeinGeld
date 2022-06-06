@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { PageRoutes } from "../Routes";
 import { FetchService } from "../FetchService";
 import { useState } from "react";
-import TitleAppBar from "./AppBar";
+import TitleAppBar from "./TitleAppBar";
 
 export function SignUpDialog() {
     const navigate = useNavigate();
@@ -60,11 +60,12 @@ export function SignUpDialog() {
                         error={!isValidInput}
                     />
                     <TextField id="Password" label="Passwort" type="password" className="signUpInItems" />
-                    <Button variant="contained" className="signUpInItems" onClick={registerUser}>
+                    <Button role="signUpButton" variant="contained" className="signUpInItems" onClick={registerUser}>
                         Registrieren
                     </Button>
                     <Typography className="separator">oder</Typography>
                     <Button
+                        role="signUpButton"
                         variant="contained"
                         color="secondary"
                         className="signUpInItems"

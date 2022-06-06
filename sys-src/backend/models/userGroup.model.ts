@@ -14,8 +14,8 @@ export interface UserGroupModel
     extends Model<InferAttributes<UserGroupModel>, InferCreationAttributes<UserGroupModel>> {
     id: CreationOptional<number>;
     name: string;
-    group_users: BelongsToManyHasAssociationMixin<PersonModel, number>;
-    addGroupUsers: BelongsToManyAddAssociationsMixin<PersonModel, number>;
+    groupToUser: BelongsToManyHasAssociationMixin<PersonModel, number>;
+    addGroupToUser: BelongsToManyAddAssociationsMixin<PersonModel, number>;
 }
 
 export default (seq: Sequelize) => {

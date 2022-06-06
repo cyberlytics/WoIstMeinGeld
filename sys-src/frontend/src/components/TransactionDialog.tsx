@@ -23,7 +23,7 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DatePicker } from "@mui/x-date-pickers";
 import { Add } from "@mui/icons-material";
 import { FetchService } from "../FetchService";
@@ -67,48 +67,27 @@ export default function TransactionDialog() {
     const [debtors, setDebtors] = useState<Person[]>([]);
     const [date, setDate] = useState(new Date());
     const [description, setDescription] = useState("");
-    const [amount, setAmount] = useState("");
-    const [errorCre, setErrorCre] = useState(false);
-    const [errorDeb, setErrorDeb] = useState(false);
-    const [errorDat, setErrorDat] = useState(false);
-    const [errorDes, setErrorDes] = useState(false);
-    const [errorAmo, setErrorAmo] = useState(false);
+    const [amount, setAmount] = useState(0);
+    const [error, setError] = useState(false);
 
     const handleClickOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const handleSave = () => {
-        //reset all errors
-        setErrorCre(false);
-        setErrorDeb(false);
-        setErrorDat(false);
-        setErrorDes(false);
-        setErrorAmo(false);
         //check if all information is present
         if (!(creditor && debtors.length > 0 && date && description && amount)) {
-            if (!creditor) {
-                setErrorCre(true);
-            }
-            if (!(debtors.length > 0)) {
-                setErrorDeb(true);
-            }
-            if (!date) {
-                setErrorDat(true);
-            }
-            if (!description) {
-                setErrorDes(true);
-            }
-            if (!amount) {
-                setErrorAmo(true);
-            }
+            setError(true);
             return;
         }
+
+        //reset errors
+        setError(false);
 
         const payload: AddTransaction = {
             group_id: 1, // FIXME needs to come from outside this component
             creditor_id: Number.parseInt(creditor),
             description,
             time: date.toISOString(),
-            amount: Number.parseFloat(amount),
+            amount,
             debtors: debtors.map((d) => d.id),
         };
 
@@ -121,6 +100,10 @@ export default function TransactionDialog() {
         if (debtors.includes(person)) setDebtors(debtors.filter((d) => d !== person));
         else setDebtors([...debtors, person]);
     };
+
+    useEffect(() => {
+        setError(false);
+    }, [open]);
 
     return (
         <div className="dialogContainer">
@@ -139,18 +122,17 @@ export default function TransactionDialog() {
                 <DialogContent dividers>
                     <TextField
                         required
-                        error={errorDes}
+                        error={error && description.length <= 0}
                         value={description}
                         onChange={(e) => setDescription(e.currentTarget.value)}
                         sx={{ mb: 1.5 }}
                         fullWidth
                         label="Verwendungszweck"
                         variant="outlined"
-                        InputLabelProps={{ shrink: true }}
                         inputProps={{ "data-testid": "Verwendungszweck" }}
                     />
 
-                    <FormControl fullWidth sx={{ mb: 1.5 }} required error={errorCre}>
+                    <FormControl fullWidth sx={{ mb: 1.5 }} required error={error && creditor.length <= 0}>
                         <InputLabel>Gläubiger</InputLabel>
                         <Select value={creditor} label="Gläubiger" onChange={(e) => setCreditor(e.target.value)}>
                             {people.map((person) => (
@@ -163,9 +145,9 @@ export default function TransactionDialog() {
 
                     <TextField
                         required
-                        error={errorAmo}
+                        error={error && amount <= 0}
                         value={amount}
-                        onChange={(e) => setAmount(e.currentTarget.value)}
+                        onChange={(e) => setAmount(Number(e.currentTarget.value))}
                         sx={{ mb: 1.5 }}
                         fullWidth
                         label="Betrag"
@@ -181,11 +163,17 @@ export default function TransactionDialog() {
                         mask="__.__.____"
                         onChange={(newValue) => setDate(newValue!)}
                         renderInput={(params) => (
-                            <TextField {...params} required error={errorDat} sx={{ mb: 1.5 }} fullWidth />
+                            <TextField
+                                {...params}
+                                required
+                                error={error && date == undefined}
+                                sx={{ mb: 1.5 }}
+                                fullWidth
+                            />
                         )}
                     />
 
-                    <FormControl fullWidth sx={{ mb: 1.5 }} required error={errorDeb}>
+                    <FormControl fullWidth sx={{ mb: 1.5 }} required error={error && debtors.length <= 0}>
                         <FormLabel>Schuldner</FormLabel>
                         <FormGroup>
                             <List

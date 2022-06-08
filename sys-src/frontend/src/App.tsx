@@ -9,6 +9,7 @@ import { TransactionList } from "./components/TransactionList";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import deLocale from "date-fns/locale/de";
 import { GroupList } from "./components/GroupList";
+import { GroupScreenTemp } from "./components/GroupScreenTemp";
 
 export function App() {
     return (
@@ -22,6 +23,7 @@ export function App() {
                             <Route path={PageRoutes.home} element={<SignInDialog />} />
                             <Route path={PageRoutes.transaction} element={<TransactionList />} />
                             <Route path={PageRoutes.group} element={<GroupList />} />
+                            <Route path={PageRoutes.groupScreenTemp} element={<GroupScreenTemp />} />
                             <Route path={PageRoutes.default} element={<Navigate to={PageRoutes.signIn} replace />} />
                         </Routes>
                     </BrowserRouter>

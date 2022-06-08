@@ -45,7 +45,7 @@ export function SignUpDialog() {
 
     return (
         <>
-            <TitleAppBar />
+            <TitleAppBar isGroupScreen={false} />
             <div className="signUpInContainer">
                 <div className="signUpInContainerInner">
                     <Typography variant="h5" className="signUpInItems" id="heading">

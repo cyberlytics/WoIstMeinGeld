@@ -60,7 +60,7 @@ export function SignInDialog() {
 
     return (
         <>
-            <TitleAppBar isGroupScreen={false} />
+            <TitleAppBar />
             <div className="signUpInContainer">
                 <div className="signUpInContainerInner">
                     <Typography variant="h5" className="signUpInItems" id="heading">

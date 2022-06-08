@@ -22,8 +22,6 @@ db.sequelize.sync();
 // defining routes
 // check https://gorrion.io/blog/node-express-js-typescript-sequelize/ for jwt guard
 app.use("/", routes.personRouter);
-app.use("/", routes.transactionRouter);
-app.use("/", routes.UserGroupRouter);
 
 app.get("/", (req, res) => {
     res.json({ message: "Hello World!" });
@@ -34,9 +32,8 @@ app.use(tokenGuard());
 // After this everything is checked for jwt-token
 
 // Protected Get
-app.get("/some-protected-resource", (req, res, next) => {
-    res.json("Protected Hello World");
-});
+app.use("/", routes.transactionRouter);
+app.use("/", routes.UserGroupRouter);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

@@ -28,7 +28,7 @@ export function GroupList() {
 
     return (
         <>
-            <TitleAppBar />
+            <TitleAppBar isGroupScreen={false} />
             <div id="groupsContainer">
                 <Typography variant="h5" align="center" style={{ padding: "20px" }}>
                     Gruppen

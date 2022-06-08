@@ -7,6 +7,9 @@ import DialogActions from "@mui/material/DialogActions";
 import {
     Checkbox,
     FormControl,
+    FormGroup,
+    FormHelperText,
+    FormLabel,
     IconButton,
     InputAdornment,
     InputLabel,
@@ -20,7 +23,7 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DatePicker } from "@mui/x-date-pickers";
 import { Add } from "@mui/icons-material";
 import { FetchService } from "../FetchService";
@@ -64,21 +67,30 @@ export default function TransactionDialog() {
     const [debtors, setDebtors] = useState<Person[]>([]);
     const [date, setDate] = useState(new Date());
     const [description, setDescription] = useState("");
-    const [amount, setAmount] = useState("");
+    const [amount, setAmount] = useState(0);
+    const [error, setError] = useState(false);
 
     const handleClickOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const handleSave = () => {
+        //check if all information is present
+        if (!(creditor && debtors.length > 0 && date && description && amount)) {
+            setError(true);
+            return;
+        }
+
+        //reset errors
+        setError(false);
+
         const payload: AddTransaction = {
             group_id: 1, // FIXME needs to come from outside this component
             creditor_id: Number.parseInt(creditor),
             description,
             time: date.toISOString(),
-            amount: Number.parseFloat(amount),
-            // FIXME empty debtors array doesn't cause db error but should not be allowed
+            amount,
             debtors: debtors.map((d) => d.id),
         };
-        // TODO edit and use FetchService
+
         FetchService.post("http://localhost:8080/createTransaction", payload)
             .then((res) => (res.ok ? handleClose() : console.error(res.status, res.statusText)))
             .catch((reason) => console.error(reason));
@@ -89,9 +101,18 @@ export default function TransactionDialog() {
         else setDebtors([...debtors, person]);
     };
 
+    useEffect(() => {
+        setError(false);
+        setDescription("");
+        setCreditor("");
+        setAmount(0);
+        setDate(new Date());
+        setDebtors([]);
+    }, [open]);
+
     return (
         <div className="dialogContainer">
-            <IconButton className="openDialogButton" onClick={handleClickOpen}>
+            <IconButton aria-label="openDialogButton" className="openDialogButton" onClick={handleClickOpen}>
                 <Add style={{ color: "black" }} />
             </IconButton>
             <Dialog
@@ -105,15 +126,18 @@ export default function TransactionDialog() {
                 <DialogTitle>Neue Ausgabe</DialogTitle>
                 <DialogContent dividers>
                     <TextField
+                        required
+                        error={error && description.length <= 0}
                         value={description}
                         onChange={(e) => setDescription(e.currentTarget.value)}
                         sx={{ mb: 1.5 }}
                         fullWidth
                         label="Verwendungszweck"
                         variant="outlined"
+                        inputProps={{ "data-testid": "Verwendungszweck", error: { error } }}
                     />
 
-                    <FormControl fullWidth sx={{ mb: 1.5 }}>
+                    <FormControl fullWidth sx={{ mb: 1.5 }} required error={error && creditor.length <= 0}>
                         <InputLabel>Gläubiger</InputLabel>
                         <Select value={creditor} label="Gläubiger" onChange={(e) => setCreditor(e.target.value)}>
                             {people.map((person) => (
@@ -125,8 +149,10 @@ export default function TransactionDialog() {
                     </FormControl>
 
                     <TextField
+                        required
+                        error={error && amount <= 0}
                         value={amount}
-                        onChange={(e) => setAmount(e.currentTarget.value)}
+                        onChange={(e) => setAmount(Number(e.currentTarget.value))}
                         sx={{ mb: 1.5 }}
                         fullWidth
                         label="Betrag"
@@ -139,47 +165,59 @@ export default function TransactionDialog() {
                     <DatePicker
                         label="Zahlungszeitpunkt"
                         value={date}
+                        mask="__.__.____"
                         onChange={(newValue) => setDate(newValue!)}
-                        renderInput={(params) => <TextField sx={{ mb: 1.5 }} fullWidth {...params} />}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                required
+                                error={error && date == undefined}
+                                sx={{ mb: 1.5 }}
+                                fullWidth
+                            />
+                        )}
                     />
 
-                    <FormControl fullWidth sx={{ mb: 1.5 }}>
-                        <Typography>Schuldner</Typography>
-                        <List
-                            sx={{
-                                width: "100%",
-                                position: "relative",
-                                overflowY: "scroll",
-                                overflowX: "hidden",
-                                maxHeight: 300,
-                            }}
-                        >
-                            {people.map((person) => {
-                                return (
-                                    <ListItem key={person.id} disablePadding>
-                                        <ListItemButton onClick={() => switchDebtor(person)} dense>
-                                            <ListItemIcon>
-                                                <Checkbox
-                                                    key={person.id}
-                                                    edge="start"
-                                                    checked={debtors.includes(person)}
-                                                    tabIndex={-1}
-                                                    disableRipple
-                                                />
-                                            </ListItemIcon>
-                                            <ListItemText primary={person.name} />
-                                        </ListItemButton>
-                                    </ListItem>
-                                );
-                            })}
-                        </List>
+                    <FormControl fullWidth sx={{ mb: 1.5 }} required error={error && debtors.length <= 0}>
+                        <FormLabel>Schuldner</FormLabel>
+                        <FormGroup>
+                            <List
+                                sx={{
+                                    width: "100%",
+                                    position: "relative",
+                                    overflowY: "scroll",
+                                    overflowX: "hidden",
+                                    maxHeight: 300,
+                                }}
+                            >
+                                {people.map((person) => {
+                                    return (
+                                        <ListItem key={person.id} disablePadding>
+                                            <ListItemButton onClick={() => switchDebtor(person)} dense>
+                                                <ListItemIcon>
+                                                    <Checkbox
+                                                        key={person.id}
+                                                        edge="start"
+                                                        checked={debtors.includes(person)}
+                                                        tabIndex={-1}
+                                                        disableRipple
+                                                    />
+                                                </ListItemIcon>
+                                                <ListItemText primary={person.name} />
+                                            </ListItemButton>
+                                        </ListItem>
+                                    );
+                                })}
+                            </List>
+                            <FormHelperText>Mindestens einen Schuldner auswählen</FormHelperText>
+                        </FormGroup>
                     </FormControl>
                 </DialogContent>
                 <DialogActions>
                     <Button autoFocus variant="contained" onClick={handleSave}>
                         Anlegen
                     </Button>
-                    <Button autoFocus onClick={handleClose}>
+                    <Button autoFocus onClick={handleClose} color="secondary">
                         Abbrechen
                     </Button>
                 </DialogActions>

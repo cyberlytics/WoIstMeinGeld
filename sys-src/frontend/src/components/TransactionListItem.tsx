@@ -25,7 +25,7 @@ export function TransactionListItem(props: Props) {
             }
         >
             <ListItemButton onClick={() => onClick(transaction)}>
-                <ListItemText primary={description} secondary={`Bezahlt von ${creditor.name}`} />
+                <ListItemText primary={description} secondary={`Bezahlt von ${creditor?.name}`} />
             </ListItemButton>
         </ListItem>
     );

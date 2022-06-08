@@ -1,3 +1,5 @@
+import fetch from 'cross-fetch';
+
 export class FetchService {
     public static get<T = any>(url: string): Promise<Response> {
         return fetch(url, {

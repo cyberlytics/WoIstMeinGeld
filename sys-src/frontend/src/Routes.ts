@@ -4,5 +4,6 @@ export class PageRoutes {
     public static readonly home = "/home";
     public static readonly default = "*";
     public static readonly transaction = "/transaction";
+    public static readonly groupScreenTemp = "/groupScreenTemp";
     public static readonly group = "/groups";
 }

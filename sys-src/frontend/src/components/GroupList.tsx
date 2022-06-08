@@ -1,12 +1,15 @@
-import { List, Typography } from "@mui/material";
+import { Button, List, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { FetchService } from "../FetchService";
 import { Group } from "../models/Group";
 import TitleAppBar from "./TitleAppBar";
 import { GroupListItem } from "./GroupListItem";
 import AddGroupDialog from "./AddGroupDialog";
+import { useNavigate } from "react-router-dom";
+import { PageRoutes } from "../Routes";
 
 export function GroupList() {
+    const navigate = useNavigate();
     const [groups, setGroups] = useState<Group[] | null>(null);
     function findGroups() {
         FetchService.get("http://localhost:8080/getGroups")
@@ -33,7 +36,17 @@ export function GroupList() {
                 {groups.length ? (
                     <List>
                         {groups.map((group) => (
-                            <GroupListItem key={group.id} group={group} />
+                            <div>
+                                <GroupListItem key={group.id} group={group} />
+                                <Button
+                                    key={group.id + 10}
+                                    onClick={() =>
+                                        navigate(PageRoutes.groupScreenTemp, { state: { groupId: group.id } })
+                                    }
+                                >
+                                    Zur Gruppe
+                                </Button>
+                            </div>
                         ))}
                     </List>
                 ) : (

@@ -28,7 +28,7 @@ export function GroupList() {
 
     return (
         <>
-            <TitleAppBar isGroupScreen={false} />
+            <TitleAppBar />
             <div id="groupsContainer">
                 <Typography variant="h5" align="center" style={{ padding: "20px" }}>
                     Gruppen
@@ -36,17 +36,11 @@ export function GroupList() {
                 {groups.length ? (
                     <List>
                         {groups.map((group) => (
-                            <div>
-                                <GroupListItem key={group.id} group={group} />
-                                <Button
-                                    key={group.id + 10}
-                                    onClick={() =>
-                                        navigate(PageRoutes.groupScreenTemp, { state: { groupId: group.id } })
-                                    }
-                                >
-                                    Zur Gruppe
-                                </Button>
-                            </div>
+                            <GroupListItem
+                                key={group.id}
+                                group={group}
+                                onClick={() => navigate(PageRoutes.groupScreenTemp, { state: { groupId: group.id } })}
+                            />
                         ))}
                     </List>
                 ) : (

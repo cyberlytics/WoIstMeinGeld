@@ -12,7 +12,7 @@ interface Props {
 }
 
 const TitleAppBar = (props: Props) => {
-    const { isGroupScreen, groupId } = props;
+    const { isGroupScreen = false, groupId } = props;
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -85,4 +85,9 @@ const TitleAppBar = (props: Props) => {
         </AppBar>
     );
 };
+
+TitleAppBar.defaultProps = {
+    isGroupScreen: false,
+};
+
 export default TitleAppBar;

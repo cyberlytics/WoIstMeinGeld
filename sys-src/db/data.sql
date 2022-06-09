@@ -1,15 +1,15 @@
 INSERT INTO person(name, password, createdAt, updatedAt)
 VALUES
-	("Alice", "$2b$12$ju4TuKYylh5XOemqgibGhu7OCb6O83Xstp44mFkt4d4NOTWCoFL2y", NOW(), NOW()),
-	("Bob", "$2b$12$1Ilp1wAvk7Au3Fe6EGS9WuPul9JeCjEOO7W.2l4GhQ5J.mVDqTfOa", NOW(), NOW()),
-	("Charlie", "$2b$12$1eYnk6lLCkPMS5WwefqSBuMSbclagz.SXjgn4ERJZTRRjLUvq.muK", NOW(), NOW()),
-	("Dave", "$2b$12$KHNR3xUWshZkZPtMJfPovuKb6qpa2A67pJKgiui3OzbhMifgvQF0G", NOW(), NOW());
+	("Hans", "$2b$12$ju4TuKYylh5XOemqgibGhu7OCb6O83Xstp44mFkt4d4NOTWCoFL2y", NOW(), NOW()),
+	("Franz", "$2b$12$1Ilp1wAvk7Au3Fe6EGS9WuPul9JeCjEOO7W.2l4GhQ5J.mVDqTfOa", NOW(), NOW()),
+	("Sepp", "$2b$12$1eYnk6lLCkPMS5WwefqSBuMSbclagz.SXjgn4ERJZTRRjLUvq.muK", NOW(), NOW()),
+	("Dieter", "$2b$12$KHNR3xUWshZkZPtMJfPovuKb6qpa2A67pJKgiui3OzbhMifgvQF0G", NOW(), NOW());
 
 INSERT INTO transaction(group_id, creditor_id, description, time, amount, createdAt, updatedAt)
 VALUES
-	(0, 1, "Ananas", "2022-05-24 12:00:00", 1, NOW(), NOW()),
-	(0, 2, "Bananen", "2022-05-23 12:00:00", 2, NOW(), NOW()),
-	(0, 3, "Champignons", "2022-05-22 13:57:57", 3, NOW(), NOW()),
+	(0, 1, "Himbeeren", "2022-05-24 12:00:00", 1, NOW(), NOW()),
+	(0, 2, "Feigen", "2022-05-23 12:00:00", 2, NOW(), NOW()),
+	(0, 3, "Stachelbeeren", "2022-05-22 13:57:57", 3, NOW(), NOW()),
 	(0, 4, "Datteln", "2022-05-21 13:57:57", 4, NOW(), NOW());
 
 INSERT INTO debtor(transaction_id, person_id)

@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { Group } from "../models/Group";
 import { Repayment } from "../models/Repayment";
 import { Transaction } from "../models/Transaction";
-import { repay_algo } from "../repayment_algorithm";
+import { calculateRepayments } from "../calculateRepayments";
 import { RepaymentListItem } from "./RepaymentListItem";
 
 interface Props {
@@ -16,7 +16,7 @@ export function RepaymentList(props: Props) {
     const { group, transactions, onReload } = props;
 
     const repayments: Repayment[] = useMemo(() => {
-        return repay_algo(transactions);
+        return calculateRepayments(transactions);
     }, []);
 
     return repayments.length ? (

@@ -11,24 +11,23 @@ interface RepaymentId {
     amount: number;
 }
 
-export function repay_algo(transactions: Transaction[]): Repayment[] {
+export function calculateRepayments(transactions: Transaction[]): Repayment[] {
     const balances = new Map<number, number>();
-    const repaymentsIds: RepaymentId[] = [];
+    const people = new Map<number, Person>();
     const repayments: Repayment[] = [];
+    const repaymentsIds: RepaymentId[] = [];
 
-    // TODO: people as function parameter
-    const people: Person[] = [
-        { id: 1, name: "Alice" },
-        { id: 2, name: "Bob" },
-        { id: 3, name: "Charlie" },
-        { id: 4, name: "Dave" },
-    ];
-    const peopleMap = new Map<number, Person>();
+    // initialize the people map
+    for (let transaction of transactions) {
+        people.set(transaction.creditor.id, transaction.creditor);
+        for (let debtor of transaction.debtors) {
+            people.set(debtor.id, debtor);
+        }
+    }
 
-    // initialize the balances and the people map
-    for (let person of people) {
-        peopleMap.set(person.id, person);
-        balances.set(person.id, 0);
+    // initialize the balances map
+    for (const personId of people.keys()) {
+        balances.set(personId, 0);
     }
 
     // calculate the balances
@@ -49,7 +48,7 @@ export function repay_algo(transactions: Transaction[]): Repayment[] {
             // set the balances for each debtor
             for (let debtor of transaction.debtors) {
                 if (debtor.id !== transaction.creditor.id) {
-                    let prevBalance: number = balances.get(debtor.id)!;
+                    prevBalance = balances.get(debtor.id)!;
                     balances.set(debtor.id, prevBalance - amountDebtor);
                 }
             }
@@ -57,9 +56,9 @@ export function repay_algo(transactions: Transaction[]): Repayment[] {
     }
 
     // remove all balances that are already wiped out
-    for (let person of people) {
-        if (balances.get(person.id) === 0) {
-            balances.delete(person.id);
+    for (const personId of people.keys()) {
+        if (balances.get(personId) === 0) {
+            balances.delete(personId);
         }
     }
 
@@ -114,8 +113,8 @@ export function repay_algo(transactions: Transaction[]): Repayment[] {
     // set the people in the repayments according to the people map
     for (let repaymentId of repaymentsIds) {
         repayments.push({
-            from: peopleMap.get(repaymentId.from)!,
-            to: peopleMap.get(repaymentId.to)!,
+            from: people.get(repaymentId.from)!,
+            to: people.get(repaymentId.to)!,
             amount: repaymentId.amount,
         });
     }

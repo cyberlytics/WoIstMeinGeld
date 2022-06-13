@@ -9,7 +9,7 @@ import TitleAppBar from "./TitleAppBar";
 import { TransactionList } from "./TransactionList";
 
 export function GroupScreen() {
-    const groupId = Number.parseInt(useParams().group || "0");
+    const groupId = Number.parseInt(useParams().groupId || "0");
     const group = useMemo(() => ({ id: groupId, name: "Testgruppe" }), [groupId]); // TODO: get group information
 
     const [activeTab, setActiveTab] = useState(0);

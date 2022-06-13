@@ -6,10 +6,14 @@
 \usepackage{algorithmic}
 \usepackage{graphicx}
 \usepackage{textcomp}
-\usepackage{xcolor}
 \usepackage[german]{babel}
 \usepackage[nonumberlist, section]{glossaries}
 \usepackage{hyperref}
+\usepackage[table]{xcolor}
+\usepackage{multirow}
+\usepackage{nicematrix}
+\usepackage{hhline}
+\usepackage{ifthen}
 \graphicspath{ {./images/} }
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
@@ -18,6 +22,19 @@
     linkcolor=blue,
     filecolor=magenta,      
     urlcolor=blue,
+}
+
+\newcommand*{\entryTemplate}[3]{\textbf{#1}\vspace{1mm}\linebreak\fontsize{8pt}{8pt}\selectfont #2 \linebreak\fontsize{8pt}{8pt}\selectfont #3}
+
+% Tabelleneintrag
+\newcommand*{\tableEntry}[4][1]
+{
+\ifthenelse{\equal{#1}{1}}{        
+        \entryTemplate{#2}{#3}{#4}
+    }
+    {
+    \Block{#1-1}{\entryTemplate{#2}{#3}{#4}}
+    }
 }
 
 
@@ -352,29 +369,40 @@ Jedes Mitglied ist dazu angehalten, zu prüfen, ob folgende Richtlinien eingehal
     \item Methoden, Variablen und Ordnernamen werden in ,,\gls{camelCase}'' geschrieben.
     \item Für Typen, Klassen und React-Komponenten gilt hingegen ,,\gls{PascalCase}''.
 \end{itemize}
-\begin{table*}
+
+%Vorbereitung für Tabelle
+\renewcommand{\arraystretch}{2} % changes all rows to height 3
+\newcolumntype{a}{>{\centering\arraybackslash}m{(\linewidth)/2}|}
+
+\begin{center}
+   \begin{table*}
     \centering
-    \begin{tabular}{|r|l|}
-        \hline
-        Architekturziel                                                                       & Zugeordneter Architekturansatz               \\\hline
-        Im Backend sind keine anderen Programmierfähigkeiten als im Frontend notwendig.       & NodeJS                                       \\
-        Während der Entwicklungszeit gibt es eine statische Typisierung.                      & TypeScript                                   \\
-        REST-API weist geringen Implementierungsaufwand auf.                                  & Express.js                                   \\
-        Die Daten werden in einer relationalen Datenbank gespeichert und bereitgestellt.      & MySQL                                        \\
-        Der Zugriff auf die MySQL-Datenbank ist schnell, sicher und ohne SQL-Befehle möglich. & Sequelize                                    \\
-        Die Webseite hat einen modularen Aufbau.                                              & React                                        \\
-        Nutzer werden authentifiziert.                                                        & \gls{JWT} als Cookie im Frontend gespeichert \\
-        Effizientes Kompilieren und \gls{Hot-Reloading} bei der Entwicklung des Frontends.    & Vite                                         \\
-        Frontend und Backend werden automatisiert getestet.                                   & Vitest und Jest                              \\
-        Stylesheets sind übersichlicher definiert.                                            & SCSS                                         \\
-        Das Aussehen der Webseite ist einheitlich.                                            & Material UI                                  \\
-        Die Entwicklung der Webseite ist zeitsparender.                                       & Material UI                                  \\
-        Einheitliche Versionierung der Datenbank und Einspielen der Testdateien.              & Docker                                       \\
-        Das Codeformat ist einheitlich.                                                       & Prettier                                     \\\hline
-    \end{tabular}
+    \begin{NiceTabular}{|r||l|}
+    \CodeBefore
+        \rowcolors{1-1}{lightgray}{}
+    \Body\Hline
+    Architekturziel & Zugeordneter Architekturansatz        \\\Hline\Hline
+    Im Backend sind keine anderen Programmierfähigkeiten als im Frontend notwendig.       & NodeJS                                       \\\Hline
+    Während der Entwicklungszeit gibt es eine statische Typisierung.                      & TypeScript                                   \\\Hline
+    REST-API weist geringen Implementierungsaufwand auf.                                  & Express.js                                   \\\Hline
+    Die Daten werden in einer relationalen Datenbank gespeichert und bereitgestellt.      & MySQL                                        \\\Hline
+    Der Zugriff auf die MySQL-Datenbank ist schnell, sicher und ohne SQL-Befehle möglich. & Sequelize                                    \\\Hline
+    Die Webseite hat einen modularen Aufbau.                                              & React                                        \\\Hline
+    Nutzer werden authentifiziert.                                                        & \gls{JWT} als Cookie im Frontend gespeichert \\\Hline
+    Effizientes Kompilieren und \gls{Hot-Reloading} bei der Entwicklung des Frontends.    & Vite                                         \\\Hline
+    Frontend und Backend werden automatisiert getestet.                                   & Vitest und Jest                              \\\Hline
+    Stylesheets sind übersichlicher definiert.                                            & SCSS                                         \\\Hline
+    Das Aussehen der Webseite ist einheitlich.                                            & Material UI                                  \\\Hline
+    Die Entwicklung der Webseite ist zeitsparender.                                       & Material UI                                  \\\Hline
+    Einheitliche Versionierung der Datenbank und Einspielen der Testdateien.              & Docker                                       \\\Hline
+    Das Codeformat ist einheitlich.                                                       & Prettier                                     \\\Hline
+    \end{NiceTabular}
+    \vspace*{1em}
+
     \caption{Dem Architekturziel ist jeweils eine Technologie zugeordnet}
     \label{tab:loesungsstrategie}
-\end{table*}
+  \end{table*}
+\end{center}
 \section{Ausblick}
 wird noch eingefügt...
 

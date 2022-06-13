@@ -44,11 +44,13 @@ const loginAndCreateCookie = async (payload, response: Response, request: Reques
 
     // check if client sent cookie
     const cookie = request.cookies.token;
-    if (cookie === undefined) {
-        response
-            .cookie("token", token.token, {
-                httpOnly: true,
-            })
-            .send(token);
+
+    if (cookie !== undefined) {
+        response.clearCookie("token");
     }
+    response
+        .cookie("token", token.token, {
+            httpOnly: true,
+        })
+        .send(token);
 };

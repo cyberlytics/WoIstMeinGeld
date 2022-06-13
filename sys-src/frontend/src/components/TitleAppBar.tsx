@@ -8,21 +8,12 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 interface IProps {
     title?: string;
-}
-
-const TitleAppBar = (props: IProps) => {
-    const { title } = props;
-
-<<<<<<< HEAD
-interface Props {
     isGroupScreen: boolean;
     groupId?: number;
 }
 
-const TitleAppBar = (props: Props) => {
-    const { isGroupScreen = false, groupId } = props;
-=======
->>>>>>> develop
+const TitleAppBar = (props: IProps) => {
+    const { title, isGroupScreen, groupId } = props;
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const location = useLocation();
@@ -64,37 +55,6 @@ const TitleAppBar = (props: Props) => {
                 <Typography className="appBarTitle" variant="h4" align="center" component="div" sx={{ flexGrow: 1 }}>
                     {title || "Wo ist mein Geld?"}
                 </Typography>
-<<<<<<< HEAD
-                <div>
-                    <IconButton size="small" onClick={handleMenu}>
-                        <MoreVert fontSize="large" color="primary" />
-                    </IconButton>
-                    <Menu
-                        id="menu-appbar"
-                        anchorEl={anchorEl}
-                        anchorOrigin={{
-                            vertical: "top",
-                            horizontal: "right",
-                        }}
-                        keepMounted
-                        transformOrigin={{
-                            vertical: "top",
-                            horizontal: "right",
-                        }}
-                        open={Boolean(anchorEl)}
-                        onClose={handleClose}
-                    >
-                        {isGroupScreen && (
-                            <MenuItem onClick={handleRemoveFromGroup}>
-                                <Typography>Aus Gruppe austreten</Typography>
-                            </MenuItem>
-                        )}
-                        <MenuItem onClick={handleLogOut} color="error">
-                            <Typography color="error">Ausloggen</Typography>
-                        </MenuItem>
-                    </Menu>
-                </div>
-=======
                 {showMenu && (
                     <div className="appBarMenuButton">
                         <IconButton size="small" onClick={handleMenu}>
@@ -115,13 +75,17 @@ const TitleAppBar = (props: Props) => {
                             open={Boolean(anchorEl)}
                             onClose={handleClose}
                         >
+                            {isGroupScreen && (
+                                <MenuItem onClick={handleRemoveFromGroup}>
+                                    <Typography>Aus Gruppe austreten</Typography>
+                                </MenuItem>
+                            )}
                             <MenuItem onClick={handleLogOut} color="error">
                                 <Typography color="error">Ausloggen</Typography>
                             </MenuItem>
                         </Menu>
                     </div>
                 )}
->>>>>>> develop
             </Toolbar>
         </AppBar>
     );

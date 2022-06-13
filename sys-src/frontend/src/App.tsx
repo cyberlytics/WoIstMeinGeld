@@ -9,7 +9,6 @@ import { GroupScreen } from "./components/GroupScreen";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import deLocale from "date-fns/locale/de";
 import { GroupList } from "./components/GroupList";
-import { GroupScreenTemp } from "./components/GroupScreenTemp";
 
 export function App() {
     return (
@@ -21,14 +20,8 @@ export function App() {
                             <Route path={PageRoutes.signIn} element={<SignInDialog />} />
                             <Route path={PageRoutes.signUp} element={<SignUpDialog />} />
                             <Route path={PageRoutes.home} element={<SignInDialog />} />
-<<<<<<< HEAD
-                            <Route path={PageRoutes.transaction} element={<TransactionList />} />
-                            <Route path={PageRoutes.group} element={<GroupList />} />
-                            <Route path={PageRoutes.groupScreenTemp} element={<GroupScreenTemp />} />
-=======
                             <Route path={PageRoutes.group} element={<GroupScreen />} />
                             <Route path={PageRoutes.groups} element={<GroupList />} />
->>>>>>> develop
                             <Route path={PageRoutes.default} element={<Navigate to={PageRoutes.signIn} replace />} />
                         </Routes>
                     </BrowserRouter>

@@ -54,15 +54,12 @@ export class UserGroupController {
             return res.status(422).json(errors.array());
         }
         const resultWithError = (e: any) => res.status(422).send(e.message);
-        const { name } = req.body;
+        const { id } = req.body;
         PersonService.getIdAndNameFromToken(req.cookies.token).then((value: IPerson) => {
             if (value !== undefined) {
                 const personId = value.id;
-                UserGroup.findOne({
-                    where: {
-                        name: name,
-                    },
-                })
+                const groupId = Number(id);
+                UserGroup.findByPk(groupId)
                     .then((t) => {
                         t.addGroupToUser([personId])
                             .then((t) => {

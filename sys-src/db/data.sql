@@ -7,10 +7,11 @@ VALUES
 
 INSERT INTO transaction(group_id, creditor_id, description, time, amount, createdAt, updatedAt)
 VALUES
-	(3, 1, "Himbeeren", "2022-05-22 12:00:00", 3, NOW(), NOW()),
+	(3, 1, "Himbeeren", "2022-05-22 12:00:00", 7, NOW(), NOW()),
 	(1, 2, "Feigen", "2022-05-23 12:00:00", 2, NOW(), NOW()),
 	(2, 3, "Stachelbeeren", "2022-05-21 12:00:00", 4, NOW(), NOW()),
-	(2, 4, "Datteln", "2022-05-24 12:00:00", 1, NOW(), NOW());
+	(2, 4, "Datteln", "2022-05-24 12:00:00", 1, NOW(), NOW()),
+	(2, 1, "Bier", "2022-05-25 12:00:00", 10, NOW(), NOW());
 
 INSERT INTO debtor(transaction_id, person_id)
 VALUES
@@ -25,7 +26,8 @@ VALUES
 	(3, 4),
 	(4, 1),
 	(4, 2),
-	(4, 3);
+	(4, 3),
+	(5, 2);
 
 INSERT INTO usergroup(name, createdAt, updatedAt)
 VALUES	

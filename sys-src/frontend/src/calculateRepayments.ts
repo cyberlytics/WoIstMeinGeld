@@ -13,15 +13,15 @@ interface RepaymentId {
 
 export function calculateRepayments(transactions: Transaction[]): Repayment[] {
     const balances = new Map<number, number>();
-    const people = new Map<number, [Person, Transaction]>();
+    const people = new Map<number, Person>();
     const repayments: Repayment[] = [];
     const repaymentsIds: RepaymentId[] = [];
 
     // get the people who are involved in the transactions
     for (let transaction of transactions) {
-        people.set(transaction.creditor.id, [transaction.creditor, transaction]);
+        people.set(transaction.creditor.id, transaction.creditor);
         for (let debtor of transaction.debtors) {
-            people.set(debtor.id, [debtor, transaction]);
+            people.set(debtor.id, debtor);
         }
     }
 
@@ -77,7 +77,9 @@ export function calculateRepayments(transactions: Transaction[]): Repayment[] {
                     continue;
                 }
                 // check if a positive balance has a matching negative balance
-                if (balance1 === -balance2) {
+                let roundBalance1: number = parseFloat(balance1.toFixed(3));
+                let roundBalance2: number = parseFloat(balance2.toFixed(3));
+                if (roundBalance1 === -roundBalance2) {
                     if (balance1 > balance2) repaymentsIds.push({ from: personId2, to: personId1, amount: balance1 });
                     else repaymentsIds.push({ from: personId1, to: personId2, amount: balance2 });
 
@@ -88,23 +90,6 @@ export function calculateRepayments(transactions: Transaction[]): Repayment[] {
                 }
             }
             if (checkTwo) break;
-
-            const peopleObject = people.get(personId1);
-
-            if (peopleObject !== undefined) {
-                const transaction = peopleObject[1];
-
-                if (transaction.creditor_id === personId1 && balance1 < transaction.debtors.length / 100) {
-                    balances.delete(personId1);
-                    checkTwo = true;
-                }
-            }
-
-            if (balances.size === 1) {
-                balances.delete(personId1);
-                checkTwo = true;
-                break;
-            }
         }
 
         // If only one balance can be wiped out, then wipe the biggest negative balance out.
@@ -144,8 +129,8 @@ export function calculateRepayments(transactions: Transaction[]): Repayment[] {
     // set the people in the repayments according to their ids
     for (let repaymentId of repaymentsIds) {
         repayments.push({
-            from: people.get(repaymentId.from)![0],
-            to: people.get(repaymentId.to)![0],
+            from: people.get(repaymentId.from)!,
+            to: people.get(repaymentId.to)!,
             amount: repaymentId.amount,
         });
     }

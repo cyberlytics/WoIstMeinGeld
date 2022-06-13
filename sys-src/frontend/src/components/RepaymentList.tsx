@@ -7,13 +7,13 @@ import { calculateRepayments } from "../calculateRepayments";
 import { RepaymentListItem } from "./RepaymentListItem";
 
 interface Props {
-    group: Group;
+    groupId: number;
     transactions: Transaction[];
     onReload(): void;
 }
 
 export function RepaymentList(props: Props) {
-    const { group, transactions, onReload } = props;
+    const { groupId, transactions, onReload } = props;
 
     const repayments: Repayment[] = useMemo(() => {
         return calculateRepayments(transactions);
@@ -24,7 +24,7 @@ export function RepaymentList(props: Props) {
             {repayments.map((repayment) => (
                 <RepaymentListItem
                     key={repayment.from.id + "" + repayment.to.id}
-                    group={group}
+                    groupId={groupId}
                     repayment={repayment}
                     onReload={onReload}
                 />

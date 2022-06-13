@@ -27,20 +27,25 @@ export class UserGroupController {
             return res.status(422).json(errors.array());
         }
         const resultWithError = (e: any) => res.status(422).send(e.message);
-        const { name, creator_id } = req.body;
-        UserGroup.create({
-            name,
-        })
-            .then((t) => {
-                t.addGroupToUser(creator_id)
+        const { name } = req.body;
+        PersonService.getIdAndNameFromToken(req.cookies.token).then((value: IPerson) => {
+            if (value !== undefined) {
+                const personId = value.id;
+                UserGroup.create({
+                    name,
+                })
                     .then((t) => {
-                        res.status(201).send();
+                        t.addGroupToUser([personId])
+                            .then((t) => {
+                                res.status(201).send();
+                            })
+                            .catch((e) => {
+                                resultWithError(e);
+                            });
                     })
-                    .catch((e) => {
-                        resultWithError(e);
-                    });
-            })
-            .catch(resultWithError);
+                    .catch(resultWithError);
+            }
+        });
     }
 
     public async addToGroup(req: Request, res: Response) {

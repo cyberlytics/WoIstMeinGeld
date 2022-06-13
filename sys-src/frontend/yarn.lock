@@ -425,6 +425,26 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
+"@mswjs/cookies@^0.2.0":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@mswjs/cookies/-/cookies-0.2.1.tgz#66a283b45970ffc5350d22657983a1377ea6bf97"
+  integrity sha512-0tDfcPw5/s7QsNQqS3knAvAD5w5PF1nNPagRhKO/yECY+sMbJxoC2sLWnH7Lzmh52mTSVLKDhd1r92Q3kfljnQ==
+  dependencies:
+    "@types/set-cookie-parser" "^2.4.0"
+    set-cookie-parser "^2.4.6"
+
+"@mswjs/interceptors@^0.16.3":
+  version "0.16.4"
+  resolved "https://registry.yarnpkg.com/@mswjs/interceptors/-/interceptors-0.16.4.tgz#fa41de240dd094e6ad19e3a6829651589551d159"
+  integrity sha512-McPKUFlZNS/wo+OAor15k0fv2skK+EdWl9CEcdxAqsN4vKajlxCxDU4B5W/pn1y0TJPSAOmxR6LYFe/8esePrg==
+  dependencies:
+    "@open-draft/until" "^1.0.3"
+    "@xmldom/xmldom" "^0.7.5"
+    debug "^4.3.3"
+    headers-polyfill "^3.0.4"
+    outvariant "^1.2.1"
+    strict-event-emitter "^0.2.4"
+
 "@mui/base@5.0.0-alpha.79":
   "integrity" "sha512-/lZLF027BkiEjM8MIYoeS/FEhTKf+41ePU9SOijMGrCin1Y0Igucw+IHa1fF8HXD7wDbFKqHuso3J1jMG8wyNw=="
   "resolved" "https://registry.npmjs.org/@mui/base/-/base-5.0.0-alpha.79.tgz"
@@ -560,6 +580,11 @@
     "@nodelib/fs.scandir" "2.1.5"
     "fastq" "^1.6.0"
 
+"@open-draft/until@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@open-draft/until/-/until-1.0.3.tgz#db9cc719191a62e7d9200f6e7bab21c5b848adca"
+  integrity sha512-Aq58f5HiWdyDlFffbbSjAlv596h/cOnt2DO1w3DOC7OJ5EHs0hd/nycJfiu9RJbT6Yk6F1knnRRXNSpxoIVZ9Q==
+
 "@polka/url@^1.0.0-next.20":
   "integrity" "sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g=="
   "resolved" "https://registry.npmjs.org/@polka/url/-/url-1.0.0-next.21.tgz"
@@ -643,6 +668,11 @@
   "resolved" "https://registry.npmjs.org/@types/chai/-/chai-4.3.1.tgz"
   "version" "4.3.1"
 
+"@types/cookie@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@types/cookie/-/cookie-0.4.1.tgz#bfd02c1f2224567676c1545199f87c3a861d878d"
+  integrity sha512-XW/Aa8APYr6jSVVA1y/DEIZX0/GMKLEVekNG727R8cs56ahETkRAy/3DR7+fJyh7oUgGwNQaRfXCun0+KbWY7Q==
+
 "@types/istanbul-lib-coverage@^2.0.1":
   "integrity" "sha512-z/QT1XN4K4KYuslS23k62yDIDLwLFkzxOuMplDtObz0+y7VqJCaO2o+SPwHCvLFZh7xazvvoor2tA/hPz9ee7g=="
   "resolved" "https://registry.npmjs.org/@types/istanbul-lib-coverage/-/istanbul-lib-coverage-2.0.4.tgz"
@@ -655,6 +685,16 @@
   dependencies:
     "jest-matcher-utils" "^27.0.0"
     "pretty-format" "^27.0.0"
+
+"@types/js-levenshtein@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@types/js-levenshtein/-/js-levenshtein-1.1.1.tgz#ba05426a43f9e4e30b631941e0aa17bf0c890ed5"
+  integrity sha512-qC4bCqYGy1y/NP7dDVr7KJarn+PbX1nSpwA7JXdu0HxT3QYjO8MJ+cntENtHFVy2dRAyBV23OZ6MxsW1AM1L8g==
+
+"@types/node@*":
+  version "17.0.39"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.39.tgz#3652d82e2a16b4ea679d5ea3143b816c91b7e113"
+  integrity sha512-JDU3YLlnPK3WDao6/DlXLOgSNpG13ct+CwIO17V8q0/9fWJyeMJJ/VyZ1lv8kDprihvZMydzVwf0tQOqGiY2Nw==
 
 "@types/parse-json@^4.0.0":
   "integrity" "sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA=="
@@ -707,6 +747,13 @@
   "integrity" "sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew=="
   "resolved" "https://registry.npmjs.org/@types/scheduler/-/scheduler-0.16.2.tgz"
   "version" "0.16.2"
+
+"@types/set-cookie-parser@^2.4.0":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@types/set-cookie-parser/-/set-cookie-parser-2.4.2.tgz#b6a955219b54151bfebd4521170723df5e13caad"
+  integrity sha512-fBZgytwhYAUkj/jC/FAV4RQ5EerRup1YQsXQCh8rZfiHkc4UahC192oH0smGwsXol3cL3A5oETuAHeQHmhXM4w==
+  dependencies:
+    "@types/node" "*"
 
 "@types/testing-library__jest-dom@^5.9.1":
   "integrity" "sha512-oKZe+Mf4ioWlMuzVBaXQ9WDnEm1+umLx0InILg+yvZVBBDmzV5KfZyLrCvadtWcx8+916jLmHafcmqqffl+iIw=="

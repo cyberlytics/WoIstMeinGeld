@@ -108,6 +108,28 @@ export class UserGroupController {
         });
     }
 
+     /**
+     * deleteGroup
+     */
+    public async deleteGroup(req: Request, res: Response) {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json(errors.array());
+        }
+        if (req.body.id) {
+            UserGroup.destroy({
+                where: { id: req.body.id },
+            }).then((t: any) => {
+                res.status(200).send({ "number of deleted rows": t });
+            })
+            .catch((e) => {
+                res.status(500).send({
+                    message: e.message || "Error occured on deleting group.",
+                });
+            });
+        }
+    }
+
     public getGroupUsers(req: Request, res: Response) {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {

@@ -44,7 +44,7 @@ export function GroupScreen() {
 
     return (
         <>
-            <TitleAppBar title={group ? group.name : undefined} />
+            <TitleAppBar title={group ? group.name : undefined} isGroupScreen={true} groupId={groupId} />
             <AppBar position="static" sx={{ backgroundColor: "backgroundDark.main", backgroundImage: "none" }}>
                 <Tabs variant="fullWidth" value={activeTab} onChange={(_, newActiveTab) => setActiveTab(newActiveTab)}>
                     <Tab label="Ausgaben" icon={<Description />} />

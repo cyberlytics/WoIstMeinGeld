@@ -35,7 +35,7 @@ const TitleAppBar = () => {
                 <Typography className="appBarTitle" variant="h4" align="center" component="div" sx={{ flexGrow: 1 }}>
                     Wo ist mein Geld?
                 </Typography>
-                <div>
+                <div className="appBarMenuButton">
                     <IconButton size="small" onClick={handleMenu}>
                         <MoreVert fontSize="large" color="primary" />
                     </IconButton>

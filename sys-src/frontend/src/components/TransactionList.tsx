@@ -1,26 +1,21 @@
 import { List, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FetchService } from "../FetchService";
 import { Transaction } from "../models/Transaction";
 import { TransactionDetailDialog } from "./TransactionDetailDialog";
 import TransactionDialog from "./TransactionDialog";
 import { TransactionListItem } from "./TransactionListItem";
 
-export function TransactionList() {
-    const [transactions, setTransactions] = useState<Transaction[] | null>(null);
+interface Props {
+    transactions: Transaction[];
+    onReload(): void;
+}
+
+export function TransactionList(props: Props) {
+    const { transactions, onReload } = props;
+
     const [detailsOpen, setDetailsOpen] = useState(false);
     const [openedTransaction, setOpenedTransaction] = useState<Transaction | null>(null);
-
-    function findAllTransactions() {
-        FetchService.get("http://localhost:8080/findAllTransactions")
-            .then((response) => response.json())
-            .then((transactions: Transaction[]) => setTransactions(transactions))
-            .catch((reason) => console.error(reason));
-    }
-
-    useEffect(() => {
-        findAllTransactions();
-    }, []);
 
     function openDetailsDialog(transaction: Transaction) {
         setOpenedTransaction(transaction);
@@ -34,14 +29,10 @@ export function TransactionList() {
     function deleteOpenedTransaction() {
         if (openedTransaction) {
             FetchService.delete("http://localhost:8080/deleteTransaction", { id: openedTransaction.id })
-                .then(() => findAllTransactions())
+                .then(() => onReload())
                 .catch((reason) => console.error(reason));
             setDetailsOpen(false);
         }
-    }
-
-    if (transactions === null) {
-        return null;
     }
 
     return (

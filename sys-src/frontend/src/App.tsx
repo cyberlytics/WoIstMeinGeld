@@ -5,7 +5,7 @@ import { SignUpDialog } from "./components/SignUpDialog";
 import theme from "./ThemeProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { TransactionList } from "./components/TransactionList";
+import { GroupScreen } from "./components/GroupScreen";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import deLocale from "date-fns/locale/de";
 import { GroupList } from "./components/GroupList";
@@ -20,8 +20,8 @@ export function App() {
                             <Route path={PageRoutes.signIn} element={<SignInDialog />} />
                             <Route path={PageRoutes.signUp} element={<SignUpDialog />} />
                             <Route path={PageRoutes.home} element={<SignInDialog />} />
-                            <Route path={PageRoutes.transaction} element={<TransactionList />} />
-                            <Route path={PageRoutes.group} element={<GroupList />} />
+                            <Route path={PageRoutes.group} element={<GroupScreen />} />
+                            <Route path={PageRoutes.groups} element={<GroupList />} />
                             <Route path={PageRoutes.default} element={<Navigate to={PageRoutes.signIn} replace />} />
                         </Routes>
                     </BrowserRouter>

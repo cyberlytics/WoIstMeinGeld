@@ -16,8 +16,8 @@ export function GroupScreen() {
     const [activeTab, setActiveTab] = useState(0);
     const [transactions, setTransactions] = useState<Transaction[] | null>(null);
 
-    function findAllTransactions() {
-        FetchService.get("http://localhost:8080/findAllTransactions")
+    function getTransactionsByGroup() {
+        FetchService.get("http://localhost:8080/transactions/" + groupId)
             .then((response) => response.json())
             .then((transactions: Transaction[]) => setTransactions(transactions))
             .catch((reason) => console.error(reason));
@@ -38,13 +38,13 @@ export function GroupScreen() {
     }
 
     useEffect(() => {
-        findAllTransactions();
+        getTransactionsByGroup();
         getGroup();
     }, []);
 
     return (
         <>
-            <TitleAppBar title={group ? group.name : undefined} />
+            <TitleAppBar title={group ? group.name : undefined} isGroupScreen={true} groupId={groupId} />
             <AppBar position="static" sx={{ backgroundColor: "backgroundDark.main", backgroundImage: "none" }}>
                 <Tabs variant="fullWidth" value={activeTab} onChange={(_, newActiveTab) => setActiveTab(newActiveTab)}>
                     <Tab label="Ausgaben" icon={<Description />} />
@@ -54,9 +54,13 @@ export function GroupScreen() {
             {transactions && (
                 <div style={{ padding: 24 }}>
                     {activeTab === 0 ? (
-                        <TransactionList transactions={transactions} onReload={findAllTransactions} />
+                        <TransactionList transactions={transactions} onReload={getTransactionsByGroup} />
                     ) : (
-                        <RepaymentList groupId={groupId} transactions={transactions} onReload={findAllTransactions} />
+                        <RepaymentList
+                            groupId={groupId}
+                            transactions={transactions}
+                            onReload={getTransactionsByGroup}
+                        />
                     )}
                 </div>
             )}

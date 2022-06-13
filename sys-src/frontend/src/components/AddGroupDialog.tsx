@@ -12,7 +12,7 @@ import {
     Typography,
 } from "@mui/material";
 import { Add } from "@mui/icons-material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { FetchService } from "../FetchService";
@@ -23,12 +23,20 @@ interface AddGroup {
     creator_id?: number;
 }
 
+interface AddById {
+    id: number;
+}
+
 export default function AddGroupDialog() {
     const [open, setOpen] = useState(false);
+    const [openJoin, setOpenJoin] = useState(false);
     const [groupLink, setGroupLink] = useState("");
     const [isCopied, setIsCopied] = useState(false);
     const [groupName, setGroupName] = useState("");
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [groupIdJoin, setGroupIdJoin] = useState<number | null>(null);
+    const [error, setError] = useState(false);
+    const [text, setText] = useState("");
     const navigate = useNavigate();
 
     const handleClickOpen = () => {
@@ -67,6 +75,51 @@ export default function AddGroupDialog() {
             .catch((reason) => console.error(reason));
     };
 
+    const handleClickOpenJoin = () => {
+        setAnchorEl(null);
+        setOpenJoin(true);
+    };
+
+    const handleCloseJoin = () => {
+        setOpenJoin(false);
+        setAnchorEl(null);
+    };
+
+    const handleError = (reason: number) => {
+        if (reason == 422) {
+            setText("Die Angegebene Gruppe Existiert nicht!");
+            setError(true);
+        }
+        if (reason == 0) {
+            setText("Die Eingabe darf nicht leer sein");
+            setError(true);
+        }
+    };
+
+    const handleJoin = () => {
+        //reset errors
+        setError(false);
+        if (!groupIdJoin) {
+            handleError(0);
+            return;
+        }
+
+        const payload: AddById = {
+            id: groupIdJoin,
+        };
+        console.log(payload);
+        FetchService.post("http://localhost:8080/addToGroup", payload)
+            .then((res) => (res.ok ? handleCloseJoin() : handleError(res.status)))
+            .catch((reason) => handleError(reason));
+    };
+
+    //to clear textfiled after pressing Button "abbrechen"
+    useEffect(() => {
+        setError(false);
+        setGroupIdJoin(null);
+        setText("");
+    }, [openJoin]);
+
     return (
         <div className="groupDialogContainer">
             <div>
@@ -91,7 +144,7 @@ export default function AddGroupDialog() {
                     <MenuItem onClick={handleClickOpen}>
                         <Typography>Neue Gruppe</Typography>
                     </MenuItem>
-                    <MenuItem>
+                    <MenuItem onClick={handleClickOpenJoin}>
                         <Typography>Gruppe beitreten</Typography>
                     </MenuItem>
                 </Menu>
@@ -136,6 +189,36 @@ export default function AddGroupDialog() {
                         Gruppe erstellen
                     </Button>
                     <Button variant="text" onClick={handleClose} color="secondary">
+                        Abbrechen
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            <Dialog
+                onClose={handleCloseJoin}
+                open={openJoin}
+                fullWidth
+                sx={{
+                    overflowX: "hidden",
+                    width: "100%",
+                }}
+            >
+                <DialogTitle>Gruppe beitreten</DialogTitle>
+                <DialogContent dividers>
+                    <TextField
+                        fullWidth
+                        error={error}
+                        sx={{ mb: 1.5 }}
+                        label="Gruppenname"
+                        helperText={text}
+                        value={groupIdJoin}
+                        onChange={(e) => setGroupIdJoin(Number(e.currentTarget.value))}
+                    ></TextField>
+                </DialogContent>
+                <DialogActions>
+                    <Button variant="contained" onClick={handleJoin}>
+                        Gruppe beitreten
+                    </Button>
+                    <Button variant="text" onClick={handleCloseJoin} color="secondary">
                         Abbrechen
                     </Button>
                 </DialogActions>

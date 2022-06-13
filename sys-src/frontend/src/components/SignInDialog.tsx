@@ -17,7 +17,7 @@ export function SignInDialog() {
             setNameErrorText("");
             setIsValidName(true);
             setIsValidPassword(true);
-            navigate(PageRoutes.group);
+            navigate(PageRoutes.groups);
             return;
         }
         const responseCode = response[0]["msg"];
@@ -36,7 +36,7 @@ export function SignInDialog() {
             setNameErrorText("");
             setIsValidName(true);
             setIsValidPassword(true);
-            navigate(PageRoutes.group);
+            navigate(PageRoutes.groups);
         }
     };
 

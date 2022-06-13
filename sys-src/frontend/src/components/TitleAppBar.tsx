@@ -8,11 +8,12 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 interface IProps {
     title?: string;
+    isGroupScreen: boolean;
+    groupId?: number;
 }
 
 const TitleAppBar = (props: IProps) => {
-    const { title } = props;
-
+    const { title, isGroupScreen, groupId } = props;
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const location = useLocation();
@@ -32,6 +33,17 @@ const TitleAppBar = (props: IProps) => {
             .then((response) => {
                 console.log(response);
                 navigate(PageRoutes.signIn);
+                handleClose();
+            })
+            .catch((reason) => console.error(reason));
+    };
+
+    const handleRemoveFromGroup = () => {
+        const jsonBody = { groupId: groupId };
+        FetchService.post("http://localhost:8080/removeFromGroup", jsonBody)
+            .then((response) => {
+                console.log(response);
+                navigate(-1);
                 handleClose();
             })
             .catch((reason) => console.error(reason));
@@ -63,6 +75,11 @@ const TitleAppBar = (props: IProps) => {
                             open={Boolean(anchorEl)}
                             onClose={handleClose}
                         >
+                            {isGroupScreen && (
+                                <MenuItem onClick={handleRemoveFromGroup}>
+                                    <Typography>Aus Gruppe austreten</Typography>
+                                </MenuItem>
+                            )}
                             <MenuItem onClick={handleLogOut} color="error">
                                 <Typography color="error">Ausloggen</Typography>
                             </MenuItem>
@@ -73,4 +90,9 @@ const TitleAppBar = (props: IProps) => {
         </AppBar>
     );
 };
+
+TitleAppBar.defaultProps = {
+    isGroupScreen: false,
+};
+
 export default TitleAppBar;

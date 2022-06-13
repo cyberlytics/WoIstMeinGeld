@@ -7,6 +7,7 @@ import {
     CreationOptional,
     BelongsToManyHasAssociationMixin,
     BelongsToManyAddAssociationsMixin,
+    BelongsToManyRemoveAssociationsMixin,
 } from "sequelize";
 import { PersonModel } from "./person.model";
 
@@ -16,6 +17,7 @@ export interface UserGroupModel
     name: string;
     groupToUser: BelongsToManyHasAssociationMixin<PersonModel, number>;
     addGroupToUser: BelongsToManyAddAssociationsMixin<PersonModel, number>;
+    removeGroupToUser: BelongsToManyRemoveAssociationsMixin<PersonModel, number>;
 }
 
 export default (seq: Sequelize) => {

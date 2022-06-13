@@ -23,6 +23,10 @@ interface AddGroup {
     creator_id?: number;
 }
 
+interface AddById {
+    id: number;
+}
+
 export default function AddGroupDialog() {
     const [open, setOpen] = useState(false);
     const [openJoin, setOpenJoin] = useState(false);
@@ -30,13 +34,10 @@ export default function AddGroupDialog() {
     const [isCopied, setIsCopied] = useState(false);
     const [groupName, setGroupName] = useState("");
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-<<<<<<< HEAD
-    const [groupNameJoin, setGroupNameJoin] = useState("");
+    const [groupIdJoin, setGroupIdJoin] = useState<number | null>(null);
     const [error, setError] = useState(false);
     const [text, setText] = useState("");
-=======
     const navigate = useNavigate();
->>>>>>> develop
 
     const handleClickOpen = () => {
         setAnchorEl(null);
@@ -98,13 +99,13 @@ export default function AddGroupDialog() {
     const handleJoin = () => {
         //reset errors
         setError(false);
-        if (groupNameJoin == "") {
+        if (!groupIdJoin) {
             handleError(0);
             return;
         }
 
-        const payload: AddGroup = {
-            name: groupNameJoin,
+        const payload: AddById = {
+            id: groupIdJoin,
         };
         console.log(payload);
         FetchService.post("http://localhost:8080/addToGroup", payload)
@@ -115,7 +116,7 @@ export default function AddGroupDialog() {
     //to clear textfiled after pressing Button "abbrechen"
     useEffect(() => {
         setError(false);
-        setGroupNameJoin("");
+        setGroupIdJoin(null);
         setText("");
     }, [openJoin]);
 
@@ -209,8 +210,8 @@ export default function AddGroupDialog() {
                         sx={{ mb: 1.5 }}
                         label="Gruppenname"
                         helperText={text}
-                        value={groupNameJoin}
-                        onChange={(e) => setGroupNameJoin(e.currentTarget.value)}
+                        value={groupIdJoin}
+                        onChange={(e) => setGroupIdJoin(Number(e.currentTarget.value))}
                     ></TextField>
                 </DialogContent>
                 <DialogActions>

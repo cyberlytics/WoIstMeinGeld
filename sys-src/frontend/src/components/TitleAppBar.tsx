@@ -6,7 +6,13 @@ import { FetchService } from "../FetchService";
 import { PageRoutes } from "../Routes";
 import { useNavigate, useLocation } from "react-router-dom";
 
-const TitleAppBar = () => {
+interface IProps {
+    title?: string;
+}
+
+const TitleAppBar = (props: IProps) => {
+    const { title } = props;
+
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const location = useLocation();
@@ -35,7 +41,7 @@ const TitleAppBar = () => {
         <AppBar position="static">
             <Toolbar sx={{ backgroundColor: "backgroundDark.main" }}>
                 <Typography className="appBarTitle" variant="h4" align="center" component="div" sx={{ flexGrow: 1 }}>
-                    Wo ist mein Geld?
+                    {title || "Wo ist mein Geld?"}
                 </Typography>
                 {showMenu && (
                     <div className="appBarMenuButton">

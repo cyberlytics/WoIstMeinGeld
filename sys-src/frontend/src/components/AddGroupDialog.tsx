@@ -29,6 +29,8 @@ export default function AddGroupDialog() {
     const [isCopied, setIsCopied] = useState(false);
     const [groupName, setGroupName] = useState("");
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [errorText, setErrorText] = useState("");
+    const [isGroupNameEmpty, setIsGroupNameEmpty] = useState(false);
     const navigate = useNavigate();
 
     const handleClickOpen = () => {
@@ -51,26 +53,33 @@ export default function AddGroupDialog() {
     };
 
     const handleSave = () => {
-        const payload: AddGroup = {
-            name: groupName,
-        };
-        console.log(payload);
-        FetchService.post("http://localhost:8080/createGroup", payload)
-            .then((res) => {
-                if (res.ok) {
-                    handleClose();
-                    navigate(0);
-                } else {
-                    console.error(res.status, res.statusText);
-                }
-            })
-            .catch((reason) => console.error(reason));
+        if (groupName == "") {
+            setErrorText("Ungültiger Gruppenname!");
+            setIsGroupNameEmpty(true);
+        } else {
+            setErrorText("");
+            setIsGroupNameEmpty(false);
+            const payload: AddGroup = {
+                name: groupName,
+            };
+            console.log(payload);
+            FetchService.post("http://localhost:8080/createGroup", payload)
+                .then((res) => {
+                    if (res.ok) {
+                        handleClose();
+                        navigate(0);
+                    } else {
+                        console.error(res.status, res.statusText);
+                    }
+                })
+                .catch((reason) => console.error(reason));
+        }
     };
 
     return (
         <div className="groupDialogContainer">
             <div>
-                <IconButton className="openGroupDialogButton" onClick={handleMenu}>
+                <IconButton data-testid="openGroupDialogButton" className="openGroupDialogButton" onClick={handleMenu}>
                     <Add style={{ color: "black" }} />
                 </IconButton>
                 <Menu
@@ -89,7 +98,7 @@ export default function AddGroupDialog() {
                     onClose={handleClose}
                 >
                     <MenuItem onClick={handleClickOpen}>
-                        <Typography>Neue Gruppe</Typography>
+                        <Typography data-testid="newGroup">Neue Gruppe</Typography>
                     </MenuItem>
                     <MenuItem>
                         <Typography>Gruppe beitreten</Typography>
@@ -108,11 +117,14 @@ export default function AddGroupDialog() {
                 <DialogTitle>Neue Gruppe erstellen</DialogTitle>
                 <DialogContent dividers>
                     <TextField
+                        data-testid="groupName"
                         fullWidth
                         sx={{ mb: 1.5 }}
                         label="Gruppenname"
                         value={groupName}
                         onChange={(e) => setGroupName(e.currentTarget.value)}
+                        helperText={errorText}
+                        error={isGroupNameEmpty}
                     ></TextField>
                     {/* Der Link kann eigentlich raus, den kriegt man erst bei der Gruppe */}
                     <div>
@@ -132,10 +144,10 @@ export default function AddGroupDialog() {
                     </div>
                 </DialogContent>
                 <DialogActions>
-                    <Button variant="contained" onClick={handleSave}>
+                    <Button data-testid="createGroup" variant="contained" onClick={handleSave}>
                         Gruppe erstellen
                     </Button>
-                    <Button variant="text" onClick={handleClose} color="secondary">
+                    <Button data-testid="cancelCreateGroup" variant="text" onClick={handleClose} color="secondary">
                         Abbrechen
                     </Button>
                 </DialogActions>

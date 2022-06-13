@@ -6,4 +6,5 @@ export class PageRoutes {
     public static readonly transaction = "/transaction";
     public static readonly group = "/group/:groupId";
     public static readonly groups = "/groups";
+    public static readonly groupTemplate = "/group/";
 }

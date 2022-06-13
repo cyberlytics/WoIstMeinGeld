@@ -36,7 +36,11 @@ export function GroupList() {
                 {groups.length ? (
                     <List>
                         {groups.map((group) => (
-                            <GroupListItem key={group.id} group={group} onClick={() => navigate(PageRoutes.group)} />
+                            <GroupListItem
+                                key={group.id}
+                                group={group}
+                                onClick={() => navigate(PageRoutes.groupTemplate + group.id)}
+                            />
                         ))}
                     </List>
                 ) : (

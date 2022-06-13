@@ -6,6 +6,7 @@ const transactionController = new TransactionController();
 
 transactionRouter.get("/findAllTransactions", transactionController.findAllTransactions);
 transactionRouter.get("/getTransaction", transactionController.getTransaction);
+transactionRouter.get("/transactions/:groupId", transactionController.transactions);
 transactionRouter.post("/createTransaction", transactionController.createTransaction);
 transactionRouter.delete("/deleteTransaction", transactionController.deleteTransaction);
 

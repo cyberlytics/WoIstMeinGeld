@@ -91,10 +91,10 @@ export function calculateRepayments(transactions: Transaction[]): Repayment[] {
         // The value of the biggest negative balance will be added to the smallest positive balance.
         if (!checkTwo) {
             let maxNegBalance: number = Number.NEGATIVE_INFINITY;
-            let maxNegPersonId: number = 0;
+            let maxNegPersonId: number = -1;
 
             let minPosBalance: number = Number.POSITIVE_INFINITY;
-            let minPosPersonId: number = 0;
+            let minPosPersonId: number = -1;
 
             for (const [personId, balance] of balances) {
                 // find the biggest negative balance
@@ -113,7 +113,10 @@ export function calculateRepayments(transactions: Transaction[]): Repayment[] {
                 }
             }
 
-            repaymentsIds.push({ from: maxNegPersonId, to: minPosPersonId, amount: maxNegBalance });
+            let prevBalance: number = balances.get(minPosPersonId)!;
+            balances.set(minPosPersonId, prevBalance + maxNegBalance);
+
+            repaymentsIds.push({ from: maxNegPersonId, to: minPosPersonId, amount: -maxNegBalance });
             balances.delete(maxNegPersonId);
         }
     }

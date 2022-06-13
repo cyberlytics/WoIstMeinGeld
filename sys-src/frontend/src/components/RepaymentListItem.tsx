@@ -3,11 +3,10 @@ import { Button, CircularProgress, ListItem, ListItemText, Typography } from "@m
 import { useState } from "react";
 import { FetchService } from "../FetchService";
 import { formatMoney } from "../format/formatMoney";
-import { Group } from "../models/Group";
 import { Repayment } from "../models/Repayment";
 
 interface Props {
-    group: Group;
+    groupId: number;
     repayment: Repayment;
     onReload(): void;
 }
@@ -24,7 +23,7 @@ interface AddTransactionPayload {
 type RepaymentState = "not-yet" | "processing" | "done" | "error";
 
 export function RepaymentListItem(props: Props) {
-    const { group, repayment, onReload } = props;
+    const { groupId, repayment, onReload } = props;
     const [state, setState] = useState<RepaymentState>("not-yet");
 
     function onRepay() {
@@ -35,7 +34,7 @@ export function RepaymentListItem(props: Props) {
         setState("processing");
 
         const payload: AddTransactionPayload = {
-            group_id: group.id,
+            group_id: groupId,
             creditor_id: repayment.from.id,
             description: `Rückzahlung an ${repayment.to.name}`,
             time: new Date().toISOString(),

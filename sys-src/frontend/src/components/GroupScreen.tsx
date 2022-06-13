@@ -1,8 +1,9 @@
 import { Description, SyncAlt } from "@mui/icons-material";
 import { AppBar, Tab, Tabs } from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { FetchService } from "../FetchService";
+import { Group } from "../models/Group";
 import { Transaction } from "../models/Transaction";
 import { RepaymentList } from "./RepaymentList";
 import TitleAppBar from "./TitleAppBar";
@@ -10,7 +11,7 @@ import { TransactionList } from "./TransactionList";
 
 export function GroupScreen() {
     const groupId = Number.parseInt(useParams().groupId || "0");
-    const group = useMemo(() => ({ id: groupId, name: "Testgruppe" }), [groupId]); // TODO: get group information
+    const [group, setGroup] = useState<Group | null>(null);
 
     const [activeTab, setActiveTab] = useState(0);
     const [transactions, setTransactions] = useState<Transaction[] | null>(null);
@@ -22,13 +23,28 @@ export function GroupScreen() {
             .catch((reason) => console.error(reason));
     }
 
+    function getGroup() {
+        FetchService.get("http://localhost:8080/getGroups")
+            .then((response) => response.json())
+            .then((groups: Group[]) => {
+                for (const group of groups) {
+                    if (group.id === groupId) {
+                        setGroup(group);
+                        break;
+                    }
+                }
+            })
+            .catch((reason) => console.error(reason));
+    }
+
     useEffect(() => {
         findAllTransactions();
+        getGroup();
     }, []);
 
     return (
         <>
-            <TitleAppBar />
+            <TitleAppBar title={group ? group.name : undefined} />
             <AppBar position="static" sx={{ backgroundColor: "backgroundDark.main", backgroundImage: "none" }}>
                 <Tabs variant="fullWidth" value={activeTab} onChange={(_, newActiveTab) => setActiveTab(newActiveTab)}>
                     <Tab label="Ausgaben" icon={<Description />} />
@@ -40,7 +56,7 @@ export function GroupScreen() {
                     {activeTab === 0 ? (
                         <TransactionList transactions={transactions} onReload={findAllTransactions} />
                     ) : (
-                        <RepaymentList group={group} transactions={transactions} onReload={findAllTransactions} />
+                        <RepaymentList groupId={groupId} transactions={transactions} onReload={findAllTransactions} />
                     )}
                 </div>
             )}

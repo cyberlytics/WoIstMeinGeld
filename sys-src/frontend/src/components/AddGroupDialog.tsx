@@ -123,7 +123,7 @@ export default function AddGroupDialog() {
     return (
         <div className="groupDialogContainer">
             <div>
-                <IconButton className="openGroupDialogButton" onClick={handleMenu}>
+                <IconButton aria-label="openGroupDialogButton" className="openGroupDialogButton" onClick={handleMenu}>
                     <Add style={{ color: "black" }} />
                 </IconButton>
                 <Menu
@@ -212,6 +212,7 @@ export default function AddGroupDialog() {
                         helperText={text}
                         value={groupIdJoin}
                         onChange={(e) => setGroupIdJoin(Number(e.currentTarget.value))}
+                        inputProps={{ "data-testid": "groupnameJoin", error: { error } }}
                     ></TextField>
                 </DialogContent>
                 <DialogActions>

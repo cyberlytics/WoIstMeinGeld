@@ -5,6 +5,7 @@ import { MoreVert, ArrowBackIos } from "@mui/icons-material";
 import { FetchService } from "../FetchService";
 import { PageRoutes } from "../Routes";
 import { useNavigate, useLocation } from "react-router-dom";
+import DeleteGroupDialog from "./DeleteGroupDialog";
 
 interface IProps {
     title?: string;
@@ -89,6 +90,7 @@ const TitleAppBar = (props: IProps) => {
                                     <MenuItem onClick={handleRemoveFromGroup}>
                                         <Typography>Aus Gruppe austreten</Typography>
                                     </MenuItem>
+                                    <DeleteGroupDialog title={title} groupId={groupId} />
                                 </>
                             )}
                             <MenuItem onClick={handleLogOut} color="error">

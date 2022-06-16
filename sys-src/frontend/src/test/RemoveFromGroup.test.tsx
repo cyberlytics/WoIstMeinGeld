@@ -1,98 +1,92 @@
-import { fireEvent, getByLabelText, getByTestId, getByText, render, screen } from "@testing-library/react";
-import { describe, expect, test } from "vitest";
-import AddGroupDialog from "../components/AddGroupDialog";
-import { BrowserRouter as Router } from "react-router-dom";
+import { fireEvent, getAllByRole, render, screen, waitFor } from "@testing-library/react";
+import { describe, expect } from "vitest";
+import { Router } from "react-router-dom";
 import { GroupList } from "../components/GroupList";
+import { TestUtils } from "./TestUtils";
+import { createMemoryHistory } from "history";
+
+const getFirstGroup = async () => {
+    const history = createMemoryHistory();
+    const result = render(
+        <Router location={history.location} navigator={history}>
+            <GroupList />
+        </Router>
+    );
+
+    // Wait for React to render the GroupList-Component
+    await TestUtils.waitforMilliseconds(1000);
+
+    //gets all groups from mocked server and checks for name
+    const groupListItems = result.getAllByRole("listitem");
+
+    return { firstGroup: groupListItems[0], history: history };
+};
 
 describe("RemoveFromGroup", () => {
-    test("if three-point-menu opens with all necessary options in GroupScreen", async () => {
+    it("if all groups are rendered in GroupList", async () => {
+        const history = createMemoryHistory();
         const result = render(
-            <Router>
+            <Router location={history.location} navigator={history}>
                 <GroupList />
             </Router>
         );
 
+        // Wait for React to render the GroupList-Component
+        await TestUtils.waitforMilliseconds(1000);
+
         //gets all groups from mocked server and checks for name
-        const groupListItems = result.getAllByTestId("groupListItem");
-        expect(groupListItems[0]).toHaveAccessibleName("Gruppe 1");
-        // fireEvent.click(groupListItems[0]);
+        const groupListItems = result.getAllByRole("listitem");
+        expect(groupListItems[0]).toHaveTextContent("Gruppe 1");
+        expect(groupListItems[1]).toHaveTextContent("Gruppe 2");
+        expect(groupListItems[2]).toHaveTextContent("Gruppe 3");
 
-        // //check if Selection pops up
-        // const menuSelection = screen.getByRole("menu");
-        // expect(menuSelection.getAttribute("open")).toBeTruthy;
+        expect(groupListItems).toHaveLength(3);
 
-        // // open the join Group Dialog
-        // const buttonOpenJoin = screen.getAllByRole("menuitem");
-        // fireEvent.click(buttonOpenJoin[1]);
-
-        // //check if it is open
-        // const joinGroupDialog = screen.getByRole("dialog");
-        // expect(joinGroupDialog.getAttribute("openJoin")).toBeTruthy;
-
-        // const buttons = screen.getAllByRole("button");
-        // console.log(buttons);
-        // console.log(buttons.length);
-
-        // // make sure it was rendered
-        // expect(await getByTestId(joinGroupDialog, "groupnameJoin")).toBeTruthy();
-        // expect(await buttons[0]).toBeTruthy();
-        // expect(await buttons[0]).toHaveTextContent("Gruppe beitreten");
-        // expect(await buttons[1]).toBeTruthy();
-        // expect(await buttons[1]).toHaveTextContent("Abbrechen");
+        expect(groupListItems[0]).toBeEnabled();
+        expect(groupListItems[1]).toBeEnabled();
+        expect(groupListItems[2]).toBeEnabled();
     });
 
-    // test("buttons are clickable", async () => {
-    //     const result = render(
-    //         <Router>
-    //             <AddGroupDialog />
-    //         </Router>
-    //     );
+    it("if user is removed from group", async () => {
+        const { firstGroup, history } = await getFirstGroup();
 
-    //     //opens Selection for joining group odr creating a new one
-    //     const buttonOpenSelection = result.getByLabelText("openGroupDialogButton");
-    //     fireEvent.click(buttonOpenSelection);
+        fireEvent.click(firstGroup);
 
-    //     //check if Selection pops up
-    //     const menuSelection = screen.getByRole("menu");
-    //     expect(menuSelection.getAttribute("open")).toBeTruthy;
+        waitFor(
+            () => {
+                expect(history.location.pathname).toBe("/group/1");
 
-    //     // open the join Group Dialog
-    //     const buttonOpenJoin = screen.getAllByRole("menuitem");
-    //     fireEvent.click(buttonOpenJoin[1]);
+                const transactionListItems = screen.getAllByRole("listitem");
 
-    //     const buttons = screen.getAllByRole("button");
-    //     expect(await buttons[0]).toBeEnabled();
-    //     expect(await buttons[1]).toBeEnabled();
-    // });
+                expect(transactionListItems[0]).toHaveTextContent("Bier");
 
-    // test("if dialog validates user-input", async () => {
-    //     const result = render(
-    //         <Router>
-    //             <AddGroupDialog />
-    //         </Router>
-    //     );
+                const buttons = screen.getAllByRole("button");
+                fireEvent.click(buttons[0]);
 
-    //     //opens Selection for joining group odr creating a new one
-    //     const buttonOpenSelection = result.getByLabelText("openGroupDialogButton");
-    //     fireEvent.click(buttonOpenSelection);
+                const menu = screen.getByRole("menu");
 
-    //     //check if Selection pops up
-    //     const menuSelection = screen.getByRole("menu");
-    //     expect(menuSelection.getAttribute("open")).toBeTruthy;
+                const menuItems = getAllByRole(menu, "menuitem");
 
-    //     // open the join Group Dialog
-    //     const buttonOpenJoin = screen.getAllByRole("menuitem");
-    //     fireEvent.click(buttonOpenJoin[1]);
+                expect(menu).toBeInTheDocument();
+                expect(menuItems[0]).toHaveTextContent("Aus Gruppe austreten");
+                expect(menuItems[1]).toHaveTextContent("Ausloggen");
+                expect(menuItems).toHaveLength(2);
 
-    //     //check if it is open
-    //     const joinGroupDialog = screen.getByRole("dialog");
-    //     expect(joinGroupDialog.getAttribute("openJoin")).toBeTruthy;
+                fireEvent.click(menuItems[0]);
 
-    //     //try to join new group without input in the testField
-    //     const buttons = screen.getAllByRole("button");
-    //     fireEvent.click(buttons[0]);
+                expect(history.location.pathname).toBe("/groups");
 
-    //     // check if error appears
-    //     expect(await getByTestId(joinGroupDialog, "groupnameJoin").getAttribute("error")).toBeTruthy();
-    // });
+                const groupListItems = screen.getAllByRole("listitem");
+
+                expect(groupListItems[0]).toHaveTextContent("Gruppe 2");
+                expect(groupListItems[1]).toHaveTextContent("Gruppe 3");
+
+                expect(groupListItems).toHaveLength(2);
+
+                expect(groupListItems[0]).toBeEnabled();
+                expect(groupListItems[1]).toBeEnabled();
+            },
+            { timeout: 4000 }
+        );
+    });
 });

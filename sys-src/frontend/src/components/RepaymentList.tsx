@@ -17,13 +17,13 @@ export function RepaymentList(props: Props) {
 
     const repayments: Repayment[] = useMemo(() => {
         return calculateRepayments(transactions);
-    }, []);
+    }, [transactions]);
 
     return repayments.length ? (
         <List>
             {repayments.map((repayment) => (
                 <RepaymentListItem
-                    key={repayment.from.id + "" + repayment.to.id}
+                    key={repayment.from?.id + "" + repayment.to?.id}
                     groupId={groupId}
                     repayment={repayment}
                     onReload={onReload}

@@ -13,6 +13,7 @@ export function SignUpDialog() {
         if (response.token !== undefined) {
             setIsValidInput(true);
             setErrorText("");
+            navigate(PageRoutes.groups);
             return;
         }
         const responseCode = response[0]["msg"];

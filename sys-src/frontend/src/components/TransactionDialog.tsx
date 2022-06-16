@@ -49,19 +49,25 @@ interface AddTransaction {
     debtors: number[];
 }
 
-// FIXME mock data needs to come from outside (group members)
-const people: Person[] = [
-    { id: 1, name: "Oliver Hansen" },
-    { id: 2, name: "Van Henry" },
-    { id: 3, name: "April Tucker" },
-    { id: 4, name: "Ralph Hubbard" },
-    { id: 5, name: "Oliver Hansen" },
-    { id: 6, name: "Van Henry" },
-    { id: 7, name: "April Tucker" },
-    { id: 8, name: "Ralph Hubbard" },
-];
+// // FIXME mock data needs to come from outside (group members)
+// const people: Person[] = [
+//     { id: 1, name: "Oliver Hansen" },
+//     { id: 2, name: "Van Henry" },
+//     { id: 3, name: "April Tucker" },
+//     { id: 4, name: "Ralph Hubbard" },
+//     { id: 5, name: "Oliver Hansen" },
+//     { id: 6, name: "Van Henry" },
+//     { id: 7, name: "April Tucker" },
+//     { id: 8, name: "Ralph Hubbard" },
+// ];
 
-export default function TransactionDialog() {
+interface IProps {
+    groupId: number;
+    onReload(): void;
+}
+
+export default function TransactionDialog(props: IProps) {
+    const { groupId, onReload } = props;
     const [open, setOpen] = useState(false);
     const [creditor, setCreditor] = useState("");
     const [debtors, setDebtors] = useState<Person[]>([]);
@@ -69,9 +75,13 @@ export default function TransactionDialog() {
     const [description, setDescription] = useState("");
     const [amount, setAmount] = useState(0);
     const [error, setError] = useState(false);
+    const [people, setPeople] = useState<Person[]>([]);
 
     const handleClickOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleClose = () => {
+        onReload();
+        setOpen(false);
+    };
     const handleSave = () => {
         //check if all information is present
         if (!(creditor && debtors.length > 0 && date && description && amount)) {
@@ -83,7 +93,7 @@ export default function TransactionDialog() {
         setError(false);
 
         const payload: AddTransaction = {
-            group_id: 1, // FIXME needs to come from outside this component
+            group_id: groupId,
             creditor_id: Number.parseInt(creditor),
             description,
             time: date.toISOString(),
@@ -109,6 +119,13 @@ export default function TransactionDialog() {
         setDate(new Date());
         setDebtors([]);
     }, [open]);
+
+    useEffect(() => {
+        FetchService.get("http://localhost:8080/getGroupUsers/" + groupId)
+            .then((response) => response.json())
+            .then((response: Person[]) => setPeople(response))
+            .catch((reason) => console.error(reason));
+    }, [groupId]);
 
     return (
         <div className="dialogContainer">
@@ -190,24 +207,26 @@ export default function TransactionDialog() {
                                     maxHeight: 300,
                                 }}
                             >
-                                {people.map((person) => {
-                                    return (
-                                        <ListItem key={person.id} disablePadding>
-                                            <ListItemButton onClick={() => switchDebtor(person)} dense>
-                                                <ListItemIcon>
-                                                    <Checkbox
-                                                        key={person.id}
-                                                        edge="start"
-                                                        checked={debtors.includes(person)}
-                                                        tabIndex={-1}
-                                                        disableRipple
-                                                    />
-                                                </ListItemIcon>
-                                                <ListItemText primary={person.name} />
-                                            </ListItemButton>
-                                        </ListItem>
-                                    );
-                                })}
+                                {people.length !== 0
+                                    ? people.map((person) => {
+                                          return (
+                                              <ListItem key={person.id} disablePadding>
+                                                  <ListItemButton onClick={() => switchDebtor(person)} dense>
+                                                      <ListItemIcon>
+                                                          <Checkbox
+                                                              key={person.id}
+                                                              edge="start"
+                                                              checked={debtors.includes(person)}
+                                                              tabIndex={-1}
+                                                              disableRipple
+                                                          />
+                                                      </ListItemIcon>
+                                                      <ListItemText primary={person.name} />
+                                                  </ListItemButton>
+                                              </ListItem>
+                                          );
+                                      })
+                                    : "Keine Gruppenmitglieder vorhanden"}
                             </List>
                             <FormHelperText>Mindestens einen Schuldner auswählen</FormHelperText>
                         </FormGroup>

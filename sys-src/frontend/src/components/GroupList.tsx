@@ -1,4 +1,4 @@
-import { Button, List, Typography } from "@mui/material";
+import { List, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { FetchService } from "../FetchService";
 import { Group } from "../models/Group";
@@ -49,7 +49,7 @@ export function GroupList() {
                     </Typography>
                 )}
             </div>
-            <AddGroupDialog />
+            <AddGroupDialog onReload={findGroups} />
         </>
     );
 }

@@ -27,14 +27,19 @@ interface AddById {
     id: number;
 }
 
-export default function AddGroupDialog() {
+interface IProps {
+    onReload(): void;
+}
+
+export default function AddGroupDialog(props: IProps) {
+    const { onReload } = props;
     const [open, setOpen] = useState(false);
     const [openJoin, setOpenJoin] = useState(false);
     const [groupLink, setGroupLink] = useState("");
     const [isCopied, setIsCopied] = useState(false);
     const [groupName, setGroupName] = useState("");
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const [groupIdJoin, setGroupIdJoin] = useState<number | null>(null);
+    const [groupIdJoin, setGroupIdJoin] = useState<string | null>(null);
     const [error, setError] = useState(false);
     const [text, setText] = useState("");
     const navigate = useNavigate();
@@ -62,12 +67,11 @@ export default function AddGroupDialog() {
         const payload: AddGroup = {
             name: groupName,
         };
-        console.log(payload);
         FetchService.post("http://localhost:8080/createGroup", payload)
             .then((res) => {
                 if (res.ok) {
                     handleClose();
-                    navigate(0);
+                    onReload();
                 } else {
                     console.error(res.status, res.statusText);
                 }
@@ -81,6 +85,7 @@ export default function AddGroupDialog() {
     };
 
     const handleCloseJoin = () => {
+        onReload();
         setOpenJoin(false);
         setAnchorEl(null);
     };
@@ -105,7 +110,7 @@ export default function AddGroupDialog() {
         }
 
         const payload: AddById = {
-            id: groupIdJoin,
+            id: Number(groupIdJoin),
         };
         console.log(payload);
         FetchService.post("http://localhost:8080/addToGroup", payload)
@@ -205,13 +210,15 @@ export default function AddGroupDialog() {
                 <DialogTitle>Gruppe beitreten</DialogTitle>
                 <DialogContent dividers>
                     <TextField
+                        className="groupJoinField"
                         fullWidth
                         error={error}
                         sx={{ mb: 1.5 }}
-                        label="Gruppenname"
+                        label="Gruppen-ID"
+                        type="number"
                         helperText={text}
                         value={groupIdJoin}
-                        onChange={(e) => setGroupIdJoin(Number(e.currentTarget.value))}
+                        onChange={(e) => setGroupIdJoin(e.currentTarget.value)}
                     ></TextField>
                 </DialogContent>
                 <DialogActions>

@@ -5,11 +5,14 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import deLocale from "date-fns/locale/de";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 
+const groupId = 1;
+const handleReload = jest.fn();
+
 describe("TransactionDialog", () => {
     test("if dialog has buttons and input textfields", async () => {
         const { container } = render(
             <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={deLocale}>
-                <TransactionDialog />
+                <TransactionDialog groupId={groupId} onReload={handleReload} />
             </LocalizationProvider>
         );
 
@@ -35,7 +38,7 @@ describe("TransactionDialog", () => {
     test("buttons are clickable", () => {
         const { container } = render(
             <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={deLocale}>
-                <TransactionDialog />
+                <TransactionDialog groupId={groupId} onReload={handleReload} />
             </LocalizationProvider>
         );
         const button = getByLabelText(container, "openDialogButton");
@@ -51,7 +54,7 @@ describe("TransactionDialog", () => {
     test("if dialog closes on pressed Close button", async () => {
         const { container } = render(
             <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={deLocale}>
-                <TransactionDialog />
+                <TransactionDialog groupId={groupId} onReload={handleReload} />
             </LocalizationProvider>
         );
 
@@ -71,7 +74,7 @@ describe("TransactionDialog", () => {
     test("if dialog shows an error when user-iput is missing", async () => {
         const { container } = render(
             <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={deLocale}>
-                <TransactionDialog />
+                <TransactionDialog groupId={groupId} onReload={handleReload} />
             </LocalizationProvider>
         );
 

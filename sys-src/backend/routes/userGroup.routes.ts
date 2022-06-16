@@ -9,5 +9,6 @@ UserGroupRouter.get("/getGroups", personController.getGroups);
 UserGroupRouter.post("/createGroup", userGroupController.createGroup);
 UserGroupRouter.post("/addToGroup", userGroupController.addToGroup);
 UserGroupRouter.post("/removeFromGroup", userGroupController.removeFromGroup);
+UserGroupRouter.get("/getGroupUsers/:groupId", userGroupController.getGroupUsers);
 
 export default UserGroupRouter;

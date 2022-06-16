@@ -49,7 +49,7 @@ export function GroupList() {
                     </Typography>
                 )}
             </div>
-            <AddGroupDialog />
+            <AddGroupDialog onReload={findGroups} />
         </>
     );
 }

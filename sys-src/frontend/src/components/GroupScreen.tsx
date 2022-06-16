@@ -1,6 +1,6 @@
 import { Description, SyncAlt } from "@mui/icons-material";
 import { AppBar, Tab, Tabs } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { FetchService } from "../FetchService";
 import { Group } from "../models/Group";
@@ -16,14 +16,14 @@ export function GroupScreen() {
     const [activeTab, setActiveTab] = useState(0);
     const [transactions, setTransactions] = useState<Transaction[] | null>(null);
 
-    function getTransactionsByGroup() {
+    const getTransactionsByGroup = useCallback(() => {
         FetchService.get("http://localhost:8080/transactions/" + groupId)
             .then((response) => response.json())
             .then((transactions: Transaction[]) => setTransactions(transactions))
             .catch((reason) => console.error(reason));
-    }
+    }, [groupId]);
 
-    function getGroup() {
+    useEffect(() => {
         FetchService.get("http://localhost:8080/getGroups")
             .then((response) => response.json())
             .then((groups: Group[]) => {
@@ -35,12 +35,9 @@ export function GroupScreen() {
                 }
             })
             .catch((reason) => console.error(reason));
-    }
+    }, [groupId]);
 
-    useEffect(() => {
-        getTransactionsByGroup();
-        getGroup();
-    }, []);
+    useEffect(() => getTransactionsByGroup(), [getTransactionsByGroup]);
 
     return (
         <>

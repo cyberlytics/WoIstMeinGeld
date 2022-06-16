@@ -1,10 +1,11 @@
 import AppBar from "@mui/material/AppBar";
 import { IconButton, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
 import { useState } from "react";
-import { MoreVert } from "@mui/icons-material";
+import { MoreVert, ArrowBackIos } from "@mui/icons-material";
 import { FetchService } from "../FetchService";
 import { PageRoutes } from "../Routes";
 import { useNavigate, useLocation } from "react-router-dom";
+import DeleteGroupDialog from "./DeleteGroupDialog";
 
 interface IProps {
     title?: string;
@@ -52,11 +53,20 @@ const TitleAppBar = (props: IProps) => {
     return (
         <AppBar position="static">
             <Toolbar sx={{ backgroundColor: "backgroundDark.main" }}>
+                {isGroupScreen && (
+                    <div className="appBarLeftMenuButton">
+                        <IconButton size="small" onClick={() => navigate(-1)}>
+                            <ArrowBackIos fontSize="large" />
+                        </IconButton>
+                    </div>
+                )}
+
                 <Typography className="appBarTitle" variant="h4" align="center" component="div" sx={{ flexGrow: 1 }}>
                     {title || "Wo ist mein Geld?"}
                 </Typography>
+
                 {showMenu && (
-                    <div className="appBarMenuButton">
+                    <div className="appBarRightMenuButton">
                         <IconButton size="small" onClick={handleMenu}>
                             <MoreVert fontSize="large" color="primary" />
                         </IconButton>
@@ -76,9 +86,12 @@ const TitleAppBar = (props: IProps) => {
                             onClose={handleClose}
                         >
                             {isGroupScreen && (
-                                <MenuItem onClick={handleRemoveFromGroup}>
-                                    <Typography>Aus Gruppe austreten</Typography>
-                                </MenuItem>
+                                <>
+                                    <MenuItem onClick={handleRemoveFromGroup}>
+                                        <Typography>Aus Gruppe austreten</Typography>
+                                    </MenuItem>
+                                    <DeleteGroupDialog title={title} groupId={groupId} />
+                                </>
                             )}
                             <MenuItem onClick={handleLogOut} color="error">
                                 <Typography color="error">Ausloggen</Typography>

@@ -14,6 +14,7 @@ interface Props {
 
 export function TransactionList(props: Props) {
     const { groupId, transactions, onReload } = props;
+    console.log(transactions);
 
     const [detailsOpen, setDetailsOpen] = useState(false);
     const [openedTransaction, setOpenedTransaction] = useState<Transaction | null>(null);

@@ -23,7 +23,7 @@ export function RepaymentList(props: Props) {
         <List>
             {repayments.map((repayment) => (
                 <RepaymentListItem
-                    key={repayment.from.id + "" + repayment.to.id}
+                    key={repayment.from?.id + "" + repayment.to?.id}
                     groupId={groupId}
                     repayment={repayment}
                     onReload={onReload}

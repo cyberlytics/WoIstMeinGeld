@@ -3,7 +3,12 @@
     padding: 20px;
 }
 
-.appBarMenuButton {
+.appBarRightMenuButton {
     position: absolute;
-    right: 15px;
+    right: 20px;
+}
+
+.appBarLeftMenuButton {
+    position: absolute;
+    left: 20px;
 }

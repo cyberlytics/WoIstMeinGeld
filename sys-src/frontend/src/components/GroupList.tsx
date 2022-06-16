@@ -12,7 +12,6 @@ export function GroupList() {
     const navigate = useNavigate();
     const [groups, setGroups] = useState<Group[] | null>(null);
     function findGroups() {
-        console.log("hello");
         FetchService.get("http://localhost:8080/getGroups")
             .then((response) => response.json())
             .then((groups: Group[]) => setGroups(groups))
@@ -24,7 +23,6 @@ export function GroupList() {
     }, []);
 
     if (groups === null) {
-        console.log("hello");
         return null;
     }
 
@@ -40,7 +38,6 @@ export function GroupList() {
                         {groups.map((group) => (
                             <GroupListItem
                                 key={group.id}
-                                data-testid="groupListItem"
                                 group={group}
                                 onClick={() => navigate(PageRoutes.groupTemplate + group.id)}
                             />

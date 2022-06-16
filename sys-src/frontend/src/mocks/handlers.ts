@@ -1,5 +1,6 @@
 import { rest } from "msw";
 import { Group } from "../models/Group";
+import { Transaction } from "../models/Transaction";
 
 // Mock Data
 export const posts = [
@@ -57,6 +58,22 @@ const groups: Group[] = [
     },
 ];
 
+const transactions: Transaction[] = [
+    {
+        id: 1,
+        group_id: 1,
+        description: "Bier",
+        creditor_id: 1,
+        amount: 10,
+        time: "Sun May 22 2022 12:00:00 GMT+0200 (Central European Summer Time)",
+        creditor: { id: 1, name: "Hans" },
+        debtors: [
+            { id: 1, name: "Hans" },
+            { id: 2, name: "Franz" },
+        ],
+    },
+];
+
 // Define handlers that catch the corresponding requests and returns the mock data.
 export const handlers = [
     rest.post("http://localhost:8080/createTransaction", (req, res, ctx) => {
@@ -64,5 +81,8 @@ export const handlers = [
     }),
     rest.get("http://localhost:8080/getGroups", (req, res, ctx) => {
         return res(ctx.status(200), ctx.json(groups));
+    }),
+    rest.get("http://localhost:8080/transactions/1", (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json(transactions));
     }),
 ];

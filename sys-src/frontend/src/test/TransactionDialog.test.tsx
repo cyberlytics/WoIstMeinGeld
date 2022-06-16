@@ -1,12 +1,12 @@
 import { fireEvent, getByLabelText, getByTestId, getByText, render, screen } from "@testing-library/react";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import TransactionDialog from "../components/TransactionDialog";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import deLocale from "date-fns/locale/de";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 
 const groupId = 1;
-const handleReload = jest.fn();
+const handleReload = vi.fn();
 
 describe("TransactionDialog", () => {
     test("if dialog has buttons and input textfields", async () => {

@@ -51,7 +51,11 @@ export function GroupScreen() {
             {transactions && (
                 <div style={{ padding: 24 }}>
                     {activeTab === 0 ? (
-                        <TransactionList transactions={transactions} onReload={getTransactionsByGroup} />
+                        <TransactionList
+                            groupId={groupId}
+                            transactions={transactions}
+                            onReload={getTransactionsByGroup}
+                        />
                     ) : (
                         <RepaymentList
                             groupId={groupId}

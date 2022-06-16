@@ -3,6 +3,7 @@ import { Result, validationResult } from "express-validator";
 import { IPerson, PersonService } from "../authentication/person.service";
 import db from "../models";
 
+const Transaction = db.transactions;
 const UserGroup = db.usergroups;
 const GroupUser = db.group_users;
 
@@ -26,6 +27,9 @@ export class UserGroupController {
             });
     }
 
+    /**
+     * createGroup
+     */
     public async createGroup(req: Request, res: Response) {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -53,6 +57,9 @@ export class UserGroupController {
         });
     }
 
+    /**
+    * add person to group
+    */
     public async addToGroup(req: Request, res: Response) {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -79,6 +86,9 @@ export class UserGroupController {
         });
     }
 
+    /**
+    * remove person from group
+    */
     public async removeFromGroup(req: Request, res: Response) {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -108,26 +118,39 @@ export class UserGroupController {
         });
     }
 
-     /**
-     * deleteGroup
-     */
+    /**
+    * deleteGroup
+    */
     public async deleteGroup(req: Request, res: Response) {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(422).json(errors.array());
         }
-        if (req.body.id) {
-            UserGroup.destroy({
-                where: { id: req.body.id },
-            }).then((t: any) => {
-                res.status(200).send({ "number of deleted rows": t });
+
+        Transaction.findAll()
+            .then((d) => {
+             
+                console.log(d);
+                if (req.body.id) {
+                    UserGroup.destroy({
+                        where: { id: req.body.id },
+                    }).then((t: any) => {
+                        res.status(200).send({ "number of deleted rows": t });
+                    })
+                    .catch((e) => {
+                        res.status(500).send({
+                            message: e.message || "Error occured on deleting group.",
+                        });
+                    });
+                }
             })
             .catch((e) => {
                 res.status(500).send({
-                    message: e.message || "Error occured on deleting group.",
+                    message: e.message || "Error occured on checking for open transactions.",
                 });
             });
-        }
+
+       
     }
 
     public getGroupUsers(req: Request, res: Response) {

@@ -59,7 +59,7 @@ export default function DeleteGroupDialog(props: IProps) {
                     <DialogTitle>Gruppe löschen</DialogTitle>
                     <DialogContent dividers>
                         {error ? (
-                            <Typography color="error">
+                            <Typography color="error" aria-label="errorMessage">
                                 {title} kann nicht gelöscht werden, da noch offene Ausgleichszahlungen austehen
                             </Typography>
                         ) : (
@@ -71,7 +71,7 @@ export default function DeleteGroupDialog(props: IProps) {
                             Abbrechen
                         </Button>
                         {!error && (
-                            <Button autoFocus variant="contained" onClick={handleDeleteGroup}>
+                            <Button autoFocus variant="contained" onClick={handleDeleteGroup} aria-label="deleteGroup">
                                 Gruppe löschen
                             </Button>
                         )}

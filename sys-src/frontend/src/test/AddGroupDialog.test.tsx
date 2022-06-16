@@ -1,12 +1,15 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import AddGroupDialog from "../components/AddGroupDialog";
 import { BrowserRouter as Router } from "react-router-dom";
+import { vi } from "vitest";
+
+const handleReload = vi.fn();
 
 describe("AddGroupDialog Component", () => {
     test("if dialog opens", () => {
         const result = render(
             <Router>
-                <AddGroupDialog />
+                <AddGroupDialog onReload={handleReload} />
             </Router>
         );
         const button = result.getByTestId("openGroupDialogButton");
@@ -65,7 +68,7 @@ describe("AddGroupDialog Component", () => {
 function openDialog() {
     const result = render(
         <Router>
-            <AddGroupDialog />
+            <AddGroupDialog onReload={handleReload} />
         </Router>
     );
     const button = result.getByTestId("openGroupDialogButton");

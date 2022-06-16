@@ -17,7 +17,7 @@ export function RepaymentList(props: Props) {
 
     const repayments: Repayment[] = useMemo(() => {
         return calculateRepayments(transactions);
-    }, []);
+    }, [transactions]);
 
     return repayments.length ? (
         <List>

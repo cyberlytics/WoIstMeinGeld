@@ -42,6 +42,8 @@ export default function AddGroupDialog(props: IProps) {
     const [groupIdJoin, setGroupIdJoin] = useState<string | null>(null);
     const [error, setError] = useState(false);
     const [text, setText] = useState("");
+    const [errorText, setErrorText] = useState("");
+    const [isGroupNameEmpty, setIsGroupNameEmpty] = useState(false);
     const navigate = useNavigate();
 
     const handleClickOpen = () => {
@@ -64,6 +66,8 @@ export default function AddGroupDialog(props: IProps) {
     };
 
     const handleSave = () => {
+            setErrorText("");
+            setIsGroupNameEmpty(false);
         const payload: AddGroup = {
             name: groupName,
         };
@@ -128,7 +132,7 @@ export default function AddGroupDialog(props: IProps) {
     return (
         <div className="groupDialogContainer">
             <div>
-                <IconButton className="openGroupDialogButton" onClick={handleMenu}>
+                <IconButton data-testid="openGroupDialogButton" className="openGroupDialogButton" onClick={handleMenu}>
                     <Add style={{ color: "black" }} />
                 </IconButton>
                 <Menu
@@ -147,7 +151,7 @@ export default function AddGroupDialog(props: IProps) {
                     onClose={handleClose}
                 >
                     <MenuItem onClick={handleClickOpen}>
-                        <Typography>Neue Gruppe</Typography>
+                        <Typography data-testid="newGroup">Neue Gruppe</Typography>
                     </MenuItem>
                     <MenuItem onClick={handleClickOpenJoin}>
                         <Typography>Gruppe beitreten</Typography>
@@ -166,11 +170,14 @@ export default function AddGroupDialog(props: IProps) {
                 <DialogTitle>Neue Gruppe erstellen</DialogTitle>
                 <DialogContent dividers>
                     <TextField
+                        data-testid="groupName"
                         fullWidth
                         sx={{ mb: 1.5 }}
                         label="Gruppenname"
                         value={groupName}
                         onChange={(e) => setGroupName(e.currentTarget.value)}
+                        helperText={errorText}
+                        error={isGroupNameEmpty}
                     ></TextField>
                     {/* Der Link kann eigentlich raus, den kriegt man erst bei der Gruppe */}
                     <div>
@@ -190,10 +197,10 @@ export default function AddGroupDialog(props: IProps) {
                     </div>
                 </DialogContent>
                 <DialogActions>
-                    <Button variant="contained" onClick={handleSave}>
+                    <Button data-testid="createGroup" variant="contained" onClick={handleSave}>
                         Gruppe erstellen
                     </Button>
-                    <Button variant="text" onClick={handleClose} color="secondary">
+                    <Button data-testid="cancelCreateGroup" variant="text" onClick={handleClose} color="secondary">
                         Abbrechen
                     </Button>
                 </DialogActions>

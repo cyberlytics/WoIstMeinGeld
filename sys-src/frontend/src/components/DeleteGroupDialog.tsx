@@ -29,11 +29,11 @@ export default function DeleteGroupDialog(props: IProps) {
             setError(true);
             return;
         }
-        const jsonBody = { id: groupId };
+        const jsonBody = { groupId: groupId };
         FetchService.delete("http://localhost:8080/deleteGroup", jsonBody)
             .then(() => {
-                handleClose();
                 navigate(-1);
+                handleClose();
             })
             .catch((reason) => console.error(reason));
     };

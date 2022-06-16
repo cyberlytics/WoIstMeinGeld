@@ -36,7 +36,7 @@ export function RepaymentListItem(props: Props) {
         const payload: AddTransactionPayload = {
             group_id: groupId,
             creditor_id: repayment.from.id,
-            description: `Rückzahlung an ${repayment.to.name}`,
+            description: `Rückzahlung an ${repayment.to?.name}`,
             time: new Date().toISOString(),
             amount: repayment.amount,
             debtors: [repayment.to.id],
@@ -95,7 +95,7 @@ export function RepaymentListItem(props: Props) {
                 </div>
             }
         >
-            <ListItemText primary={repayment.from.name} secondary={`schuldet ${repayment.to.name}`} />
+            <ListItemText primary={repayment.from?.name} secondary={`schuldet ${repayment.to?.name}`} />
         </ListItem>
     );
 }

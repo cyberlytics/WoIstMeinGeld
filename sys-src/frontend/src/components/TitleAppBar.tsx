@@ -43,7 +43,6 @@ const TitleAppBar = (props: IProps) => {
         const jsonBody = { groupId: groupId };
         FetchService.post("http://localhost:8080/removeFromGroup", jsonBody)
             .then((response) => {
-                console.log(response);
                 navigate(-1);
                 handleClose();
             })

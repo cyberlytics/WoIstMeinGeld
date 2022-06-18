@@ -1,21 +1,27 @@
-import { fireEvent, getAllByRole, render, screen, waitFor } from "@testing-library/react";
+import {
+    fireEvent,
+    getAllByRole,
+    queryByText,
+    render,
+    screen,
+    waitFor,
+    waitForElementToBeRemoved,
+} from "@testing-library/react";
 import { describe, expect } from "vitest";
-import { MemoryRouter, Navigate, Route, Router, Routes } from "react-router-dom";
+import { MemoryRouter, Navigate, Route, Routes, BrowserRouter } from "react-router-dom";
 import { GroupList } from "../components/GroupList";
-import { TestUtils } from "./TestUtils";
-import { createMemoryHistory } from "history";
 import { GroupScreen } from "../components/GroupScreen";
 import { PageRoutes } from "../Routes";
 
 const getFirstGroup = async () => {
     const result = render(
-        <MemoryRouter>
+        <BrowserRouter>
             <Routes>
                 <Route path={PageRoutes.group} element={<GroupScreen />} />
                 <Route path={PageRoutes.groups} element={<GroupList />} />
                 <Route path={PageRoutes.default} element={<Navigate to={PageRoutes.groups} replace />} />
             </Routes>
-        </MemoryRouter>
+        </BrowserRouter>
     );
 
     //gets all groups from mocked server and checks for name
@@ -28,6 +34,10 @@ const getRemoveFromGroupButton = async () => {
     const firstGroup = await getFirstGroup();
 
     fireEvent.click(firstGroup);
+
+    const secondGroup = screen.queryByText("Gruppe 2");
+
+    expect(secondGroup).not.toBeInTheDocument();
 
     const buttons = await screen.findAllByRole("button");
     fireEvent.click(buttons[0]);
@@ -65,6 +75,11 @@ describe("RemoveFromGroup", () => {
 
         fireEvent.click(firstGroup);
 
+        // wait for GroupList to disappear
+        await waitFor(() => {
+            expect(firstGroup).not.toBeInTheDocument();
+        });
+
         const transactionListItems = await screen.findAllByRole("listitem");
 
         expect(transactionListItems[0]).toHaveTextContent("Bier");
@@ -80,12 +95,16 @@ describe("RemoveFromGroup", () => {
         expect(menuItems[0]).toHaveTextContent("Aus Gruppe austreten");
         expect(menuItems[1]).toHaveTextContent("Ausloggen");
         expect(menuItems).toHaveLength(2);
+
+        expect(window.location.pathname).toBe("/group/1");
     });
 
     test("if leaving group is possible and redirection to GroupList", async () => {
         const removeButton = await getRemoveFromGroupButton();
 
         fireEvent.click(removeButton);
+
+        await waitForElementToBeRemoved(removeButton);
 
         const groupListItems = await screen.findAllByRole("listitem");
 
@@ -96,5 +115,7 @@ describe("RemoveFromGroup", () => {
 
         expect(groupListItems[0]).toBeEnabled();
         expect(groupListItems[1]).toBeEnabled();
+
+        expect(window.location.pathname).toBe("/groups");
     });
 });

@@ -1,6 +1,7 @@
 import {
     fireEvent,
     getAllByRole,
+    prettyDOM,
     queryByText,
     render,
     screen,
@@ -12,6 +13,7 @@ import { MemoryRouter, Navigate, Route, Routes, BrowserRouter } from "react-rout
 import { GroupList } from "../components/GroupList";
 import { GroupScreen } from "../components/GroupScreen";
 import { PageRoutes } from "../Routes";
+import { CabinSharp } from "@mui/icons-material";
 
 const getFirstGroup = async () => {
     const result = render(
@@ -39,10 +41,10 @@ const getRemoveFromGroupButton = async () => {
 
     expect(secondGroup).not.toBeInTheDocument();
 
-    const buttons = await screen.findAllByRole("button");
-    fireEvent.click(buttons[0]);
+    const menuButton = screen.getByTestId("openThreePointMenu");
+    fireEvent.click(menuButton);
 
-    const menu = screen.getByRole("menu");
+    const menu = await screen.findByRole("menu");
 
     const menuItems = getAllByRole(menu, "menuitem");
 
@@ -82,19 +84,20 @@ describe("RemoveFromGroup", () => {
 
         const transactionListItems = await screen.findAllByRole("listitem");
 
-        expect(transactionListItems[0]).toHaveTextContent("Bier");
+        expect(transactionListItems[0]).toHaveTextContent("Himbeeren");
 
-        const buttons = screen.getAllByRole("button");
-        fireEvent.click(buttons[0]);
+        const menuButton = screen.getByTestId("openThreePointMenu");
+        fireEvent.click(menuButton);
 
-        const menu = screen.getByRole("menu");
+        const menu = await screen.findByRole("menu");
 
         const menuItems = getAllByRole(menu, "menuitem");
 
         expect(menu).toBeInTheDocument();
         expect(menuItems[0]).toHaveTextContent("Aus Gruppe austreten");
-        expect(menuItems[1]).toHaveTextContent("Ausloggen");
-        expect(menuItems).toHaveLength(2);
+        expect(menuItems[1]).toHaveTextContent("Gruppe löschen");
+        expect(menuItems[2]).toHaveTextContent("Ausloggen");
+        expect(menuItems).toHaveLength(3);
 
         expect(window.location.pathname).toBe("/group/1");
     });

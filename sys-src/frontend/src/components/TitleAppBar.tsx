@@ -66,7 +66,7 @@ const TitleAppBar = (props: IProps) => {
 
                 {showMenu && (
                     <div className="appBarRightMenuButton">
-                        <IconButton size="small" onClick={handleMenu}>
+                        <IconButton size="small" onClick={handleMenu} data-testid="openThreePointMenu">
                             <MoreVert fontSize="large" color="primary" />
                         </IconButton>
                         <Menu
@@ -85,12 +85,12 @@ const TitleAppBar = (props: IProps) => {
                             onClose={handleClose}
                         >
                             {isGroupScreen && (
-                                <>
+                                <div>
                                     <MenuItem onClick={handleRemoveFromGroup}>
                                         <Typography>Aus Gruppe austreten</Typography>
                                     </MenuItem>
                                     <DeleteGroupDialog title={title} groupId={groupId} />
-                                </>
+                                </div>
                             )}
                             <MenuItem onClick={handleLogOut} color="error">
                                 <Typography color="error">Ausloggen</Typography>

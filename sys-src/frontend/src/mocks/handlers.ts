@@ -25,7 +25,24 @@ export const posts = [
     },
 ];
 
-export const transactions = [{ "id": 1, "group_id": 3, "creditor_id": 1, "description": "Himbeeren", "time": "2022-05-22T12:00:00.000Z", "amount": 7, "createdAt": "2022-06-16T12:21:31.000Z", "updatedAt": "2022-06-16T12:21:31.000Z", "creditor": { "id": 1, "name": "Hans" }, "debtors": [{ "id": 2, "name": "Franz", "debtor": { "person_id": 2, "transaction_id": 1 } }, { "id": 3, "name": "Sepp", "debtor": { "person_id": 3, "transaction_id": 1 } }, { "id": 4, "name": "Dieter", "debtor": { "person_id": 4, "transaction_id": 1 } }] }]
+export const transactions = [
+    {
+        id: 1,
+        group_id: 3,
+        creditor_id: 1,
+        description: "Himbeeren",
+        time: "2022-05-22T12:00:00.000Z",
+        amount: 7,
+        createdAt: "2022-06-16T12:21:31.000Z",
+        updatedAt: "2022-06-16T12:21:31.000Z",
+        creditor: { id: 1, name: "Hans" },
+        debtors: [
+            { id: 2, name: "Franz", debtor: { person_id: 2, transaction_id: 1 } },
+            { id: 3, name: "Sepp", debtor: { person_id: 3, transaction_id: 1 } },
+            { id: 4, name: "Dieter", debtor: { person_id: 4, transaction_id: 1 } },
+        ],
+    },
+];
 
 interface AddTransaction {
     group_id: number;
@@ -61,22 +78,6 @@ const groups: Group[] = [
     },
 ];
 
-const transactions: Transaction[] = [
-    {
-        id: 1,
-        group_id: 1,
-        description: "Bier",
-        creditor_id: 1,
-        amount: 10,
-        time: "Sun May 22 2022 12:00:00 GMT+0200 (Central European Summer Time)",
-        creditor: { id: 1, name: "Hans" },
-        debtors: [
-            { id: 1, name: "Hans" },
-            { id: 2, name: "Franz" },
-        ],
-    },
-];
-
 const groupUsers: Person[] = [
     {
         id: 1,
@@ -109,8 +110,6 @@ export const handlers = [
         return res(ctx.status(200), ctx.json({}));
     }),
     rest.delete("http://localhost:8080/deleteGroup", (req, res, ctx) => {
-    return res(ctx.status(500), ctx.json({ Message: "Error occured on deleting transaction." }));
-        }),
+        return res(ctx.status(500), ctx.json({ Message: "Error occured on deleting transaction." }));
+    }),
 ];
-
-  

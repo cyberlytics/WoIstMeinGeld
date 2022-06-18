@@ -19,6 +19,8 @@ export function calculateRepayments(transactions: Transaction[]): Repayment[] {
 
     // get the people who are involved in the transactions
     for (let transaction of transactions) {
+        let roundAmount: number = parseFloat(transaction.amount.toFixed(2));
+        transaction.amount = roundAmount;
         people.set(transaction.creditor.id, transaction.creditor);
         for (let debtor of transaction.debtors) {
             people.set(debtor.id, debtor);
@@ -35,6 +37,7 @@ export function calculateRepayments(transactions: Transaction[]): Repayment[] {
         // A transaction without debtors has no impact on the balances.
         if (transaction.debtors.length > 0) {
             let amountDebtor: number = transaction.amount / transaction.debtors.length;
+            let roundAmountDebtor: number = parseFloat(amountDebtor.toFixed(3));
 
             let debtorIds: number[] = transaction.debtors.map((debtor) => debtor.id);
 
@@ -43,9 +46,13 @@ export function calculateRepayments(transactions: Transaction[]): Repayment[] {
 
             // The balance of the creditor depends on whether he/she is also a debtor.
             if (debtorIds.includes(transaction.creditor.id)) {
-                balances.set(transaction.creditor.id, prevBalance + transaction.amount - amountDebtor);
+                let creditorBalance = prevBalance + transaction.amount - roundAmountDebtor;
+                let roundCreditorBalance: number = parseFloat(creditorBalance.toFixed(3));
+                balances.set(transaction.creditor.id, roundCreditorBalance);
             } else {
-                balances.set(transaction.creditor.id, prevBalance + transaction.amount);
+                let creditorBalance = prevBalance + transaction.amount;
+                let roundCreditorBalance: number = parseFloat(creditorBalance.toFixed(3));
+                balances.set(transaction.creditor.id, roundCreditorBalance);
             }
 
             // set the balances for each debtor
@@ -53,7 +60,9 @@ export function calculateRepayments(transactions: Transaction[]): Repayment[] {
                 // If the debtor is also the creditor, then his/her balance has already been set.
                 if (debtor.id !== transaction.creditor.id) {
                     prevBalance = balances.get(debtor.id)!;
-                    balances.set(debtor.id, prevBalance - amountDebtor);
+                    let debtorBalance = prevBalance - roundAmountDebtor;
+                    let roundDebtorBalance: number = parseFloat(debtorBalance.toFixed(3));
+                    balances.set(debtor.id, roundDebtorBalance);
                 }
             }
         }
@@ -62,7 +71,7 @@ export function calculateRepayments(transactions: Transaction[]): Repayment[] {
     // remove all balances that are already wiped out
     for (const personId of people.keys()) {
         let roundBalance: number = parseFloat(balances.get(personId)!.toFixed(2));
-        if (roundBalance === 0.0) {
+        if (-0.02 < roundBalance && roundBalance < 0.02) {
             balances.delete(personId);
         } else {
             balances.set(personId, roundBalance);
@@ -145,12 +154,14 @@ export function calculateRepayments(transactions: Transaction[]): Repayment[] {
 
     // set the people in the repayments according to their ids
     for (let repaymentId of repaymentsIds) {
-        let roundAmount: number = parseFloat(repaymentId.amount.toFixed(2));
-        repayments.push({
-            from: people.get(repaymentId.from)!,
-            to: people.get(repaymentId.to)!,
-            amount: roundAmount,
-        });
+        if (repaymentId.amount > 0.01) {
+            let roundAmount: number = parseFloat(repaymentId.amount.toFixed(2));
+            repayments.push({
+                from: people.get(repaymentId.from)!,
+                to: people.get(repaymentId.to)!,
+                amount: roundAmount,
+            });
+        }
     }
 
     return repayments;

@@ -1,11 +1,10 @@
 import { List, Typography } from "@mui/material";
 import { useMemo } from "react";
-import { Group } from "../models/Group";
 import { Repayment } from "../models/Repayment";
 import { Transaction } from "../models/Transaction";
 import { calculateRepayments } from "../calculateRepayments";
 import { RepaymentListItem } from "./RepaymentListItem";
-import { PieChart, Pie, Legend, ResponsiveContainer } from "recharts";
+import { RepaymentChart } from "./RepaymentChart";
 
 interface Props {
     groupId: number;
@@ -32,16 +31,7 @@ export function RepaymentList(props: Props) {
                     />
                 ))}
             </List>
-            <PieChart width={300} height={300}>
-                <Pie
-                    data={repayments}
-                    nameKey={(repayment: Repayment) => repayment.from.name}
-                    dataKey={"amount"}
-                    innerRadius={60}
-                    outerRadius={100}
-                />
-                <Legend />
-            </PieChart>
+            <RepaymentChart repayments={repayments} />
         </>
     ) : (
         <Typography variant="h5" align="center" style={{ padding: 20 }}>

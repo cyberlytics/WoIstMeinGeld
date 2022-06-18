@@ -49,18 +49,6 @@ interface AddTransaction {
     debtors: number[];
 }
 
-// // FIXME mock data needs to come from outside (group members)
-// const people: Person[] = [
-//     { id: 1, name: "Oliver Hansen" },
-//     { id: 2, name: "Van Henry" },
-//     { id: 3, name: "April Tucker" },
-//     { id: 4, name: "Ralph Hubbard" },
-//     { id: 5, name: "Oliver Hansen" },
-//     { id: 6, name: "Van Henry" },
-//     { id: 7, name: "April Tucker" },
-//     { id: 8, name: "Ralph Hubbard" },
-// ];
-
 interface IProps {
     groupId: number;
     onReload(): void;
@@ -125,7 +113,7 @@ export default function TransactionDialog(props: IProps) {
             .then((response) => response.json())
             .then((response: Person[]) => setPeople(response))
             .catch((reason) => console.error(reason));
-    }, [groupId]);
+    }, [groupId, open]);
 
     return (
         <div className="dialogContainer">

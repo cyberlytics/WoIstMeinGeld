@@ -44,6 +44,37 @@ export const transactions = [
     },
 ];
 
+export const closedTransactions = [
+    {
+        id: 1,
+        group_id: 3,
+        creditor_id: 1,
+        description: "Bananen",
+        time: "2022-05-22T12:00:00.000Z",
+        amount: 2,
+        createdAt: "2022-06-16T12:21:31.000Z",
+        updatedAt: "2022-06-16T12:21:31.000Z",
+        creditor: { id: 1, name: "Hans" },
+        debtors: [
+            { id: 2, name: "Franz", debtor: { person_id: 2, transaction_id: 1 } },
+        ],
+    },
+    {
+        id: 2,
+        group_id: 3,
+        creditor_id: 1,
+        description: "Bananen",
+        time: "2022-05-22T12:00:00.000Z",
+        amount: 2,
+        createdAt: "2022-06-16T12:21:31.000Z",
+        updatedAt: "2022-06-16T12:21:31.000Z",
+        creditor: { id: 2, name: "Franz" },
+        debtors: [
+            { id: 1, name: "Hans", debtor: { person_id: 1, transaction_id: 2 } },
+        ],
+    },
+];
+
 interface AddTransaction {
     group_id: number;
     creditor_id: number;
@@ -99,6 +130,9 @@ export const handlers = [
     }),
     rest.get("http://localhost:8080/transactions/1", (req, res, ctx) => {
         return res(ctx.status(200), ctx.json(transactions));
+    }),
+    rest.get("http://localhost:8080/transactions/2", (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json(closedTransactions));
     }),
 
     rest.get("http://localhost:8080/getGroupUsers/1", (req, res, ctx) => {

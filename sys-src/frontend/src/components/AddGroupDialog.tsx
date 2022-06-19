@@ -66,8 +66,8 @@ export default function AddGroupDialog(props: IProps) {
     };
 
     const handleSave = () => {
-            setErrorText("");
-            setIsGroupNameEmpty(false);
+        setErrorText("");
+        setIsGroupNameEmpty(false);
         const payload: AddGroup = {
             name: groupName,
         };
@@ -131,10 +131,10 @@ export default function AddGroupDialog(props: IProps) {
 
     return (
         <div className="groupDialogContainer">
+            <IconButton data-testid="openGroupDialogButton" className="openGroupDialogButton" onClick={handleMenu}>
+                <Add style={{ color: "black" }} />
+            </IconButton>
             <div>
-                <IconButton data-testid="openGroupDialogButton" className="openGroupDialogButton" onClick={handleMenu}>
-                    <Add style={{ color: "black" }} />
-                </IconButton>
                 <Menu
                     id="menu-groups"
                     anchorEl={anchorEl}

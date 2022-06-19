@@ -39,7 +39,7 @@ export default function DeleteGroupDialog(props: IProps) {
     };
 
     useEffect(() => {
-        setError(false);
+        if (open) setError(false);
     }, [open]);
 
     return (

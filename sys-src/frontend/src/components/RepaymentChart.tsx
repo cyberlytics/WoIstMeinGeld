@@ -20,8 +20,9 @@ export function RepaymentChart(props: Props) {
         typography: { fontFamily, fontSize },
     } = useTheme();
 
+    // transform repayment data to show composed dept/ loan to the group
     const barData = repayments.reduce((totals: Total[], repayment): Total[] => {
-        // from debtor
+        // from/ debtor
         let temp = totals.find((total) => total.name == repayment.from.name);
         if (temp) temp.value -= repayment.amount;
         else
@@ -29,7 +30,7 @@ export function RepaymentChart(props: Props) {
                 name: repayment.from.name,
                 value: repayment.amount * -1,
             });
-        // to creditor
+        // to/ creditor
         temp = totals.find((total) => total.name == repayment.to.name);
         if (temp) temp.value += repayment.amount;
         else
@@ -66,21 +67,27 @@ export function RepaymentChart(props: Props) {
     );
 }
 
+/**
+ * renderCustomizedLabel used by LabelList to render the exact amount as labels
+ */
 const renderCustomizedLabel = (props: any) => {
-    const { x, y, width, height, value: payload, viewBox } = props;
+    const { x, y, width, height, value: payload } = props;
+    const padding = 5;
 
     console.log(height);
-    const baseLine = height < 0 && Math.abs(height) < payload.fontSize ? "hanging" : "top";
+    const hanging =
+        (height < 0 && Math.abs(height) + 2 * padding < payload.fontSize) ||
+        (0 < height && payload.fontSize < height + 2 * padding);
 
     return (
         <g>
             <text
                 x={x + width / 2}
-                y={y}
+                y={hanging ? y + padding : y - padding}
                 fontFamily={payload.fontFamily}
                 fill={payload.palette.fontWhite.main}
                 textAnchor="middle"
-                dominantBaseline={baseLine}
+                dominantBaseline={hanging ? "hanging" : "text-top"}
             >
                 {formatMoney(payload.value)}
             </text>

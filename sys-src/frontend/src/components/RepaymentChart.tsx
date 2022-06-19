@@ -43,7 +43,7 @@ export function RepaymentChart(props: Props) {
 
     return (
         <div id={"repayment-chart"}>
-            <ResponsiveContainer width={"60%"}>
+            <ResponsiveContainer width={"60%"} aspect={undefined}>
                 <BarChart
                     data={barData.map((v) =>
                         Object.assign({}, v, { label: { value: v.value, palette, fontFamily, fontSize } })

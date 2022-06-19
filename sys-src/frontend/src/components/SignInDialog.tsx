@@ -40,7 +40,8 @@ export function SignInDialog() {
         }
     };
 
-    const loginUser = () => {
+    const loginUser = (event: { preventDefault: () => void }) => {
+        event.preventDefault();
         const inputName = document.getElementById("Name") as HTMLInputElement | null;
         const inputPassword = document.getElementById("Password") as HTMLInputElement | null;
 
@@ -62,7 +63,7 @@ export function SignInDialog() {
         <>
             <TitleAppBar />
             <div className="signUpInContainer">
-                <div className="signUpInContainerInner">
+                <form className="signUpInContainerInner">
                     <Typography variant="h5" className="signUpInItems" id="heading">
                         Einloggen
                     </Typography>
@@ -82,7 +83,13 @@ export function SignInDialog() {
                         helperText={passwordErrorText}
                         error={!isValidPassword}
                     />
-                    <Button role="signInButton" variant="contained" className="signUpInItems" onClick={loginUser}>
+                    <Button
+                        role="signInButton"
+                        variant="contained"
+                        className="signUpInItems"
+                        onClick={loginUser}
+                        type="submit"
+                    >
                         Einloggen
                     </Button>
                     <Typography className="separator">oder</Typography>
@@ -95,7 +102,7 @@ export function SignInDialog() {
                     >
                         Registrieren
                     </Button>
-                </div>
+                </form>
             </div>
         </>
     );

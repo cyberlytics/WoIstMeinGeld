@@ -27,16 +27,23 @@ interface AddById {
     id: number;
 }
 
-export default function AddGroupDialog() {
+interface IProps {
+    onReload(): void;
+}
+
+export default function AddGroupDialog(props: IProps) {
+    const { onReload } = props;
     const [open, setOpen] = useState(false);
     const [openJoin, setOpenJoin] = useState(false);
     const [groupLink, setGroupLink] = useState("");
     const [isCopied, setIsCopied] = useState(false);
     const [groupName, setGroupName] = useState("");
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const [groupIdJoin, setGroupIdJoin] = useState<number | null>(null);
+    const [groupIdJoin, setGroupIdJoin] = useState<string | null>(null);
     const [error, setError] = useState(false);
     const [text, setText] = useState("");
+    const [errorText, setErrorText] = useState("");
+    const [isGroupNameEmpty, setIsGroupNameEmpty] = useState(false);
     const navigate = useNavigate();
 
     const handleClickOpen = () => {
@@ -59,15 +66,16 @@ export default function AddGroupDialog() {
     };
 
     const handleSave = () => {
+        setErrorText("");
+        setIsGroupNameEmpty(false);
         const payload: AddGroup = {
             name: groupName,
         };
-        console.log(payload);
         FetchService.post("http://localhost:8080/createGroup", payload)
             .then((res) => {
                 if (res.ok) {
                     handleClose();
-                    navigate(0);
+                    onReload();
                 } else {
                     console.error(res.status, res.statusText);
                 }
@@ -81,6 +89,7 @@ export default function AddGroupDialog() {
     };
 
     const handleCloseJoin = () => {
+        onReload();
         setOpenJoin(false);
         setAnchorEl(null);
     };
@@ -105,7 +114,7 @@ export default function AddGroupDialog() {
         }
 
         const payload: AddById = {
-            id: groupIdJoin,
+            id: Number(groupIdJoin),
         };
         console.log(payload);
         FetchService.post("http://localhost:8080/addToGroup", payload)
@@ -122,6 +131,9 @@ export default function AddGroupDialog() {
 
     return (
         <div className="groupDialogContainer">
+            <IconButton data-testid="openGroupDialogButton" className="openGroupDialogButton" onClick={handleMenu}>
+                <Add style={{ color: "black" }} />
+            </IconButton>
             <div>
                 <IconButton aria-label="openGroupDialogButton" className="openGroupDialogButton" onClick={handleMenu}>
                     <Add style={{ color: "black" }} />
@@ -142,7 +154,7 @@ export default function AddGroupDialog() {
                     onClose={handleClose}
                 >
                     <MenuItem onClick={handleClickOpen}>
-                        <Typography>Neue Gruppe</Typography>
+                        <Typography data-testid="newGroup">Neue Gruppe</Typography>
                     </MenuItem>
                     <MenuItem onClick={handleClickOpenJoin}>
                         <Typography>Gruppe beitreten</Typography>
@@ -161,11 +173,14 @@ export default function AddGroupDialog() {
                 <DialogTitle>Neue Gruppe erstellen</DialogTitle>
                 <DialogContent dividers>
                     <TextField
+                        data-testid="groupName"
                         fullWidth
                         sx={{ mb: 1.5 }}
                         label="Gruppenname"
                         value={groupName}
                         onChange={(e) => setGroupName(e.currentTarget.value)}
+                        helperText={errorText}
+                        error={isGroupNameEmpty}
                     ></TextField>
                     {/* Der Link kann eigentlich raus, den kriegt man erst bei der Gruppe */}
                     <div>
@@ -185,10 +200,10 @@ export default function AddGroupDialog() {
                     </div>
                 </DialogContent>
                 <DialogActions>
-                    <Button variant="contained" onClick={handleSave}>
+                    <Button data-testid="createGroup" variant="contained" onClick={handleSave}>
                         Gruppe erstellen
                     </Button>
-                    <Button variant="text" onClick={handleClose} color="secondary">
+                    <Button data-testid="cancelCreateGroup" variant="text" onClick={handleClose} color="secondary">
                         Abbrechen
                     </Button>
                 </DialogActions>
@@ -205,10 +220,12 @@ export default function AddGroupDialog() {
                 <DialogTitle>Gruppe beitreten</DialogTitle>
                 <DialogContent dividers>
                     <TextField
+                        className="groupJoinField"
                         fullWidth
                         error={error}
                         sx={{ mb: 1.5 }}
-                        label="Gruppenname"
+                        label="Gruppen-ID"
+                        type="number"
                         helperText={text}
                         value={groupIdJoin}
                         onChange={(e) => setGroupIdJoin(Number(e.currentTarget.value))}

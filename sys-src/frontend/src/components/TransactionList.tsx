@@ -7,12 +7,14 @@ import TransactionDialog from "./TransactionDialog";
 import { TransactionListItem } from "./TransactionListItem";
 
 interface Props {
+    groupId: number;
     transactions: Transaction[];
     onReload(): void;
 }
 
 export function TransactionList(props: Props) {
-    const { transactions, onReload } = props;
+    const { groupId, transactions, onReload } = props;
+    console.log(transactions);
 
     const [detailsOpen, setDetailsOpen] = useState(false);
     const [openedTransaction, setOpenedTransaction] = useState<Transaction | null>(null);
@@ -58,7 +60,7 @@ export function TransactionList(props: Props) {
                 onClose={closeDetailsDialog}
                 onDelete={deleteOpenedTransaction}
             />
-            <TransactionDialog />
+            <TransactionDialog groupId={groupId} onReload={onReload} />
         </>
     );
 }

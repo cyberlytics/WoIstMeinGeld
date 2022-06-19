@@ -1,18 +1,13 @@
-import { TransactionController } from "../controllers";
 import { Request, Response } from "express";
+import { TransactionController } from "../controllers";
 
-// FIXME 2 encoiding not recognized maybe a secondary issue
-// because these 2 line should but do not fix the error
-// https://stackoverflow.com/questions/46227783/encoding-not-recognized-in-jest-js
-import iconv from "iconv-lite";
-iconv.encodingExists("cesu8");
-
-// Hack to make iconv load the encodings module, otherwise jest crashes. Compare
-// https://github.com/sidorares/node-mysql2/issues/489
+// FIXME Hack to make iconv load the encodings module. (does not appear to work)
+// Compare https://github.com/sidorares/node-mysql2/issues/489
 // import * as iconv from "iconv-lite";
 // iconv.encodingExists("cesu8");
 
-// The try to mock the connection didn´t fix the error
+jest.useFakeTimers();
+// mock the database connection to use in-memory db
 jest.mock("../models/connection");
 
 describe("transaction controller", () => {
@@ -22,7 +17,7 @@ describe("transaction controller", () => {
             body: {
                 group_id: 1,
                 creditor_id: 1,
-                descption: "test create transaction",
+                description: "test create transaction",
                 time: new Date().toISOString(),
                 amount: 10,
                 debtors: [1, 2, 3],
@@ -34,11 +29,12 @@ describe("transaction controller", () => {
             send: jest.fn(),
         } as unknown as Response;
 
-        await tc.createTransaction(req, res);
+        const result = await tc.createTransaction(req, res);
+        console.log(result);
 
         // FIXME 1 jest does not wait for execution of sequelize
-        // expect(res.send).toBeCalled();
-        // expect(res.json).toBeCalledWith({});
-        // expect(res.status).toBeCalledWith(201);
+        expect(res.send).toBeCalled();
+        expect(res.json).toBeCalledWith({});
+        expect(res.status).toBeCalledWith(201);
     });
 });

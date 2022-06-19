@@ -26,7 +26,8 @@ export function SignUpDialog() {
         }
     };
 
-    const registerUser = () => {
+    const registerUser = (event: { preventDefault: () => void }) => {
+        event.preventDefault();
         const inputName = document.getElementById("Name") as HTMLInputElement | null;
         const inputPassword = document.getElementById("Password") as HTMLInputElement | null;
 
@@ -48,7 +49,7 @@ export function SignUpDialog() {
         <>
             <TitleAppBar />
             <div className="signUpInContainer">
-                <div className="signUpInContainerInner">
+                <form className="signUpInContainerInner">
                     <Typography variant="h5" className="signUpInItems" id="heading">
                         Registrieren
                     </Typography>
@@ -61,7 +62,13 @@ export function SignUpDialog() {
                         error={!isValidInput}
                     />
                     <TextField id="Password" label="Passwort" type="password" className="signUpInItems" />
-                    <Button role="signUpButton" variant="contained" className="signUpInItems" onClick={registerUser}>
+                    <Button
+                        type="submit"
+                        role="signUpButton"
+                        variant="contained"
+                        className="signUpInItems"
+                        onClick={registerUser}
+                    >
                         Registrieren
                     </Button>
                     <Typography className="separator">oder</Typography>
@@ -74,7 +81,7 @@ export function SignUpDialog() {
                     >
                         Einloggen
                     </Button>
-                </div>
+                </form>
             </div>
         </>
     );

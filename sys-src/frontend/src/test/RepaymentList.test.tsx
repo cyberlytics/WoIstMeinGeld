@@ -5,6 +5,8 @@ import { Transaction } from "../models/Transaction";
 import { Person } from "../models/Person";
 import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
+import { ThemeProvider } from "@mui/material";
+import theme from "../ThemeProvider";
 
 const groupId = 1;
 
@@ -54,7 +56,11 @@ describe("RepaymentList Component", () => {
     test("with no transactions", () => {
         const onReload = vi.fn();
 
-        const result = render(<RepaymentList groupId={groupId} transactions={[]} onReload={onReload} />);
+        const result = render(
+            <ThemeProvider theme={theme}>
+                <RepaymentList groupId={groupId} transactions={[]} onReload={onReload} />
+            </ThemeProvider>
+        );
 
         expect(result.container).toHaveTextContent("Keine Rückzahlungen nötig");
         expect(result.queryByRole("list")).not.toBeInTheDocument();
@@ -65,7 +71,9 @@ describe("RepaymentList Component", () => {
         const onReload = vi.fn();
 
         const result = render(
-            <RepaymentList groupId={groupId} transactions={sampleTransactions} onReload={onReload} />
+            <ThemeProvider theme={theme}>
+                <RepaymentList groupId={groupId} transactions={sampleTransactions} onReload={onReload} />
+            </ThemeProvider>
         );
 
         const list = result.queryByRole("list");
@@ -81,7 +89,9 @@ describe("RepaymentList Component", () => {
         const onReload = vi.fn();
 
         const result = render(
-            <RepaymentList groupId={groupId} transactions={sampleTransactions} onReload={onReload} />
+            <ThemeProvider theme={theme}>
+                <RepaymentList groupId={groupId} transactions={sampleTransactions} onReload={onReload} />
+            </ThemeProvider>
         );
 
         const repaymentButtons = result.getAllByText("Begleichen");

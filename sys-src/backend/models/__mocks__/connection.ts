@@ -1,8 +1,5 @@
-// Try to mock Database connection
 import { Sequelize } from "sequelize";
 
-console.log("hi");
-
-const connection = new Sequelize({ dialect: "mysql" });
+const connection = new Sequelize("sqlite::memory:", { dialect: "mysql" });
 
 export default connection;

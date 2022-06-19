@@ -12,7 +12,6 @@ export async function checkOpenRepayments(groupId: number): Promise<boolean> {
 
     if (transactions) {
         const repayments: Repayment[] = await calculateRepayments(transactions);
-        console.log(repayments);
         return repayments.find((repayment: Repayment) => parseFloat(repayment.amount.toFixed(3)) > 0) ? true : false;
     }
 

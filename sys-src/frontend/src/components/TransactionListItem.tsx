@@ -16,6 +16,7 @@ export function TransactionListItem(props: Props) {
         <ListItem
             divider
             disablePadding
+            data-testid="transactionListItem"
             secondaryAction={
                 <ListItemText
                     primary={formatMoney(amount)}

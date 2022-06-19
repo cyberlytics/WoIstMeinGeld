@@ -19,6 +19,8 @@ export function calculateRepayments(transactions: Transaction[]): Repayment[] {
 
     // get the people who are involved in the transactions
     for (let transaction of transactions) {
+        let roundAmount: number = parseFloat(transaction.amount.toFixed(2));
+        transaction.amount = roundAmount;
         people.set(transaction.creditor.id, transaction.creditor);
         for (let debtor of transaction.debtors) {
             people.set(debtor.id, debtor);
@@ -35,6 +37,7 @@ export function calculateRepayments(transactions: Transaction[]): Repayment[] {
         // A transaction without debtors has no impact on the balances.
         if (transaction.debtors.length > 0) {
             let amountDebtor: number = transaction.amount / transaction.debtors.length;
+            let roundAmountDebtor: number = parseFloat(amountDebtor.toFixed(3));
 
             let debtorIds: number[] = transaction.debtors.map((debtor) => debtor.id);
 
@@ -43,9 +46,13 @@ export function calculateRepayments(transactions: Transaction[]): Repayment[] {
 
             // The balance of the creditor depends on whether he/she is also a debtor.
             if (debtorIds.includes(transaction.creditor.id)) {
-                balances.set(transaction.creditor.id, prevBalance + transaction.amount - amountDebtor);
+                let creditorBalance = prevBalance + transaction.amount - roundAmountDebtor;
+                let roundCreditorBalance: number = parseFloat(creditorBalance.toFixed(3));
+                balances.set(transaction.creditor.id, roundCreditorBalance);
             } else {
-                balances.set(transaction.creditor.id, prevBalance + transaction.amount);
+                let creditorBalance = prevBalance + transaction.amount;
+                let roundCreditorBalance: number = parseFloat(creditorBalance.toFixed(3));
+                balances.set(transaction.creditor.id, roundCreditorBalance);
             }
 
             // set the balances for each debtor
@@ -53,7 +60,9 @@ export function calculateRepayments(transactions: Transaction[]): Repayment[] {
                 // If the debtor is also the creditor, then his/her balance has already been set.
                 if (debtor.id !== transaction.creditor.id) {
                     prevBalance = balances.get(debtor.id)!;
-                    balances.set(debtor.id, prevBalance - amountDebtor);
+                    let debtorBalance = prevBalance - roundAmountDebtor;
+                    let roundDebtorBalance: number = parseFloat(debtorBalance.toFixed(3));
+                    balances.set(debtor.id, roundDebtorBalance);
                 }
             }
         }
@@ -61,39 +70,41 @@ export function calculateRepayments(transactions: Transaction[]): Repayment[] {
 
     // remove all balances that are already wiped out
     for (const personId of people.keys()) {
-        if (balances.get(personId) === 0) {
+        let roundBalance: number = parseFloat(balances.get(personId)!.toFixed(2));
+        if (-0.02 < roundBalance && roundBalance < 0.02) {
             balances.delete(personId);
+        } else {
+            balances.set(personId, roundBalance);
         }
     }
 
-    // calculate the repayments
-    while (balances.size > 0) {
+    // calculate the repayments until two balances are left
+    while (balances.size > 2) {
         let checkTwo: boolean = false;
 
         // If two balances can be wiped out, then wipe them out.
         for (const [personId1, balance1] of balances) {
             for (const [personId2, balance2] of balances) {
-                if (personId1 === personId2) {
-                    continue;
-                }
-                // check if a positive balance has a matching negative balance
-                let roundBalance1: number = parseFloat(balance1.toFixed(3));
-                let roundBalance2: number = parseFloat(balance2.toFixed(3));
-                if (roundBalance1 === -roundBalance2) {
-                    if (balance1 > balance2) repaymentsIds.push({ from: personId2, to: personId1, amount: balance1 });
-                    else repaymentsIds.push({ from: personId1, to: personId2, amount: balance2 });
+                if (personId1 !== personId2) {
+                    // check if a positive balance has a matching negative balance
+                    if (balance1 === -balance2) {
+                        if (balance1 > balance2) {
+                            repaymentsIds.push({ from: personId2, to: personId1, amount: balance1 });
+                        } else {
+                            repaymentsIds.push({ from: personId1, to: personId2, amount: balance2 });
+                        }
 
-                    balances.delete(personId1);
-                    balances.delete(personId2);
-                    checkTwo = true;
-                    break;
+                        balances.delete(personId1);
+                        balances.delete(personId2);
+                        checkTwo = true;
+                        break;
+                    }
                 }
             }
             if (checkTwo) break;
         }
 
         // If only one balance can be wiped out, then wipe the biggest negative balance out.
-        // The value of the biggest negative balance will be added to the smallest positive balance.
         if (!checkTwo) {
             let maxNegBalance: number = Number.NEGATIVE_INFINITY;
             let maxNegPersonId: number = -1;
@@ -118,21 +129,39 @@ export function calculateRepayments(transactions: Transaction[]): Repayment[] {
                 }
             }
 
-            let prevBalance: number = balances.get(minPosPersonId)!;
-            balances.set(minPosPersonId, prevBalance + maxNegBalance);
+            // add the value of the biggest negative balance to the smallest positive balance
+            let oldBalance: number = balances.get(minPosPersonId)!;
+            let newBalance: number = oldBalance + maxNegBalance;
+            let roundNewBalance: number = parseFloat(newBalance.toFixed(2));
+            balances.set(minPosPersonId, roundNewBalance);
 
             repaymentsIds.push({ from: maxNegPersonId, to: minPosPersonId, amount: -maxNegBalance });
             balances.delete(maxNegPersonId);
         }
     }
 
+    // wipe the two remaining balances out
+    if (balances.size === 2) {
+        let [firstPersonId, firstBalance]: number[] = [...balances][0];
+        let [secondPersonId, secondBalance]: number[] = [...balances][1];
+
+        if (firstBalance > secondBalance) {
+            repaymentsIds.push({ from: secondPersonId, to: firstPersonId, amount: firstBalance });
+        } else {
+            repaymentsIds.push({ from: firstPersonId, to: secondPersonId, amount: secondBalance });
+        }
+    }
+
     // set the people in the repayments according to their ids
     for (let repaymentId of repaymentsIds) {
-        repayments.push({
-            from: people.get(repaymentId.from)!,
-            to: people.get(repaymentId.to)!,
-            amount: repaymentId.amount,
-        });
+        if (repaymentId.amount > 0.01) {
+            let roundAmount: number = parseFloat(repaymentId.amount.toFixed(2));
+            repayments.push({
+                from: people.get(repaymentId.from)!,
+                to: people.get(repaymentId.to)!,
+                amount: roundAmount,
+            });
+        }
     }
 
     return repayments;

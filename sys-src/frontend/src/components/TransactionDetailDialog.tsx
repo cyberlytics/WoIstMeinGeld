@@ -74,7 +74,7 @@ export function TransactionDetailDialog(props: Props) {
                 <Button variant="contained" color="error" startIcon={<Delete />} onClick={onDelete}>
                     Entfernen
                 </Button>
-                <Button variant="contained" onClick={onClose}>
+                <Button autoFocus variant="contained" onClick={onClose}>
                     Schließen
                 </Button>
             </DialogActions>

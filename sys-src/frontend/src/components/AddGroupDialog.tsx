@@ -122,6 +122,18 @@ export default function AddGroupDialog(props: IProps) {
             .catch((reason) => handleError(reason));
     };
 
+    const handleJoinKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Enter") {
+            handleJoin();
+        }
+    };
+
+    const handleCreateKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Enter") {
+            handleSave();
+        }
+    };
+
     //to clear textfiled after pressing Button "abbrechen"
     useEffect(() => {
         setError(false);
@@ -175,13 +187,15 @@ export default function AddGroupDialog(props: IProps) {
                     <TextField
                         data-testid="groupName"
                         fullWidth
+                        autoFocus
                         sx={{ mb: 1.5 }}
                         label="Gruppenname"
                         value={groupName}
                         onChange={(e) => setGroupName(e.currentTarget.value)}
                         helperText={errorText}
                         error={isGroupNameEmpty}
-                    ></TextField>
+                        onKeyDown={handleCreateKeyDown}
+                    />
                     {/* Der Link kann eigentlich raus, den kriegt man erst bei der Gruppe */}
                     {/* <div>
                         <TextField
@@ -200,11 +214,11 @@ export default function AddGroupDialog(props: IProps) {
                     </div> */}
                 </DialogContent>
                 <DialogActions>
-                    <Button data-testid="createGroup" variant="contained" onClick={handleSave}>
-                        Gruppe erstellen
-                    </Button>
                     <Button data-testid="cancelCreateGroup" variant="text" onClick={handleClose} color="secondary">
                         Abbrechen
+                    </Button>
+                    <Button data-testid="createGroup" variant="contained" onClick={handleSave}>
+                        Gruppe erstellen
                     </Button>
                 </DialogActions>
             </Dialog>
@@ -222,6 +236,7 @@ export default function AddGroupDialog(props: IProps) {
                     <TextField
                         className="groupJoinField"
                         fullWidth
+                        autoFocus
                         error={error}
                         sx={{ mb: 1.5 }}
                         label="Gruppen-ID"
@@ -230,14 +245,15 @@ export default function AddGroupDialog(props: IProps) {
                         value={groupIdJoin ?? ""}
                         onChange={(e) => setGroupIdJoin(Number(e.currentTarget.value))}
                         inputProps={{ "data-testid": "groupnameJoin", error: { error } }}
-                    ></TextField>
+                        onKeyDown={handleJoinKeyDown}
+                    />
                 </DialogContent>
                 <DialogActions>
-                    <Button variant="contained" onClick={handleJoin}>
-                        Gruppe beitreten
-                    </Button>
                     <Button variant="text" onClick={handleCloseJoin} color="secondary">
                         Abbrechen
+                    </Button>
+                    <Button variant="contained" onClick={handleJoin}>
+                        Gruppe beitreten
                     </Button>
                 </DialogActions>
             </Dialog>

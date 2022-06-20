@@ -203,6 +203,16 @@
     name=JSON Webtoken,
     description={Token, das ermöglicht, Daten zwischen zwei Parteien sicher auszutauschen}
 }
+\newglossaryentry{HTTP}{
+    name=Hypertext Transfer Protocol,
+    description={Zustandsloses Protokoll zur Übertragung von Daten auf der Anwendungsschicht über ein Rechnernetz}
+}
+
+\newglossaryentry{Figma}{
+    name=Figma,
+    description={Prototyping Tool}
+}
+
 
 \makeglossaries
 
@@ -246,10 +256,6 @@
 
     Doch auch bei der Umsetzung dieser Anwendung kann es einige Hürden geben, die es zu überwinden gibt.
 \end{abstract}
-
-% \begin{IEEEkeywords}
-%     component, formatting, style, styling, insert
-% \end{IEEEkeywords}
 
 \section{Einleitung}
 Um den Überblick zu bewahren, wer wem wie viel Geld nach einem Ausflug oder Urlaub mit Freunden schuldet,
@@ -299,16 +305,17 @@ Das heißt, dass die Benutzung so intuitiv und einfach wie möglich ist.
 Die Ziele, die verfolgt werden, lassen sich mit den Technologien verknüpfen, die verwendet werden.
 In der Tabelle (vgl. Tabelle~\ref{tab:loesungsstrategie}) kann man erkennen, welche Technologie für die Erreichung eines Architekturziels eingesetzt wurde.
 
+Zur Visualisierung des künftigen Systems wurde \gls{Figma} verwendet. Dies bietet die Grundlage für Diskussionen, da jeder ein einheitliches Bild der Benutzeroberfläche hat.
+
 Um die Architekturentscheidungen, die getroffen wurden, möglichst detailliert herausarbeiten zu können, wurde
 das System in drei Bereiche unterteilt:
 \subsection{Frontend}
 Im \gls{Frontend} wird \gls{React} mit \gls{TypeScript} genutzt und ein \gls{Vite}-Server für das Hosting. Zusätzlich wird für das Design, wenn möglich, das \gls{MUI}-Theme verwendet.
 Findet sich keine gute Lösung in dem Theme, so wird mit \gls{SCSS} nachgeholfen.
 \subsection{Backend}
-Das \gls{Backend} besteht aus TypeScript mit einem \gls{Express}-Server und \gls{Sequelize}, die in einer \gls{NodeJS}-Umgebung laufen.
-Diese besitzt eine Anbindung an den \gls{Docker}-Container, in dem die Datenbank läuft.
+Das \gls{Backend} läuft in einer \gls{NodeJS}-Umgebung und wird mit TypeScript programmiert. Es nutzt \gls{Express} zum Definieren von \gls{HTTP}-Routen und \gls{Sequelize} für die Kommunikation mit der Datenbank.
 \subsection{Datenbank}
-Die \gls{MySQL}-Datenbank läuft in einem Docker-Container. Hierbei werden die Tabellen automatisch beim Starten des Containers angelegt und mit mit vorher festgelegten Testdaten befüllt.
+Die \gls{MySQL}-Datenbank läuft in einem \gls{Docker}-Container. Hierbei werden die Tabellen automatisch beim Starten des Containers angelegt und mit mit vorher festgelegten Testdaten befüllt.
 \begin{figure*}[h]
     \centering
     \includegraphics[width=\linewidth]{ER_Modell.png}
@@ -323,13 +330,13 @@ Außerdem erhält er eine ID als primären Schlüssel.
 \subsubsection{TRANSACTION}
 Hier befinden sich die einzelnen Ausgaben. Eine Ausgabe enthält die ID der Gruppe, die ID des Gläubigers, eine Beschreibung, das Datum der Ausgabe, sowie einen Betrag.
 \subsubsection{DEBTOR}
-Um nun einem \gls{Schuldner} eine Ausgabe eines Gläubigers zuzuweisen, gitb es die Debtor-Tabelle.
+Um nun einem \gls{Schuldner} eine Ausgabe eines Gläubigers zuzuweisen, gibt es die Debtor-Tabelle.
 Hier wird eine Ausgabe mit einem User verknüpft. So können zu einer Ausgabe mehere Schuldner zugewiesen werden.
 \subsubsection{GROUP}
 In der Group-Tabelle werden eine eindeutige ID, sowie der Name der Gruppe gespeichert.
 \subsubsection{GROUP-USER}
 Auch muss die Gruppenzugehörigkeit gespeichert werden. Hier finden sich die ID des Users mit der jeweiligen ID der Gruppe, in der er sich befindet.
-So kann zugeordner werden, welche User in welchen Gruppen ist.
+So kann zugeordnet werden, welche User in welchen Gruppen ist.
 
 
 \section{Randbedingungen}
@@ -403,13 +410,22 @@ Jedes Mitglied ist dazu angehalten, zu prüfen, ob folgende Richtlinien eingehal
     \label{tab:loesungsstrategie}
   \end{table*}
 \end{center}
+
 \section{Ausblick}
-wird noch eingefügt...
+Obwohl es sich bei ,,Wo ist mein Geld?'' um ein lauffähiges System handelt, bei dem alle geplanten User-Stories umgesetzt wurden, gibt es noch die Möglichkeit, weitere Features zu implementieren.
+\begin{itemize}
+    \item Gänzliche Optimierung der Anwendung für mobile Endgeräte
+    \item Unterstützung mehrerer Sprachen
+    \item Zusätzliche Informationen zu den Ausgaben, z. B. Bilder, Textbeschreibung, Schlagwörter, etc.
+    \item Such- und Filterfunktion für Ausgaben
+    \item Bearbeiten einer bestehenden Ausgabe
+    \item Anzeige aller Gruppenmitglieder einer Gruppe
+    \item Erstellen und Anzeigen einer Gruppenbeschreibung
+    \item Bearbeiten des eigenen Nutzerprofils
+\end{itemize}
 
 \newpage
 \printglossary[style=altlist,title=Glossar]
-% \begin{thebibliography}{00}
-% \end{thebibliography}
 \vspace{12pt}
 
 \end{document}

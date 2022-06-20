@@ -1,29 +1,19 @@
-import {
-    fireEvent,
-    getAllByRole,
-    prettyDOM,
-    queryByText,
-    render,
-    screen,
-    waitFor,
-    waitForElementToBeRemoved,
-} from "@testing-library/react";
+import { fireEvent, getAllByRole, render, screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react";
 import { describe, expect } from "vitest";
-import { MemoryRouter, Navigate, Route, Routes, BrowserRouter } from "react-router-dom";
+import { MemoryRouter, Navigate, Route, Routes } from "react-router-dom";
 import { GroupList } from "../components/GroupList";
 import { GroupScreen } from "../components/GroupScreen";
 import { PageRoutes } from "../Routes";
-import { CabinSharp } from "@mui/icons-material";
 
 const getFirstGroup = async () => {
     const result = render(
-        <BrowserRouter>
+        <MemoryRouter>
             <Routes>
                 <Route path={PageRoutes.group} element={<GroupScreen />} />
                 <Route path={PageRoutes.groups} element={<GroupList />} />
                 <Route path={PageRoutes.default} element={<Navigate to={PageRoutes.groups} replace />} />
             </Routes>
-        </BrowserRouter>
+        </MemoryRouter>
     );
 
     //gets all groups from mocked server and checks for name
@@ -37,9 +27,9 @@ const getRemoveFromGroupButton = async () => {
 
     fireEvent.click(firstGroup);
 
-    const secondGroup = screen.queryByText("Gruppe 2");
-
-    expect(secondGroup).not.toBeInTheDocument();
+    await waitFor(() => {
+        expect(firstGroup).not.toBeInTheDocument();
+    });
 
     const menuButton = screen.getByTestId("openThreePointMenu");
     fireEvent.click(menuButton);
@@ -98,8 +88,6 @@ describe("RemoveFromGroup", () => {
         expect(menuItems[1]).toHaveTextContent("Gruppe löschen");
         expect(menuItems[2]).toHaveTextContent("Ausloggen");
         expect(menuItems).toHaveLength(3);
-
-        expect(window.location.pathname).toBe("/group/1");
     });
 
     test("if leaving group is possible and redirection to GroupList", async () => {
@@ -118,7 +106,5 @@ describe("RemoveFromGroup", () => {
 
         expect(groupListItems[0]).toBeEnabled();
         expect(groupListItems[1]).toBeEnabled();
-
-        expect(window.location.pathname).toBe("/groups");
     });
 });

@@ -120,6 +120,10 @@ const groupUsers: Person[] = [
     },
 ];
 
+const signInOutResponseSucc = {
+    token: "succToken",
+};
+
 // Define handlers that catch the corresponding requests and returns the mock data.
 export const handlers = [
     rest.post("http://localhost:8080/createTransaction", (req, res, ctx) => {
@@ -145,5 +149,36 @@ export const handlers = [
     }),
     rest.delete("http://localhost:8080/deleteGroup", (req, res, ctx) => {
         return res(ctx.status(500), ctx.json({ Message: "Error occured on deleting transaction." }));
+    }),
+    rest.post("http://localhost:8080/signIn", (req: any, res, ctx) => {
+        const { name, password } = req.body;
+
+        if (name === "Franz" && password === "password") {
+            return res(ctx.status(200), ctx.json({ 0: { msg: "successful login" } }));
+        }
+        if (name !== "Hans" && password === "password") {
+            return res(ctx.status(200), ctx.json({ 0: { msg: "401 invalid password" } }));
+        }
+        if (password !== "password") {
+            return res(ctx.status(200), ctx.json({ 0: { msg: "404 name doesn't exist" } }));
+        }
+        if (name === "Hans" && password === "password") {
+            return res(ctx.status(200), ctx.json(signInOutResponseSucc));
+        }
+    }),
+    rest.post("http://localhost:8080/signOut", (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json({}));
+    }),
+    rest.post("http://localhost:8080/signUp", (req: any, res, ctx) => {
+        const { name } = req.body;
+
+        if (name === "Albert") {
+            return res(ctx.status(200), ctx.json({ 0: { msg: "successful signup" } }));
+        }
+        if (name === "Hans") {
+            return res(ctx.status(200), ctx.json({ 0: { msg: "409 name already exists" } }));
+        }
+
+        return res(ctx.status(200), ctx.json(signInOutResponseSucc));
     }),
 ];

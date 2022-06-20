@@ -1,7 +1,7 @@
 import AppBar from "@mui/material/AppBar";
 import { IconButton, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
 import { useState } from "react";
-import { MoreVert, ArrowBackIos } from "@mui/icons-material";
+import { MoreVert, ArrowBack } from "@mui/icons-material";
 import { FetchService } from "../FetchService";
 import { PageRoutes } from "../Routes";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -54,8 +54,8 @@ const TitleAppBar = (props: IProps) => {
             <Toolbar sx={{ backgroundColor: "backgroundDark.main" }}>
                 {isGroupScreen && (
                     <div className="appBarLeftMenuButton">
-                        <IconButton size="small" onClick={() => navigate(-1)}>
-                            <ArrowBackIos fontSize="large" />
+                        <IconButton size="large" onClick={() => navigate(-1)}>
+                            <ArrowBack />
                         </IconButton>
                     </div>
                 )}

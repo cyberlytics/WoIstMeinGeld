@@ -227,7 +227,7 @@ export default function AddGroupDialog(props: IProps) {
                         label="Gruppen-ID"
                         type="number"
                         helperText={text}
-                        value={groupIdJoin}
+                        value={groupIdJoin ?? ""}
                         onChange={(e) => setGroupIdJoin(Number(e.currentTarget.value))}
                         inputProps={{ "data-testid": "groupnameJoin", error: { error } }}
                     ></TextField>

@@ -54,6 +54,7 @@ export function SignUpDialog() {
                         Registrieren
                     </Typography>
                     <TextField
+                        fullWidth
                         id="Name"
                         variant="outlined"
                         label="Name"
@@ -61,7 +62,7 @@ export function SignUpDialog() {
                         helperText={errorText}
                         error={!isValidInput}
                     />
-                    <TextField id="Password" label="Passwort" type="password" className="signUpInItems" />
+                    <TextField fullWidth id="Password" label="Passwort" type="password" className="signUpInItems" />
                     <Button
                         type="submit"
                         role="signUpButton"

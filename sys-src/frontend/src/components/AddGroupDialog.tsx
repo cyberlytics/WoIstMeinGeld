@@ -135,6 +135,9 @@ export default function AddGroupDialog(props: IProps) {
                 <Add style={{ color: "black" }} />
             </IconButton>
             <div>
+                <IconButton aria-label="openGroupDialogButton" className="openGroupDialogButton" onClick={handleMenu}>
+                    <Add style={{ color: "black" }} />
+                </IconButton>
                 <Menu
                     id="menu-groups"
                     anchorEl={anchorEl}
@@ -225,7 +228,8 @@ export default function AddGroupDialog(props: IProps) {
                         type="number"
                         helperText={text}
                         value={groupIdJoin}
-                        onChange={(e) => setGroupIdJoin(e.currentTarget.value)}
+                        onChange={(e) => setGroupIdJoin(Number(e.currentTarget.value))}
+                        inputProps={{ "data-testid": "groupnameJoin", error: { error } }}
                     ></TextField>
                 </DialogContent>
                 <DialogActions>

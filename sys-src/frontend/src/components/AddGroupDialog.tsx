@@ -39,7 +39,7 @@ export default function AddGroupDialog(props: IProps) {
     const [isCopied, setIsCopied] = useState(false);
     const [groupName, setGroupName] = useState("");
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const [groupIdJoin, setGroupIdJoin] = useState<string | null>(null);
+    const [groupIdJoin, setGroupIdJoin] = useState<number | null>(null);
     const [error, setError] = useState(false);
     const [text, setText] = useState("");
     const [errorText, setErrorText] = useState("");

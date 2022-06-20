@@ -23,6 +23,7 @@ export function SignUpDialog() {
         } else {
             setIsValidInput(true);
             setErrorText("");
+            navigate(PageRoutes.groups);
         }
     };
 
@@ -61,8 +62,16 @@ export function SignUpDialog() {
                         className="signUpInItems"
                         helperText={errorText}
                         error={!isValidInput}
+                        inputProps={{ "data-testid": "signUpName" }}
                     />
-                    <TextField fullWidth id="Password" label="Passwort" type="password" className="signUpInItems" />
+                    <TextField
+                        fullWidth
+                        id="Password"
+                        label="Passwort"
+                        type="password"
+                        className="signUpInItems"
+                        inputProps={{ "data-testid": "signUpPassword" }}
+                    />
                     <Button
                         type="submit"
                         role="signUpButton"

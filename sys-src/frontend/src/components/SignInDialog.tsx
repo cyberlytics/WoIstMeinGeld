@@ -75,6 +75,7 @@ export function SignInDialog() {
                         className="signUpInItems"
                         helperText={nameErrorText}
                         error={!isValidName}
+                        inputProps={{ "data-testid": "signInName" }}
                     />
                     <TextField
                         fullWidth
@@ -84,6 +85,7 @@ export function SignInDialog() {
                         className="signUpInItems"
                         helperText={passwordErrorText}
                         error={!isValidPassword}
+                        inputProps={{ "data-testid": "signInPassword" }}
                     />
                     <Button
                         role="signInButton"

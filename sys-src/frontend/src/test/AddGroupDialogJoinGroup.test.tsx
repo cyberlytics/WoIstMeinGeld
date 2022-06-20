@@ -2,12 +2,15 @@ import { fireEvent, getByLabelText, getByTestId, getByText, render, screen } fro
 import { describe, expect, test } from "vitest";
 import AddGroupDialog from "../components/AddGroupDialog";
 import { BrowserRouter as Router } from "react-router-dom";
+import { vi } from "vitest";
+
+const handleReload = vi.fn();
 
 describe("AddGroupDialog", () => {
     test("if dialog opens correctly, has buttons and a input textfield", async () => {
         const result = render(
             <Router>
-                <AddGroupDialog />
+                <AddGroupDialog onReload={handleReload} />
             </Router>
         );
 
@@ -42,7 +45,7 @@ describe("AddGroupDialog", () => {
     test("buttons are clickable", async () => {
         const result = render(
             <Router>
-                <AddGroupDialog />
+                <AddGroupDialog onReload={handleReload} />
             </Router>
         );
 
@@ -66,7 +69,7 @@ describe("AddGroupDialog", () => {
     test("if dialog validates user-input", async () => {
         const result = render(
             <Router>
-                <AddGroupDialog />
+                <AddGroupDialog onReload={handleReload} />
             </Router>
         );
 

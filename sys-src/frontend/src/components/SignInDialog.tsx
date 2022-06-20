@@ -68,6 +68,7 @@ export function SignInDialog() {
                         Einloggen
                     </Typography>
                     <TextField
+                        fullWidth
                         id="Name"
                         variant="outlined"
                         label="Name"
@@ -76,6 +77,7 @@ export function SignInDialog() {
                         error={!isValidName}
                     />
                     <TextField
+                        fullWidth
                         id="Password"
                         label="Passwort"
                         type="password"

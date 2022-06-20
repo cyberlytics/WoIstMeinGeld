@@ -182,22 +182,6 @@ export default function AddGroupDialog(props: IProps) {
                         helperText={errorText}
                         error={isGroupNameEmpty}
                     ></TextField>
-                    {/* Der Link kann eigentlich raus, den kriegt man erst bei der Gruppe */}
-                    {/* <div>
-                        <TextField
-                            style={{ width: "92%" }}
-                            sx={{ mb: 1.5 }}
-                            label={"Gruppenlink"}
-                            value={groupLink}
-                            disabled={true}
-                        ></TextField>
-                        <CopyToClipboard onCopy={handleCopy} text={groupLink}>
-                            <IconButton>
-                                <ContentCopyIcon />
-                            </IconButton>
-                        </CopyToClipboard>
-                        {isCopied ? <Alert severity="success">Link in Zwischenablage kopiert!</Alert> : null}
-                    </div> */}
                 </DialogContent>
                 <DialogActions>
                     <Button data-testid="createGroup" variant="contained" onClick={handleSave}>

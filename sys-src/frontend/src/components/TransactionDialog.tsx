@@ -221,11 +221,11 @@ export default function TransactionDialog(props: IProps) {
                     </FormControl>
                 </DialogContent>
                 <DialogActions>
-                    <Button autoFocus variant="contained" onClick={handleSave}>
-                        Anlegen
-                    </Button>
                     <Button autoFocus onClick={handleClose} color="secondary">
                         Abbrechen
+                    </Button>
+                    <Button autoFocus variant="contained" onClick={handleSave}>
+                        Anlegen
                     </Button>
                 </DialogActions>
             </Dialog>

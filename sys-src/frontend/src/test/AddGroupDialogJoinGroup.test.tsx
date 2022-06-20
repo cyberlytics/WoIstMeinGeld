@@ -37,9 +37,9 @@ describe("AddGroupDialog", () => {
         // make sure it was rendered
         expect(await getByTestId(joinGroupDialog, "groupnameJoin")).toBeTruthy();
         expect(await buttons[0]).toBeTruthy();
-        expect(await buttons[0]).toHaveTextContent("Gruppe beitreten");
+        expect(await buttons[0]).toHaveTextContent("Abbrechen");
         expect(await buttons[1]).toBeTruthy();
-        expect(await buttons[1]).toHaveTextContent("Abbrechen");
+        expect(await buttons[1]).toHaveTextContent("Gruppe beitreten");
     });
 
     test("buttons are clickable", async () => {

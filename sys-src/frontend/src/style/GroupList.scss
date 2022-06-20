@@ -1,0 +1,20 @@
+#groupsContainer {
+    border-radius: 25px;
+    background-color: #181d25;
+    padding: 20px;
+    margin: auto;
+    margin-top: 50px;
+    width: 800px;
+    max-width: 90%;
+}
+.listItem {
+    background-color: #383a44;
+    border-radius: 15px;
+    margin-top: 25px;
+    cursor: pointer;
+}
+#noGroups {
+    background-color: #383a44;
+    border-radius: 15px;
+    margin-top: 25px;
+}

@@ -1,5 +1,4 @@
 import {
-    Alert,
     Button,
     Dialog,
     DialogActions,
@@ -13,8 +12,6 @@ import {
 } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { useEffect, useState } from "react";
-import { CopyToClipboard } from "react-copy-to-clipboard";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { FetchService } from "../FetchService";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
@@ -175,7 +172,7 @@ export default function AddGroupDialog(props: IProps) {
                     onClose={handleClose}
                 >
                     <MenuItem onClick={handleClickOpen}>
-                        <Typography data-testid="newGroup">Neue Gruppe</Typography>
+                        <Typography>Neue Gruppe</Typography>
                     </MenuItem>
                     <MenuItem onClick={handleClickOpenJoin}>
                         <Typography>Gruppe beitreten</Typography>
@@ -207,10 +204,10 @@ export default function AddGroupDialog(props: IProps) {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button data-testid="cancelCreateGroup" variant="text" onClick={handleClose} color="secondary">
+                    <Button variant="text" onClick={handleClose} color="secondary">
                         Abbrechen
                     </Button>
-                    <Button data-testid="createGroup" variant="contained" onClick={handleSave}>
+                    <Button variant="contained" onClick={handleSave}>
                         Gruppe erstellen
                     </Button>
                 </DialogActions>

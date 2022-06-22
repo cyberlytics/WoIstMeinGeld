@@ -6,6 +6,8 @@ import { FetchService } from "../FetchService";
 import { PageRoutes } from "../Routes";
 import { useNavigate, useLocation } from "react-router-dom";
 import DeleteGroupDialog from "./DeleteGroupDialog";
+import CopyToClipboard from "react-copy-to-clipboard";
+import { useSnackbar } from "notistack";
 
 interface IProps {
     title?: string;
@@ -19,6 +21,7 @@ const TitleAppBar = (props: IProps) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const location = useLocation();
     const showMenu = location.pathname != PageRoutes.signIn && location.pathname != PageRoutes.signUp;
+    const { enqueueSnackbar } = useSnackbar();
 
     const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -47,6 +50,13 @@ const TitleAppBar = (props: IProps) => {
                 handleClose();
             })
             .catch((reason) => console.error(reason));
+    };
+
+    const handleCopy = () => {
+        enqueueSnackbar("Gruppen-ID erfolgreich kopiert!", {
+            variant: "success",
+        });
+        setAnchorEl(null);
     };
 
     return (
@@ -86,6 +96,11 @@ const TitleAppBar = (props: IProps) => {
                         >
                             {isGroupScreen && (
                                 <div>
+                                    <MenuItem>
+                                        <CopyToClipboard onCopy={handleCopy} text={groupId!.toString()}>
+                                            <Typography>Gruppen-ID kopieren</Typography>
+                                        </CopyToClipboard>
+                                    </MenuItem>
                                     <MenuItem onClick={handleRemoveFromGroup}>
                                         <Typography>Aus Gruppe austreten</Typography>
                                     </MenuItem>

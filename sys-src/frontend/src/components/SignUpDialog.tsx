@@ -4,25 +4,36 @@ import { PageRoutes } from "../Routes";
 import { FetchService } from "../FetchService";
 import { useState } from "react";
 import TitleAppBar from "./TitleAppBar";
+import { useSnackbar } from "notistack";
 
 export function SignUpDialog() {
     const navigate = useNavigate();
+    const { enqueueSnackbar } = useSnackbar();
     const [errorText, setErrorText] = useState("");
     const [isValidInput, setIsValidInput] = useState(true);
     const checkResponse = (response: any) => {
         if (response.token !== undefined) {
             setIsValidInput(true);
             setErrorText("");
+            enqueueSnackbar("Registrierung erfolgreich", {
+                variant: "success",
+            });
             navigate(PageRoutes.groups);
             return;
         }
         const responseCode = response[0]["msg"];
         if (responseCode.includes("409")) {
             setIsValidInput(false);
+            enqueueSnackbar("Registrierung fehlgeschlagen", {
+                variant: "error",
+            });
             setErrorText("Nutzername bereits vergeben!");
         } else {
             setIsValidInput(true);
             setErrorText("");
+            enqueueSnackbar("Registrierung erfolgreich", {
+                variant: "success",
+            });
             navigate(PageRoutes.groups);
         }
     };
@@ -42,7 +53,11 @@ export function SignUpDialog() {
             FetchService.post("http://localhost:8080/signUp", jsonBody)
                 .then((response) => response.json())
                 .then((response) => checkResponse(response))
-                .catch((reason) => console.error(reason));
+                .catch((reason) =>
+                    enqueueSnackbar(reason, {
+                        variant: "error",
+                    })
+                );
         }
     };
 

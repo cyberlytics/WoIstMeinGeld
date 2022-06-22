@@ -17,6 +17,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { FetchService } from "../FetchService";
 import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 interface AddGroup {
     name: string;
@@ -44,6 +45,7 @@ export default function AddGroupDialog(props: IProps) {
     const [text, setText] = useState("");
     const [errorText, setErrorText] = useState("");
     const [isGroupNameEmpty, setIsGroupNameEmpty] = useState(false);
+    const { enqueueSnackbar } = useSnackbar();
     const navigate = useNavigate();
 
     const handleClickOpen = () => {
@@ -74,13 +76,23 @@ export default function AddGroupDialog(props: IProps) {
         FetchService.post("http://localhost:8080/createGroup", payload)
             .then((res) => {
                 if (res.ok) {
+                    enqueueSnackbar(groupName + " erfolgreich angelegt!", {
+                        variant: "success",
+                    });
                     handleClose();
                     onReload();
                 } else {
                     console.error(res.status, res.statusText);
+                    enqueueSnackbar("Fehler beim Anlegen der Gruppe: " + groupName, {
+                        variant: "error",
+                    });
                 }
             })
-            .catch((reason) => console.error(reason));
+            .catch((reason) =>
+                enqueueSnackbar(reason, {
+                    variant: "error",
+                })
+            );
     };
 
     const handleClickOpenJoin = () => {
@@ -116,7 +128,7 @@ export default function AddGroupDialog(props: IProps) {
         const payload: AddById = {
             id: Number(groupIdJoin),
         };
-        console.log(payload);
+
         FetchService.post("http://localhost:8080/addToGroup", payload)
             .then((res) => (res.ok ? handleCloseJoin() : handleError(res.status)))
             .catch((reason) => handleError(reason));

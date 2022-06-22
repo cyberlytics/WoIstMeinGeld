@@ -30,7 +30,6 @@ describe("transaction controller", () => {
         } as unknown as Response;
 
         const result = await tc.createTransaction(req, res);
-        console.log(result);
 
         // FIXME 1 jest does not wait for execution of sequelize
         expect(res.send).toBeCalled();

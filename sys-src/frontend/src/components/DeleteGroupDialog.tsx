@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { FetchService } from "../FetchService";
 import { checkOpenRepayments } from "../checkOpenRepayments";
 import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 interface IProps {
     title?: string;
@@ -21,6 +22,7 @@ export default function DeleteGroupDialog(props: IProps) {
     const [error, setError] = useState(false);
 
     const navigate = useNavigate();
+    const { enqueueSnackbar } = useSnackbar();
     const handleClickOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const handleDeleteGroup = async () => {
@@ -32,10 +34,17 @@ export default function DeleteGroupDialog(props: IProps) {
         const jsonBody = { groupId: groupId };
         FetchService.delete("http://localhost:8080/deleteGroup", jsonBody)
             .then(() => {
+                enqueueSnackbar(title + " wurde erfolgreich gelöscht!", {
+                    variant: "success",
+                });
                 navigate(-1);
                 handleClose();
             })
-            .catch((reason) => console.error(reason));
+            .catch((reason) =>
+                enqueueSnackbar(reason, {
+                    variant: "error",
+                })
+            );
     };
 
     useEffect(() => {

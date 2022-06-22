@@ -34,8 +34,6 @@ describe("AddGroupDialog", () => {
         expect(joinGroupDialog.getAttribute("openJoin")).toBeTruthy;
 
         const buttons = screen.getAllByRole("button");
-        console.log(buttons);
-        console.log(buttons.length);
 
         // make sure it was rendered
         expect(await getByTestId(joinGroupDialog, "groupnameJoin")).toBeTruthy();

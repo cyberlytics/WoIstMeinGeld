@@ -35,21 +35,31 @@ const TitleAppBar = (props: IProps) => {
         FetchService.post("http://localhost:8080/signOut", {})
             .then((response) => response.json())
             .then((response) => {
-                console.log(response);
                 navigate(PageRoutes.signIn);
                 handleClose();
             })
-            .catch((reason) => console.error(reason));
+            .catch((reason) =>
+                enqueueSnackbar(reason, {
+                    variant: "error",
+                })
+            );
     };
 
     const handleRemoveFromGroup = () => {
         const jsonBody = { groupId: groupId };
         FetchService.post("http://localhost:8080/removeFromGroup", jsonBody)
             .then((response) => {
+                enqueueSnackbar("Erfolgreich aus Gruppe ausgetreten!", {
+                    variant: "success",
+                });
                 navigate(-1);
                 handleClose();
             })
-            .catch((reason) => console.error(reason));
+            .catch((reason) =>
+                enqueueSnackbar(reason, {
+                    variant: "error",
+                })
+            );
     };
 
     const handleCopy = () => {

@@ -4,9 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { FetchService } from "../FetchService";
 import { PageRoutes } from "../Routes";
 import TitleAppBar from "./TitleAppBar";
+import { useSnackbar } from "notistack";
 
 export function SignInDialog() {
     const navigate = useNavigate();
+    const { enqueueSnackbar } = useSnackbar();
     const [nameErrorText, setNameErrorText] = useState("");
     const [passwordErrorText, setPasswordErrorText] = useState("");
     const [isValidName, setIsValidName] = useState(true);
@@ -17,6 +19,9 @@ export function SignInDialog() {
             setNameErrorText("");
             setIsValidName(true);
             setIsValidPassword(true);
+            enqueueSnackbar("Login erfolgreich", {
+                variant: "success",
+            });
             navigate(PageRoutes.groups);
             return;
         }
@@ -26,16 +31,25 @@ export function SignInDialog() {
             setPasswordErrorText("");
             setIsValidName(false);
             setNameErrorText("Ungültiger Nutzername!");
+            enqueueSnackbar("Login fehlgeschlagen!", {
+                variant: "error",
+            });
         } else if (responseCode.includes("401")) {
             setIsValidName(true);
             setNameErrorText("");
             setIsValidPassword(false);
             setPasswordErrorText("Ungültiges Passwort!");
+            enqueueSnackbar("Login fehlgeschlagen!", {
+                variant: "error",
+            });
         } else {
             setPasswordErrorText("");
             setNameErrorText("");
             setIsValidName(true);
             setIsValidPassword(true);
+            enqueueSnackbar("Login erfolgreich!", {
+                variant: "success",
+            });
             navigate(PageRoutes.groups);
         }
     };
@@ -55,7 +69,11 @@ export function SignInDialog() {
             FetchService.post("http://localhost:8080/signIn", jsonBody)
                 .then((response) => response.json())
                 .then((response) => checkResponse(response))
-                .catch((reason) => console.error(reason));
+                .catch((reason) =>
+                    enqueueSnackbar(reason, {
+                        variant: "error",
+                    })
+                );
         }
     };
 

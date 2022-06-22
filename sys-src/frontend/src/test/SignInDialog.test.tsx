@@ -1,5 +1,6 @@
 import { render, waitFor, screen, waitForElementToBeRemoved, getAllByRole, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { SnackbarProvider } from "notistack";
 import { BrowserRouter as Router, MemoryRouter, Navigate, Route, Routes } from "react-router-dom";
 import { GroupList } from "../components/GroupList";
 import { SignInDialog } from "../components/SignInDialog";
@@ -9,15 +10,17 @@ import { PageRoutes } from "../Routes";
 describe("SignInDialog Component", () => {
     const renderElements = async () => {
         const result = render(
-            <MemoryRouter>
-                <Routes>
-                    <Route path={PageRoutes.signIn} element={<SignInDialog />} />
-                    <Route path={PageRoutes.signUp} element={<SignUpDialog />} />
-                    <Route path={PageRoutes.home} element={<SignInDialog />} />
-                    <Route path={PageRoutes.groups} element={<GroupList />} />
-                    <Route path={PageRoutes.default} element={<Navigate to={PageRoutes.signIn} replace />} />
-                </Routes>
-            </MemoryRouter>
+            <SnackbarProvider>
+                <MemoryRouter>
+                    <Routes>
+                        <Route path={PageRoutes.signIn} element={<SignInDialog />} />
+                        <Route path={PageRoutes.signUp} element={<SignUpDialog />} />
+                        <Route path={PageRoutes.home} element={<SignInDialog />} />
+                        <Route path={PageRoutes.groups} element={<GroupList />} />
+                        <Route path={PageRoutes.default} element={<Navigate to={PageRoutes.signIn} replace />} />
+                    </Routes>
+                </MemoryRouter>
+            </SnackbarProvider>
         );
 
         const nameTextfield = (await result.findByTestId("signInName")) as HTMLInputElement;
@@ -29,9 +32,11 @@ describe("SignInDialog Component", () => {
     };
     test("contains textfields and buttons", () => {
         const result = render(
-            <Router>
-                <SignInDialog />
-            </Router>
+            <SnackbarProvider>
+                <Router>
+                    <SignInDialog />
+                </Router>
+            </SnackbarProvider>
         );
         const button = result.getAllByRole("signInButton");
 
@@ -43,9 +48,11 @@ describe("SignInDialog Component", () => {
 
     test("buttons are clickable", () => {
         const result = render(
-            <Router>
-                <SignInDialog />
-            </Router>
+            <SnackbarProvider>
+                <Router>
+                    <SignInDialog />
+                </Router>
+            </SnackbarProvider>
         );
         const button = result.getAllByRole("signInButton");
         expect(button[0]).toBeEnabled();

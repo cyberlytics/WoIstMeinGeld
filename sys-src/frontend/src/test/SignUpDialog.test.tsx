@@ -7,19 +7,22 @@ import { PageRoutes } from "../Routes";
 import { SignInDialog } from "../components/SignInDialog";
 import { GroupList } from "../components/GroupList";
 import userEvent from "@testing-library/user-event";
+import { SnackbarProvider } from "notistack";
 
 describe("SignUpDialog", () => {
     const renderElements = async () => {
         const result = render(
-            <MemoryRouter>
-                <Routes>
-                    <Route path={PageRoutes.signIn} element={<SignInDialog />} />
-                    <Route path={PageRoutes.signUp} element={<SignUpDialog />} />
-                    <Route path={PageRoutes.home} element={<SignInDialog />} />
-                    <Route path={PageRoutes.groups} element={<GroupList />} />
-                    <Route path={PageRoutes.default} element={<Navigate to={PageRoutes.signUp} replace />} />
-                </Routes>
-            </MemoryRouter>
+            <SnackbarProvider>
+                <MemoryRouter>
+                    <Routes>
+                        <Route path={PageRoutes.signIn} element={<SignInDialog />} />
+                        <Route path={PageRoutes.signUp} element={<SignUpDialog />} />
+                        <Route path={PageRoutes.home} element={<SignInDialog />} />
+                        <Route path={PageRoutes.groups} element={<GroupList />} />
+                        <Route path={PageRoutes.default} element={<Navigate to={PageRoutes.signUp} replace />} />
+                    </Routes>
+                </MemoryRouter>
+            </SnackbarProvider>
         );
 
         const nameTextfield = (await result.findByTestId("signUpName")) as HTMLInputElement;
@@ -32,9 +35,11 @@ describe("SignUpDialog", () => {
     test("if dialog has buttons and input textfields", () => {
         const history = createMemoryHistory();
         render(
-            <Router location={history.location} navigator={history}>
-                <SignUpDialog />
-            </Router>
+            <SnackbarProvider>
+                <Router location={history.location} navigator={history}>
+                    <SignUpDialog />
+                </Router>
+            </SnackbarProvider>
         );
 
         const buttons = screen.getAllByRole("signUpButton");
@@ -50,9 +55,11 @@ describe("SignUpDialog", () => {
     test("if routing to SignInDialog works", () => {
         const history = createMemoryHistory();
         render(
-            <Router location={history.location} navigator={history}>
-                <SignUpDialog />
-            </Router>
+            <SnackbarProvider>
+                <Router location={history.location} navigator={history}>
+                    <SignUpDialog />
+                </Router>
+            </SnackbarProvider>
         );
 
         const logInButton = screen.getAllByRole("signUpButton")[1];

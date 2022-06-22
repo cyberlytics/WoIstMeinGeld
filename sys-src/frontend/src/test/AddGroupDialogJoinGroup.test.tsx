@@ -3,15 +3,18 @@ import { describe, expect, test } from "vitest";
 import AddGroupDialog from "../components/AddGroupDialog";
 import { BrowserRouter as Router } from "react-router-dom";
 import { vi } from "vitest";
+import { SnackbarProvider } from "notistack";
 
 const handleReload = vi.fn();
 
 describe("AddGroupDialog", () => {
     test("if dialog opens correctly, has buttons and a input textfield", async () => {
         const result = render(
-            <Router>
-                <AddGroupDialog onReload={handleReload} />
-            </Router>
+            <SnackbarProvider>
+                <Router>
+                    <AddGroupDialog onReload={handleReload} />
+                </Router>
+            </SnackbarProvider>
         );
 
         //opens Selection for joining group odr creating a new one
@@ -44,9 +47,11 @@ describe("AddGroupDialog", () => {
 
     test("buttons are clickable", async () => {
         const result = render(
-            <Router>
-                <AddGroupDialog onReload={handleReload} />
-            </Router>
+            <SnackbarProvider>
+                <Router>
+                    <AddGroupDialog onReload={handleReload} />
+                </Router>
+            </SnackbarProvider>
         );
 
         //opens Selection for joining group odr creating a new one
@@ -68,9 +73,11 @@ describe("AddGroupDialog", () => {
 
     test("if dialog validates user-input", async () => {
         const result = render(
-            <Router>
-                <AddGroupDialog onReload={handleReload} />
-            </Router>
+            <SnackbarProvider>
+                <Router>
+                    <AddGroupDialog onReload={handleReload} />
+                </Router>
+            </SnackbarProvider>
         );
 
         //opens Selection for joining group odr creating a new one

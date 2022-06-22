@@ -1,4 +1,5 @@
 import { act, fireEvent, getByLabelText, getByTestId, getByText, render, screen } from "@testing-library/react";
+import { SnackbarProvider } from "notistack";
 import { BrowserRouter as Router } from "react-router-dom";
 import { describe, expect, test } from "vitest";
 import DeleteGroupDialog from "../components/DeleteGroupDialog";
@@ -8,9 +9,11 @@ const groupId = 1;
 describe("DeleteGroupDialog", () => {
     test("if dialog can open", async () => {
         const { container } = render(
-            <Router>
-                <DeleteGroupDialog groupId={groupId} />
-            </Router>
+            <SnackbarProvider>
+                <Router>
+                    <DeleteGroupDialog groupId={groupId} />
+                </Router>
+            </SnackbarProvider>
         );
 
         const button = getByLabelText(container, "openDialogButton");
@@ -22,9 +25,11 @@ describe("DeleteGroupDialog", () => {
 
     test("buttons are clickable", () => {
         const { container } = render(
-            <Router>
-                <DeleteGroupDialog groupId={groupId} />
-            </Router>
+            <SnackbarProvider>
+                <Router>
+                    <DeleteGroupDialog groupId={groupId} />
+                </Router>
+            </SnackbarProvider>
         );
         const button = getByLabelText(container, "openDialogButton");
         fireEvent.click(button);
@@ -38,9 +43,11 @@ describe("DeleteGroupDialog", () => {
 
     test("if dialog closes on pressed Close button", async () => {
         const { container } = render(
-            <Router>
-                <DeleteGroupDialog groupId={groupId} />
-            </Router>
+            <SnackbarProvider>
+                <Router>
+                    <DeleteGroupDialog groupId={groupId} />
+                </Router>
+            </SnackbarProvider>
         );
 
         const button = getByLabelText(container, "openDialogButton");

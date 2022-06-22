@@ -4,16 +4,19 @@ import { MemoryRouter, Navigate, Route, Routes } from "react-router-dom";
 import { GroupList } from "../components/GroupList";
 import { GroupScreen } from "../components/GroupScreen";
 import { PageRoutes } from "../Routes";
+import { SnackbarProvider } from "notistack";
 
 const getFirstGroup = async () => {
     const result = render(
-        <MemoryRouter>
-            <Routes>
-                <Route path={PageRoutes.group} element={<GroupScreen />} />
-                <Route path={PageRoutes.groups} element={<GroupList />} />
-                <Route path={PageRoutes.default} element={<Navigate to={PageRoutes.groups} replace />} />
-            </Routes>
-        </MemoryRouter>
+        <SnackbarProvider>
+            <MemoryRouter>
+                <Routes>
+                    <Route path={PageRoutes.group} element={<GroupScreen />} />
+                    <Route path={PageRoutes.groups} element={<GroupList />} />
+                    <Route path={PageRoutes.default} element={<Navigate to={PageRoutes.groups} replace />} />
+                </Routes>
+            </MemoryRouter>
+        </SnackbarProvider>
     );
 
     //gets all groups from mocked server and checks for name
@@ -38,15 +41,17 @@ const getRemoveFromGroupButton = async () => {
 
     const menuItems = getAllByRole(menu, "menuitem");
 
-    return menuItems[0];
+    return menuItems[1];
 };
 
 describe("RemoveFromGroup", () => {
     test("if all groups are rendered in GroupList", async () => {
         const result = render(
-            <MemoryRouter>
-                <GroupList />
-            </MemoryRouter>
+            <SnackbarProvider>
+                <MemoryRouter>
+                    <GroupList />
+                </MemoryRouter>
+            </SnackbarProvider>
         );
 
         //gets all groups from mocked server and checks for name
@@ -84,10 +89,11 @@ describe("RemoveFromGroup", () => {
         const menuItems = getAllByRole(menu, "menuitem");
 
         expect(menu).toBeInTheDocument();
-        expect(menuItems[0]).toHaveTextContent("Aus Gruppe austreten");
-        expect(menuItems[1]).toHaveTextContent("Gruppe löschen");
-        expect(menuItems[2]).toHaveTextContent("Ausloggen");
-        expect(menuItems).toHaveLength(3);
+        expect(menuItems[0]).toHaveTextContent("Gruppen-ID kopieren");
+        expect(menuItems[1]).toHaveTextContent("Aus Gruppe austreten");
+        expect(menuItems[2]).toHaveTextContent("Gruppe löschen");
+        expect(menuItems[3]).toHaveTextContent("Ausloggen");
+        expect(menuItems).toHaveLength(4);
     });
 
     test("if leaving group is possible and redirection to GroupList", async () => {

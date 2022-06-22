@@ -7,6 +7,7 @@ import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
 import { ThemeProvider } from "@mui/material";
 import theme from "../ThemeProvider";
+import { SnackbarProvider } from "notistack";
 
 const groupId = 1;
 
@@ -57,9 +58,11 @@ describe("RepaymentList Component", () => {
         const onReload = vi.fn();
 
         const result = render(
-            <ThemeProvider theme={theme}>
-                <RepaymentList groupId={groupId} transactions={[]} onReload={onReload} />
-            </ThemeProvider>
+            <SnackbarProvider>
+                <ThemeProvider theme={theme}>
+                    <RepaymentList groupId={groupId} transactions={[]} onReload={onReload} />
+                </ThemeProvider>
+            </SnackbarProvider>
         );
 
         expect(result.container).toHaveTextContent("Keine Rückzahlungen nötig");
@@ -71,9 +74,11 @@ describe("RepaymentList Component", () => {
         const onReload = vi.fn();
 
         const result = render(
-            <ThemeProvider theme={theme}>
-                <RepaymentList groupId={groupId} transactions={sampleTransactions} onReload={onReload} />
-            </ThemeProvider>
+            <SnackbarProvider>
+                <ThemeProvider theme={theme}>
+                    <RepaymentList groupId={groupId} transactions={sampleTransactions} onReload={onReload} />
+                </ThemeProvider>
+            </SnackbarProvider>
         );
 
         const list = result.queryByRole("list");
@@ -89,9 +94,11 @@ describe("RepaymentList Component", () => {
         const onReload = vi.fn();
 
         const result = render(
-            <ThemeProvider theme={theme}>
-                <RepaymentList groupId={groupId} transactions={sampleTransactions} onReload={onReload} />
-            </ThemeProvider>
+            <SnackbarProvider>
+                <ThemeProvider theme={theme}>
+                    <RepaymentList groupId={groupId} transactions={sampleTransactions} onReload={onReload} />
+                </ThemeProvider>
+            </SnackbarProvider>
         );
 
         const repaymentButtons = result.getAllByText("Begleichen");

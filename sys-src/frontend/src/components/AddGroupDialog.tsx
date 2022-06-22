@@ -36,8 +36,6 @@ export default function AddGroupDialog(props: IProps) {
     const { onReload } = props;
     const [open, setOpen] = useState(false);
     const [openJoin, setOpenJoin] = useState(false);
-    const [groupLink, setGroupLink] = useState("");
-    const [isCopied, setIsCopied] = useState(false);
     const [groupName, setGroupName] = useState("");
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [groupIdJoin, setGroupIdJoin] = useState<number | null>(null);
@@ -51,16 +49,10 @@ export default function AddGroupDialog(props: IProps) {
     const handleClickOpen = () => {
         setAnchorEl(null);
         setOpen(true);
-        setGroupLink("diesWäreDerGruppenlink");
     };
     const handleClose = () => {
         setOpen(false);
         setAnchorEl(null);
-    };
-
-    const handleCopy = () => {
-        setIsCopied(true);
-        setTimeout(() => setIsCopied(false), 3000);
     };
 
     const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -68,31 +60,36 @@ export default function AddGroupDialog(props: IProps) {
     };
 
     const handleSave = () => {
-        setErrorText("");
-        setIsGroupNameEmpty(false);
-        const payload: AddGroup = {
-            name: groupName,
-        };
-        FetchService.post("http://localhost:8080/createGroup", payload)
-            .then((res) => {
-                if (res.ok) {
-                    enqueueSnackbar(groupName + " erfolgreich angelegt!", {
-                        variant: "success",
-                    });
-                    handleClose();
-                    onReload();
-                } else {
-                    console.error(res.status, res.statusText);
-                    enqueueSnackbar("Fehler beim Anlegen der Gruppe: " + groupName, {
-                        variant: "error",
-                    });
-                }
-            })
-            .catch((reason) =>
-                enqueueSnackbar(reason, {
-                    variant: "error",
+        if (groupName == "") {
+            setErrorText("Ungültiger Gruppenname!");
+            setIsGroupNameEmpty(true);
+        } else {
+            setErrorText("");
+            setIsGroupNameEmpty(false);
+            const payload: AddGroup = {
+                name: groupName,
+            };
+            FetchService.post("http://localhost:8080/createGroup", payload)
+                .then((res) => {
+                    if (res.ok) {
+                        enqueueSnackbar(groupName + " erfolgreich angelegt!", {
+                            variant: "success",
+                        });
+                        handleClose();
+                        onReload();
+                    } else {
+                        console.error(res.status, res.statusText);
+                        enqueueSnackbar("Fehler beim Anlegen der Gruppe: " + groupName, {
+                            variant: "error",
+                        });
+                    }
                 })
-            );
+                .catch((reason) =>
+                    enqueueSnackbar(reason, {
+                        variant: "error",
+                    })
+                );
+        }
     };
 
     const handleClickOpenJoin = () => {

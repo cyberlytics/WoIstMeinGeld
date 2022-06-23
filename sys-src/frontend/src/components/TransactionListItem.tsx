@@ -25,7 +25,7 @@ export function TransactionListItem(props: Props) {
                 />
             }
         >
-            <ListItemButton onClick={() => onClick(transaction)}>
+            <ListItemButton onClick={() => onClick(transaction)} data-testid="transactionListItemButton">
                 <ListItemText primary={description} secondary={`Bezahlt von ${creditor?.name}`} />
             </ListItemButton>
         </ListItem>

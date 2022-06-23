@@ -122,11 +122,6 @@ describe("TransactionList Component", () => {
         // click on list item
         await user.click(firstListItemButton);
 
-        // wait 1 sec for network request and ui update
-        await act(async () => {
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-        });
-
         transactionDetailDialog = result.queryByTestId("transactionDetailDialog");
 
         // check if transaction detail dialog has opened
@@ -154,11 +149,6 @@ describe("TransactionList Component", () => {
         // click on list item
         await user.click(firstListItemButton);
 
-        // wait 1 sec for network request and ui update
-        await act(async () => {
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-        });
-
         const removeButton = result.getByText("Entfernen");
 
         // click on remove button of transaction detail dialog
@@ -177,11 +167,6 @@ describe("TransactionList Component", () => {
 
         // click on list item
         await user.click(firstListItemButton);
-
-        // wait 1 sec for network request and ui update
-        await act(async () => {
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-        });
 
         const closeButton = result.getByText("Schließen");
 

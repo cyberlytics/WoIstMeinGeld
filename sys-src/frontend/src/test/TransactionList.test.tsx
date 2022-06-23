@@ -120,7 +120,7 @@ describe("TransactionList Component", () => {
         const firstListItemButton = listItemButtons[0];
 
         // click on list item
-        user.click(firstListItemButton);
+        await user.click(firstListItemButton);
 
         // wait 1 sec for network request and ui update
         await act(async () => {
@@ -152,7 +152,7 @@ describe("TransactionList Component", () => {
         const firstListItemButton = listItemButtons[0];
 
         // click on list item
-        user.click(firstListItemButton);
+        await user.click(firstListItemButton);
 
         // wait 1 sec for network request and ui update
         await act(async () => {
@@ -162,7 +162,7 @@ describe("TransactionList Component", () => {
         const removeButton = result.getByText("Entfernen");
 
         // click on remove button of transaction detail dialog
-        user.click(removeButton);
+        await user.click(removeButton);
 
         // wait 1 sec for network request and ui update
         await act(async () => {
@@ -176,7 +176,7 @@ describe("TransactionList Component", () => {
         expect(transactionDetailDialog).not.toBeInTheDocument();
 
         // click on list item
-        user.click(firstListItemButton);
+        await user.click(firstListItemButton);
 
         // wait 1 sec for network request and ui update
         await act(async () => {
@@ -186,7 +186,7 @@ describe("TransactionList Component", () => {
         const closeButton = result.getByText("Schließen");
 
         // click on close button of transaction detail dialog
-        user.click(closeButton);
+        await user.click(closeButton);
 
         // wait 1 sec for network request and ui update
         await act(async () => {

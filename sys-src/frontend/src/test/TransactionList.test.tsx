@@ -1,9 +1,8 @@
 import { vi } from "vitest";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import { Transaction } from "../models/Transaction";
 import { Person } from "../models/Person";
 import userEvent from "@testing-library/user-event";
-import { act } from "react-dom/test-utils";
 import { ThemeProvider } from "@mui/material";
 import theme from "../ThemeProvider";
 import { SnackbarProvider } from "notistack";
@@ -88,11 +87,6 @@ describe("TransactionList Component", () => {
         expect(list).toBeInTheDocument();
         expect(list?.children).toHaveLength(3);
 
-        /*
-         * Test if the list is ordered by date (descending) is not possible because
-         * the sorting has already happened in a sql query in the backend.
-         */
-
         expect(onReload).not.toHaveBeenCalled();
     });
 
@@ -173,13 +167,6 @@ describe("TransactionList Component", () => {
             const transactionDetailDialog = result.queryByTestId("transactionDetailDialog");
             expect(transactionDetailDialog).not.toBeInTheDocument();
         });
-
-        /*
-         * Test if one transaction item has been removed from the transaction list
-         * is not possible because after the deletion of one transaction,
-         * a sql query in the backend will be executed and the page will
-         * be reloaded with the new data.
-         */
 
         expect(onReload).not.toHaveBeenCalled();
     });

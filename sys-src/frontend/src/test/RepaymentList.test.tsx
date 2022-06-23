@@ -4,7 +4,6 @@ import { RepaymentList } from "../components/RepaymentList";
 import { Transaction } from "../models/Transaction";
 import { Person } from "../models/Person";
 import userEvent from "@testing-library/user-event";
-import { act } from "react-dom/test-utils";
 import { ThemeProvider } from "@mui/material";
 import theme from "../ThemeProvider";
 import { SnackbarProvider } from "notistack";
@@ -123,12 +122,5 @@ describe("RepaymentList Component", () => {
         await waitFor(() => {
             expect(onReload).toHaveBeenCalledTimes(1);
         });
-
-        /*
-         * Test if one repayment item has been removed from the repayment list
-         * is not possible because after the settlement of one repayment,
-         * a sql query in the backend will be executed and the page will
-         * be reloaded with the new data.
-         */
     });
 });

@@ -27,7 +27,7 @@ export function TransactionDetailDialog(props: Props) {
     const { open, transaction, onClose, onDelete } = props;
 
     return (
-        <Dialog open={open} onClose={onClose}>
+        <Dialog open={open} onClose={onClose} data-testid="transactionDetailDialog">
             <DialogTitle>{transaction?.description}</DialogTitle>
             <DialogContent>
                 <List dense>

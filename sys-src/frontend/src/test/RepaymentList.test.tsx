@@ -48,7 +48,7 @@ function createSampleTransaction(
 const sampleTransactions: Transaction[] = [
     createSampleTransaction(1, personPeter, "Eis essen", 14, [personPaul, personSandra]),
     createSampleTransaction(2, personPeter, "Burger essen", 35, [personPaul, personSandra]),
-    createSampleTransaction(3, personSandra, "Schlittschuh fahren", 11.5, [personPaul, personPeter]),
+    createSampleTransaction(3, personSandra, "Schlittschuh fahren", 11.5, [personPeter, personPaul]),
     createSampleTransaction(4, personPaul, "Museum", 10, [personSandra]),
     createSampleTransaction(5, personPeter, "Bierzelt", 40, [personPaul, personSandra]),
 ];
@@ -65,8 +65,10 @@ describe("RepaymentList Component", () => {
             </SnackbarProvider>
         );
 
+        const list = result.queryByRole("list");
+
         expect(result.container).toHaveTextContent("Keine Rückzahlungen nötig");
-        expect(result.queryByRole("list")).not.toBeInTheDocument();
+        expect(list).not.toBeInTheDocument();
         expect(onReload).not.toHaveBeenCalled();
     });
 
@@ -84,7 +86,11 @@ describe("RepaymentList Component", () => {
         const list = result.queryByRole("list");
 
         expect(list).toBeInTheDocument();
-        expect(list?.children.length).toBeGreaterThanOrEqual(1);
+
+        // minimum: one repayment
+        // maximum: two repayments (because three people are involved)
+        expect(list?.children.length).toBeGreaterThan(0);
+        expect(list?.children.length).toBeLessThan(3);
 
         expect(onReload).not.toHaveBeenCalled();
     });
@@ -101,8 +107,13 @@ describe("RepaymentList Component", () => {
             </SnackbarProvider>
         );
 
-        const repaymentButtons = result.getAllByText("Begleichen");
-        expect(repaymentButtons.length).toBeGreaterThanOrEqual(1);
+        let repaymentButtons = result.getAllByText("Begleichen");
+        const buttonsLength = repaymentButtons.length;
+
+        // minimum: one repayment
+        // maximum: two repayments (because three people are involved)
+        expect(buttonsLength).toBeGreaterThan(0);
+        expect(buttonsLength).toBeLessThan(3);
 
         const repaymentButton = repaymentButtons[0];
 
@@ -115,5 +126,12 @@ describe("RepaymentList Component", () => {
         });
 
         expect(onReload).toHaveBeenCalledTimes(1);
+
+        /*
+         * Test if one repayment item has been removed from the repayment list
+         * is not possible because after the settlement of one repayment,
+         * a sql query in the backend will be executed and the page will
+         * be reloaded with the new data.
+         */
     });
 });

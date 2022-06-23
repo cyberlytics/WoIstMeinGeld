@@ -1,5 +1,5 @@
 import { vi } from "vitest";
-import { render } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import { RepaymentList } from "../components/RepaymentList";
 import { Transaction } from "../models/Transaction";
 import { Person } from "../models/Person";
@@ -120,12 +120,9 @@ describe("RepaymentList Component", () => {
         await user.click(repaymentButton);
         await user.click(repaymentButton); // second click should not trigger again
 
-        // wait 1 sec for network request and ui update
-        await act(async () => {
-            await new Promise((resolve) => setTimeout(resolve, 1000));
+        await waitFor(() => {
+            expect(onReload).toHaveBeenCalledTimes(1);
         });
-
-        expect(onReload).toHaveBeenCalledTimes(1);
 
         /*
          * Test if one repayment item has been removed from the repayment list

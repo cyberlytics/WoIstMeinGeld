@@ -154,16 +154,11 @@ describe("TransactionList Component", () => {
         // click on remove button of transaction detail dialog
         await user.click(removeButton);
 
-        // wait 1 sec for network request and ui update
-        await act(async () => {
-            await new Promise((resolve) => setTimeout(resolve, 1000));
+        // wait for transaction detail dialog to close
+        await waitFor(() => {
+            const transactionDetailDialog = result.queryByTestId("transactionDetailDialog");
+            expect(transactionDetailDialog).not.toBeInTheDocument();
         });
-
-        const transactionDetailDialog = result.queryByTestId("transactionDetailDialog");
-
-        // why does this test fail?
-        // check if transaction detail dialog has closed
-        expect(transactionDetailDialog).not.toBeInTheDocument();
 
         // click on list item
         await user.click(firstListItemButton);
@@ -173,14 +168,11 @@ describe("TransactionList Component", () => {
         // click on close button of transaction detail dialog
         await user.click(closeButton);
 
-        // wait 1 sec for network request and ui update
-        await act(async () => {
-            await new Promise((resolve) => setTimeout(resolve, 1000));
+        // wait for transaction detail dialog to close
+        await waitFor(() => {
+            const transactionDetailDialog = result.queryByTestId("transactionDetailDialog");
+            expect(transactionDetailDialog).not.toBeInTheDocument();
         });
-
-        // why does this test fail?
-        // check if transaction detail dialog has closed
-        expect(transactionDetailDialog).not.toBeInTheDocument();
 
         /*
          * Test if one transaction item has been removed from the transaction list

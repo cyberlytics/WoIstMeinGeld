@@ -124,27 +124,36 @@ export const handlers = [
     rest.post("http://localhost:8080/createTransaction", (req, res, ctx) => {
         return res(ctx.status(200), ctx.json(payload));
     }),
-    rest.get("http://localhost:8080/getGroups", (req, res, ctx) => {
-        return res(ctx.status(200), ctx.json(groups));
-    }),
     rest.get("http://localhost:8080/transactions/1", (req, res, ctx) => {
         return res(ctx.status(200), ctx.json(transactions));
     }),
     rest.get("http://localhost:8080/transactions/2", (req, res, ctx) => {
         return res(ctx.status(200), ctx.json(closedTransactions));
     }),
+    rest.get("http://localhost:8080/transactions/3", (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json([]));
+    }),
+    rest.delete("http://localhost:8080/deleteTransaction", (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json({}));
+    }),
 
+    rest.get("http://localhost:8080/getGroups", (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json(groups));
+    }),
     rest.get("http://localhost:8080/getGroupUsers/1", (req, res, ctx) => {
         return res(ctx.status(200), ctx.json(groupUsers));
     }),
-
-    rest.post("http://localhost:8080/removeFromGroup", (req, res, ctx) => {
-        groups.shift();
-        return res(ctx.status(200), ctx.json({}));
+    rest.get("http://localhost:8080/getGroupUsers/3", (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json(groupUsers));
     }),
     rest.delete("http://localhost:8080/deleteGroup", (req, res, ctx) => {
         return res(ctx.status(500), ctx.json({ Message: "Error occured on deleting group." }));
     }),
+    rest.post("http://localhost:8080/removeFromGroup", (req, res, ctx) => {
+        groups.shift();
+        return res(ctx.status(200), ctx.json({}));
+    }),
+
     rest.post("http://localhost:8080/signIn", (req: any, res, ctx) => {
         const { name, password } = req.body;
 
@@ -175,8 +184,5 @@ export const handlers = [
         }
 
         return res(ctx.status(200), ctx.json(signInOutResponseSucc));
-    }),
-    rest.delete("http://localhost:8080/deleteTransaction", (req, res, ctx) => {
-        return res(ctx.status(200), ctx.json({}));
     }),
 ];

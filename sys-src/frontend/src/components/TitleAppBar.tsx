@@ -80,7 +80,14 @@ const TitleAppBar = (props: IProps) => {
                     </div>
                 )}
 
-                <Typography className="appBarTitle" variant="h4" align="center" component="div" sx={{ flexGrow: 1 }}>
+                <Typography
+                    className="appBarTitle"
+                    variant="h4"
+                    align="center"
+                    component="div"
+                    sx={{ flexGrow: 1 }}
+                    data-testid="titleAppBarTitle"
+                >
                     {title || "Wo ist mein Geld?"}
                 </Typography>
 

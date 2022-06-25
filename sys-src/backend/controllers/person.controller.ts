@@ -75,7 +75,6 @@ export class PersonsController {
                 const personId = value.id;
                 Person.findByPk(personId, {})
                     .then((t: any) => {
-                        console.log(t, "\n", t.id, "Data Values:id \n", t.dataValues.id);
                         const ret = t.dataValues.id;
                         res.send(ret.toString());
                     })

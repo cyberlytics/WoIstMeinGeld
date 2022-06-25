@@ -124,7 +124,40 @@ describe("TransactionList Component", () => {
         expect(onReload).not.toHaveBeenCalled();
     });
 
-    test("click on remove or close button in detail dialog", async () => {
+    test("click on close button in detail dialog", async () => {
+        const user = userEvent.setup();
+        const onReload = vi.fn();
+
+        const result = render(
+            <SnackbarProvider>
+                <ThemeProvider theme={theme}>
+                    <TransactionList groupId={groupId} transactions={threeTransactions} onReload={onReload} />
+                </ThemeProvider>
+            </SnackbarProvider>
+        );
+
+        const listItemButtons = result.getAllByTestId("transactionListItemButton");
+
+        const firstListItemButton = listItemButtons[0];
+
+        // click on list item
+        await user.click(firstListItemButton);
+
+        const closeButton = result.getByText("Schließen");
+
+        // click on close button of transaction detail dialog
+        await user.click(closeButton);
+
+        // wait for transaction detail dialog to close
+        await waitFor(() => {
+            const transactionDetailDialog = result.queryByTestId("transactionDetailDialog");
+            expect(transactionDetailDialog).not.toBeInTheDocument();
+        });
+
+        expect(onReload).not.toHaveBeenCalled();
+    });
+
+    test("click on remove button in detail dialog", async () => {
         const user = userEvent.setup();
         const onReload = vi.fn();
 
@@ -154,20 +187,6 @@ describe("TransactionList Component", () => {
             expect(transactionDetailDialog).not.toBeInTheDocument();
         });
 
-        // click on list item
-        await user.click(firstListItemButton);
-
-        const closeButton = result.getByText("Schließen");
-
-        // click on close button of transaction detail dialog
-        await user.click(closeButton);
-
-        // wait for transaction detail dialog to close
-        await waitFor(() => {
-            const transactionDetailDialog = result.queryByTestId("transactionDetailDialog");
-            expect(transactionDetailDialog).not.toBeInTheDocument();
-        });
-
-        expect(onReload).not.toHaveBeenCalled();
+        expect(onReload).toHaveBeenCalled();
     });
 });

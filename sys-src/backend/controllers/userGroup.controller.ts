@@ -128,23 +128,22 @@ export class UserGroupController {
         }
         const { groupId } = req.body;
         console.log(groupId);
-
         if (groupId) {
             UserGroup.destroy({
                 where: { id: groupId },
             })
                 .then(async (t: any) => {
-
                     Transaction.destroy({
                         where: { group_id: Number(groupId) },
-                    }).then((t: any) => {
-                        res.status(200).send({ "number of deleted rows": t });
-                    }).catch((e) => {
-                        res.status(500).send({
-                            message: e.message + groupId || "Error occured on deleting group.",
+                    })
+                        .then((t: any) => {
+                            res.status(200).send({ "number of deleted rows": t });
+                        })
+                        .catch((e) => {
+                            res.status(500).send({
+                                message: e.message + groupId || "Error occured on deleting group.",
+                            });
                         });
-                    });
-
                 })
                 .catch((e) => {
                     res.status(500).send({

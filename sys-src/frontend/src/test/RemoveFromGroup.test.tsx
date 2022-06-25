@@ -1,4 +1,12 @@
-import { fireEvent, getAllByRole, render, screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react";
+import {
+    findAllByRole,
+    fireEvent,
+    getAllByRole,
+    render,
+    screen,
+    waitFor,
+    waitForElementToBeRemoved,
+} from "@testing-library/react";
 import { describe, expect } from "vitest";
 import { MemoryRouter, Navigate, Route, Routes } from "react-router-dom";
 import { GroupList } from "../components/GroupList";
@@ -101,7 +109,17 @@ describe("RemoveFromGroup", () => {
 
         fireEvent.click(removeButton);
 
-        await waitForElementToBeRemoved(removeButton);
+        const removeDialog = await screen.findByRole("dialog");
+
+        expect(removeDialog).toBeInTheDocument();
+
+        const confirmRemoveButton = (await findAllByRole(removeDialog, "button"))[1];
+
+        expect(confirmRemoveButton).toHaveTextContent("Aus Gruppe austreten");
+
+        fireEvent.click(confirmRemoveButton);
+
+        await waitForElementToBeRemoved(confirmRemoveButton);
 
         const groupListItems = await screen.findAllByRole("listitem");
 

@@ -34,7 +34,7 @@ export const transactions = [
         amount: 7,
         createdAt: "2022-06-16T12:21:31.000Z",
         updatedAt: "2022-06-16T12:21:31.000Z",
-        creditor: { id: 1, name: "Hans" },
+        creditor: { id: 2, name: "Franz" },
         debtors: [
             { id: 2, name: "Franz", debtor: { person_id: 2, transaction_id: 1 } },
             { id: 3, name: "Sepp", debtor: { person_id: 3, transaction_id: 1 } },
@@ -184,5 +184,8 @@ export const handlers = [
         }
 
         return res(ctx.status(200), ctx.json(signInOutResponseSucc));
+    }),
+    rest.get("http://localhost:8080/getId", (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json("1"));
     }),
 ];

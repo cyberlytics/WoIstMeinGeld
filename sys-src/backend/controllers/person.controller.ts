@@ -63,6 +63,31 @@ export class PersonsController {
             }
         });
     }
+
+    public getId(req: Request, res: Response) {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            return res.status(422).json(errors.array());
+        }
+        PersonService.getIdAndNameFromToken(req.cookies.token).then((value: IPerson) => {
+            if (value !== undefined) {
+                const personId = value.id;
+                Person.findByPk(personId, {})
+                    .then((t: any) => {
+                        console.log(t, "\n", t.id, "Data Values:id \n", t.dataValues.id);
+                        const ret = t.dataValues.id;
+                        res.send(ret.toString());
+                    })
+                    .catch((e) => {
+                        console.log(e);
+                        res.status(500).send({
+                            message: e.message || "Error occurred on finding Person.",
+                        });
+                    });
+            }
+        });
+    }
 }
 
 export default PersonsController;

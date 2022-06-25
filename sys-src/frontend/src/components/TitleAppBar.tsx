@@ -5,6 +5,7 @@ import { MoreVert, ArrowBack } from "@mui/icons-material";
 import { FetchService } from "../FetchService";
 import { PageRoutes } from "../Routes";
 import { useNavigate, useLocation } from "react-router-dom";
+import RemoveFromGroupDialog from "./RemoveFromGroupDialog";
 import DeleteGroupDialog from "./DeleteGroupDialog";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { useSnackbar } from "notistack";
@@ -36,23 +37,6 @@ const TitleAppBar = (props: IProps) => {
             .then((response) => response.json())
             .then((response) => {
                 navigate(PageRoutes.signIn);
-                handleClose();
-            })
-            .catch((reason) =>
-                enqueueSnackbar(reason, {
-                    variant: "error",
-                })
-            );
-    };
-
-    const handleRemoveFromGroup = () => {
-        const jsonBody = { groupId: groupId };
-        FetchService.post("http://localhost:8080/removeFromGroup", jsonBody)
-            .then((response) => {
-                enqueueSnackbar("Erfolgreich aus Gruppe ausgetreten!", {
-                    variant: "success",
-                });
-                navigate(-1);
                 handleClose();
             })
             .catch((reason) =>
@@ -111,9 +95,7 @@ const TitleAppBar = (props: IProps) => {
                                             <Typography>Gruppen-ID kopieren</Typography>
                                         </CopyToClipboard>
                                     </MenuItem>
-                                    <MenuItem onClick={handleRemoveFromGroup}>
-                                        <Typography>Aus Gruppe austreten</Typography>
-                                    </MenuItem>
+                                    <RemoveFromGroupDialog title={title} groupId={groupId} />
                                     <DeleteGroupDialog title={title} groupId={groupId} />
                                 </div>
                             )}

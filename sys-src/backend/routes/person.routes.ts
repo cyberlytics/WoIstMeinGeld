@@ -2,8 +2,10 @@ import { Request, Response, Router } from "express";
 import { validationResult } from "express-validator/check";
 import { PersonService } from "../authentication/person.service";
 import { checkLogin, checkRegister } from "../authentication/loginRegisterRules";
+import { PersonsController } from "../controllers";
 
 export const personRouter = Router();
+const personController = new PersonsController();
 
 personRouter.post("/signUp", checkRegister, async (req, res) => {
     const errors = validationResult(req);
@@ -37,6 +39,8 @@ personRouter.post("/signOut", (req, res) => {
         res.send({ msg: "Cookie cleared!" });
     }
 });
+
+personRouter.get("/getId", personController.getId);
 
 const loginAndCreateCookie = async (payload, response: Response, request: Request) => {
     const tokenPromise = PersonService.login(payload);

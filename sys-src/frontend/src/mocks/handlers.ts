@@ -1,7 +1,6 @@
 import { rest } from "msw";
 import { Group } from "../models/Group";
 import { Person } from "../models/Person";
-import { Transaction } from "../models/Transaction";
 
 // Mock Data
 export const posts = [
@@ -55,9 +54,7 @@ export const closedTransactions = [
         createdAt: "2022-06-16T12:21:31.000Z",
         updatedAt: "2022-06-16T12:21:31.000Z",
         creditor: { id: 1, name: "Hans" },
-        debtors: [
-            { id: 2, name: "Franz", debtor: { person_id: 2, transaction_id: 1 } },
-        ],
+        debtors: [{ id: 2, name: "Franz", debtor: { person_id: 2, transaction_id: 1 } }],
     },
     {
         id: 2,
@@ -69,9 +66,7 @@ export const closedTransactions = [
         createdAt: "2022-06-16T12:21:31.000Z",
         updatedAt: "2022-06-16T12:21:31.000Z",
         creditor: { id: 2, name: "Franz" },
-        debtors: [
-            { id: 1, name: "Hans", debtor: { person_id: 1, transaction_id: 2 } },
-        ],
+        debtors: [{ id: 1, name: "Hans", debtor: { person_id: 1, transaction_id: 2 } }],
     },
 ];
 
@@ -124,7 +119,7 @@ const signInOutResponseSucc = {
     token: "succToken",
 };
 
-// Define handlers that catch the corresponding requests and returns the mock data.
+// Define handlers that catch the corresponding requests and return the mock data.
 export const handlers = [
     rest.post("http://localhost:8080/createTransaction", (req, res, ctx) => {
         return res(ctx.status(200), ctx.json(payload));
@@ -148,7 +143,7 @@ export const handlers = [
         return res(ctx.status(200), ctx.json({}));
     }),
     rest.delete("http://localhost:8080/deleteGroup", (req, res, ctx) => {
-        return res(ctx.status(500), ctx.json({ Message: "Error occured on deleting transaction." }));
+        return res(ctx.status(500), ctx.json({ Message: "Error occured on deleting group." }));
     }),
     rest.post("http://localhost:8080/signIn", (req: any, res, ctx) => {
         const { name, password } = req.body;
@@ -180,5 +175,8 @@ export const handlers = [
         }
 
         return res(ctx.status(200), ctx.json(signInOutResponseSucc));
+    }),
+    rest.delete("http://localhost:8080/deleteTransaction", (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json({}));
     }),
 ];

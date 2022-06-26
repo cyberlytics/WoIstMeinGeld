@@ -29,7 +29,8 @@ export function TransactionList(props: Props) {
 
     function deleteOpenedTransaction() {
         if (openedTransaction) {
-            FetchService.delete("http://localhost:8080/deleteTransaction", { id: openedTransaction.id })
+            const jsonBody = { transactionId: openedTransaction.id };
+            FetchService.delete("http://localhost:8080/deleteTransaction", jsonBody)
                 .then(() => onReload())
                 .catch((reason) => console.error(reason));
             setDetailsOpen(false);

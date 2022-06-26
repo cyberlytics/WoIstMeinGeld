@@ -34,7 +34,7 @@ export function GroupList() {
                     Gruppen
                 </Typography>
                 {groups.length ? (
-                    <List>
+                    <List data-testid={"groupUL"}>
                         {groups.map((group) => (
                             <GroupListItem
                                 key={group.id}

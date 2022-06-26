@@ -89,7 +89,7 @@ const payload: AddTransaction = {
     debtors: [1],
 };
 
-const groups: Group[] = [
+export const groups: Group[] = [
     {
         id: 1,
         name: "Gruppe 1",

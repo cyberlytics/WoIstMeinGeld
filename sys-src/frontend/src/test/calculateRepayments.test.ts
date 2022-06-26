@@ -248,7 +248,49 @@ describe("calculateRepayments", () => {
         expect(repaymentAmounts).toEqual([1.5, 0.5]);
     });
 
-    test("[12] four small transactions (0.01€, 0.01€, 0.01€, 0.01€)", () => {
+    test("[12] four normal transactions (4€, 3€, 2€, 1€)", () => {
+        let aliceTransaction = createTransaction(1, 1, "Alice spent four euro for everybody.", 1, 4, alice, [
+            alice,
+            bob,
+            charlie,
+            dave,
+        ]);
+
+        let bobTransaction = createTransaction(2, 1, "Bob spent three euro for everybody.", 2, 3, bob, [
+            alice,
+            bob,
+            charlie,
+            dave,
+        ]);
+
+        let charlieTransaction = createTransaction(3, 1, "Charlie spent two euro for everybody.", 3, 2, charlie, [
+            alice,
+            bob,
+            charlie,
+            dave,
+        ]);
+
+        let daveTransaction = createTransaction(4, 1, "Dave spent one euro for everybody.", 4, 1, dave, [
+            alice,
+            bob,
+            charlie,
+            dave,
+        ]);
+
+        let fourTransactions: Transaction[] = [aliceTransaction, bobTransaction, charlieTransaction, daveTransaction];
+
+        let repayments: Repayment[] = calculateRepayments(fourTransactions);
+
+        let repaymentFromIds: number[] = repayments.map((repayment) => repayment.from.id);
+        let repaymentToIds: number[] = repayments.map((repayment) => repayment.to.id);
+        let repaymentAmounts: number[] = repayments.map((repayment) => repayment.amount);
+
+        expect(repaymentFromIds).toEqual([4, 3]);
+        expect(repaymentToIds).toEqual([1, 2]);
+        expect(repaymentAmounts).toEqual([1.5, 0.5]);
+    });
+
+    test("[13] four small transactions (0.01€, 0.01€, 0.01€, 0.01€)", () => {
         let aliceTransaction = createTransaction(1, 1, "Alice lent one cent to Bob and Charlie.", 1, 0.01, alice, [
             bob,
             charlie,

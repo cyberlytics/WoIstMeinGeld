@@ -101,9 +101,10 @@ export class TransactionController {
         if (!errors.isEmpty()) {
             return res.status(422).json(errors.array());
         }
-        if (req.body.id) {
+        const { transactionId } = req.body;
+        if (transactionId) {
             Transaction.destroy({
-                where: { id: req.body.id },
+                where: { id: transactionId },
             })
                 .then((t: any) => {
                     res.status(200).send({ "number of deleted rows": t });

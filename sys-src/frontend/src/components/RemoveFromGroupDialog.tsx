@@ -74,9 +74,11 @@ export default function RemoveFromGroupDialog(props: IProps) {
     };
 
     useEffect(() => {
-        if (open) setErrorCreditor(false);
-        if (open) setErrorDebtor(false);
-        if (open) setError(false);
+        if (open) {
+            setErrorCreditor(false);
+            setErrorDebtor(false);
+            setError(false);
+        }
     }, [open]);
 
     return (
@@ -101,7 +103,7 @@ export default function RemoveFromGroupDialog(props: IProps) {
                             </Typography>
                         ) : errorDebtor ? (
                             <Typography color="error" aria-label="errorMessage">
-                                Du hast noch offene Zahlungen in {title}! Andere Teilnehmer haben noch Schuden bei dir.
+                                Du hast noch offene Zahlungen in {title}! Andere Teilnehmer haben noch Schulden bei dir.
                             </Typography>
                         ) : errorCreditor ? (
                             <Typography color="error" aria-label="errorMessage">

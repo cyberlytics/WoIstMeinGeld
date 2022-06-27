@@ -23,8 +23,13 @@ export default function DeleteGroupDialog(props: IProps) {
 
     const navigate = useNavigate();
     const { enqueueSnackbar } = useSnackbar();
+
     const handleClickOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    /**
+     * check if group has open repayments, if so, delete group
+     */
     const handleDeleteGroup = async () => {
         const hasOpenRepayments = await checkOpenRepayments(groupId!);
         if (hasOpenRepayments) {

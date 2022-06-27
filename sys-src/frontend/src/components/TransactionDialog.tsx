@@ -192,7 +192,7 @@ export default function TransactionDialog(props: IProps) {
                         )}
                     />
 
-                    <FormControl fullWidth sx={{ mb: 1.5 }} required error={error && debtors.length <= 0}>
+                    <FormControl fullWidth sx={{ mb: 1.5 }} data-testid="Schuldner" required error={error && debtors.length <= 0}>
                         <FormLabel>Schuldner</FormLabel>
                         <FormGroup>
                             <List

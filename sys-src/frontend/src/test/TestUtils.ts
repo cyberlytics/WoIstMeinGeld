@@ -18,10 +18,6 @@ export class TestUtils {
         expect(input.value).toBe(value);
     }
 
-    public waitforMilliseconds(milliSeconds: number) {
-        return act(async () => new Promise((resolve) => setTimeout(resolve, milliSeconds)));
-    }
-
     public async selectOption(container: RenderResult, select: HTMLElement, value: string) {
         const creditorBtn = select?.parentNode?.querySelector("[role=button]");
 

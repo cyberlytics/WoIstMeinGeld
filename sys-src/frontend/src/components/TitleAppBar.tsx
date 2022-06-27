@@ -1,11 +1,14 @@
 import AppBar from "@mui/material/AppBar";
 import { IconButton, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
 import { useState } from "react";
-import { MoreVert, ArrowBackIos } from "@mui/icons-material";
+import { MoreVert, ArrowBack } from "@mui/icons-material";
 import { FetchService } from "../FetchService";
 import { PageRoutes } from "../Routes";
 import { useNavigate, useLocation } from "react-router-dom";
+import RemoveFromGroupDialog from "./RemoveFromGroupDialog";
 import DeleteGroupDialog from "./DeleteGroupDialog";
+import CopyToClipboard from "react-copy-to-clipboard";
+import { useSnackbar } from "notistack";
 
 interface IProps {
     title?: string;
@@ -19,6 +22,7 @@ const TitleAppBar = (props: IProps) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const location = useLocation();
     const showMenu = location.pathname != PageRoutes.signIn && location.pathname != PageRoutes.signUp;
+    const { enqueueSnackbar } = useSnackbar();
 
     const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -32,21 +36,21 @@ const TitleAppBar = (props: IProps) => {
         FetchService.post("http://localhost:8080/signOut", {})
             .then((response) => response.json())
             .then((response) => {
-                console.log(response);
                 navigate(PageRoutes.signIn);
                 handleClose();
             })
-            .catch((reason) => console.error(reason));
+            .catch((reason) =>
+                enqueueSnackbar(reason, {
+                    variant: "error",
+                })
+            );
     };
 
-    const handleRemoveFromGroup = () => {
-        const jsonBody = { groupId: groupId };
-        FetchService.post("http://localhost:8080/removeFromGroup", jsonBody)
-            .then((response) => {
-                navigate(-1);
-                handleClose();
-            })
-            .catch((reason) => console.error(reason));
+    const handleCopy = () => {
+        enqueueSnackbar("Gruppen-ID erfolgreich kopiert!", {
+            variant: "success",
+        });
+        setAnchorEl(null);
     };
 
     return (
@@ -54,13 +58,20 @@ const TitleAppBar = (props: IProps) => {
             <Toolbar sx={{ backgroundColor: "backgroundDark.main" }}>
                 {isGroupScreen && (
                     <div className="appBarLeftMenuButton">
-                        <IconButton size="small" onClick={() => navigate(-1)}>
-                            <ArrowBackIos fontSize="large" />
+                        <IconButton size="large" onClick={() => navigate(-1)}>
+                            <ArrowBack />
                         </IconButton>
                     </div>
                 )}
 
-                <Typography className="appBarTitle" variant="h4" align="center" component="div" sx={{ flexGrow: 1 }}>
+                <Typography
+                    className="appBarTitle"
+                    variant="h4"
+                    align="center"
+                    component="div"
+                    sx={{ flexGrow: 1 }}
+                    data-testid="titleAppBarTitle"
+                >
                     {title || "Wo ist mein Geld?"}
                 </Typography>
 
@@ -86,9 +97,12 @@ const TitleAppBar = (props: IProps) => {
                         >
                             {isGroupScreen && (
                                 <div>
-                                    <MenuItem onClick={handleRemoveFromGroup}>
-                                        <Typography>Aus Gruppe austreten</Typography>
+                                    <MenuItem>
+                                        <CopyToClipboard onCopy={handleCopy} text={groupId!.toString()}>
+                                            <Typography>Gruppen-ID kopieren</Typography>
+                                        </CopyToClipboard>
                                     </MenuItem>
+                                    <RemoveFromGroupDialog title={title} groupId={groupId} />
                                     <DeleteGroupDialog title={title} groupId={groupId} />
                                 </div>
                             )}

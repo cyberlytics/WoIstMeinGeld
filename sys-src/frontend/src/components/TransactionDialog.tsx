@@ -70,6 +70,10 @@ export default function TransactionDialog(props: IProps) {
         onReload();
         setOpen(false);
     };
+
+    /**
+     * creates Transaction if all input fields are filled and valid
+     */
     const handleSave = () => {
         //check if all information is present
         if (!(creditor && debtors.length > 0 && date && description && amount)) {
@@ -94,11 +98,17 @@ export default function TransactionDialog(props: IProps) {
             .catch((reason) => console.error(reason));
     };
 
+    /**
+     * add debtors correctly by filtering the listbox
+     */
     const switchDebtor = (person: Person) => {
         if (debtors.includes(person)) setDebtors(debtors.filter((d) => d !== person));
         else setDebtors([...debtors, person]);
     };
 
+    /**
+     * resetting all input fields and errors on open
+     */
     useEffect(() => {
         setError(false);
         setDescription("");
@@ -139,19 +149,26 @@ export default function TransactionDialog(props: IProps) {
                         fullWidth
                         label="Verwendungszweck"
                         variant="outlined"
-                        inputProps={{ "data-testid": "Verwendungszweck", error: { error } }}
+                        inputProps={{ "data-testid": "Verwendungszweck" }}
                     />
 
-                    <FormControl fullWidth sx={{ mb: 1.5 }} required error={error && creditor.length <= 0}>
-                        <InputLabel>Gläubiger</InputLabel>
-                        <Select value={creditor} label="Gläubiger" onChange={(e) => setCreditor(e.target.value)}>
-                            {people.map((person) => (
-                                <MenuItem key={person.id} value={person.id}>
-                                    {person.name}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
+                    <TextField
+                        sx={{ mb: 1.5 }}
+                        fullWidth
+                        select
+                        required
+                        error={error && creditor.length <= 0}
+                        label="Gläubiger"
+                        onChange={(e) => setCreditor(e.target.value)}
+                        value={creditor ?? ""}
+                        inputProps={{ "data-testid": "Gläubiger" }}
+                    >
+                        {people.map((person) => (
+                            <MenuItem key={person.id} value={person.id}>
+                                {person.name}
+                            </MenuItem>
+                        ))}
+                    </TextField>
 
                     <TextField
                         required
@@ -162,6 +179,7 @@ export default function TransactionDialog(props: IProps) {
                         fullWidth
                         label="Betrag"
                         type="number"
+                        inputProps={{ "data-testid": "Betrag" }}
                         InputProps={{
                             endAdornment: <InputAdornment position="start">€</InputAdornment>,
                         }}
@@ -176,6 +194,7 @@ export default function TransactionDialog(props: IProps) {
                             <TextField
                                 {...params}
                                 required
+                                data-testid="Zahlungszeitpunkt"
                                 error={error && date == undefined}
                                 sx={{ mb: 1.5 }}
                                 fullWidth
@@ -183,7 +202,13 @@ export default function TransactionDialog(props: IProps) {
                         )}
                     />
 
-                    <FormControl fullWidth sx={{ mb: 1.5 }} required error={error && debtors.length <= 0}>
+                    <FormControl
+                        fullWidth
+                        sx={{ mb: 1.5 }}
+                        data-testid="Schuldner"
+                        required
+                        error={error && debtors.length <= 0}
+                    >
                         <FormLabel>Schuldner</FormLabel>
                         <FormGroup>
                             <List
@@ -221,11 +246,11 @@ export default function TransactionDialog(props: IProps) {
                     </FormControl>
                 </DialogContent>
                 <DialogActions>
-                    <Button autoFocus variant="contained" onClick={handleSave}>
-                        Anlegen
-                    </Button>
                     <Button autoFocus onClick={handleClose} color="secondary">
                         Abbrechen
+                    </Button>
+                    <Button autoFocus variant="contained" onClick={handleSave}>
+                        Anlegen
                     </Button>
                 </DialogActions>
             </Dialog>

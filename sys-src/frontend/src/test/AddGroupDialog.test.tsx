@@ -1,80 +1,94 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, getAllByRole, render, screen, waitForElementToBeRemoved } from "@testing-library/react";
 import AddGroupDialog from "../components/AddGroupDialog";
 import { BrowserRouter as Router } from "react-router-dom";
 import { vi } from "vitest";
+import { SnackbarProvider } from "notistack";
 
 const handleReload = vi.fn();
 
 describe("AddGroupDialog Component", () => {
-    test("if dialog opens", () => {
+    test("if dialog opens", async () => {
         const result = render(
-            <Router>
-                <AddGroupDialog onReload={handleReload} />
-            </Router>
+            <SnackbarProvider>
+                <Router>
+                    <AddGroupDialog onReload={handleReload} />
+                </Router>
+            </SnackbarProvider>
         );
-        const button = result.getByTestId("openGroupDialogButton");
-        fireEvent.click(button);
+        const button = result.getAllByRole("button");
+        fireEvent.click(button[1]);
 
-        expect(screen.getByRole("menu").getAttribute("open")).toBeTruthy;
+        const menu = await screen.findByRole("menu");
 
-        const newGroup = result.getByTestId("newGroup");
-        fireEvent.click(newGroup);
+        const menuItems = getAllByRole(menu, "menuitem");
 
-        expect(screen.getByRole("dialog").getAttribute("open")).toBeTruthy;
+        expect(menu).toBeInTheDocument();
+        expect(menuItems[0]).toHaveTextContent("Neue Gruppe");
+        expect(menuItems[1]).toHaveTextContent("Gruppe beitreten");
+        expect(menuItems).toHaveLength(2);
+
+        fireEvent.click(menuItems[0]);
+
+        expect(screen.getByRole("dialog")).toHaveTextContent("Neue Gruppe erstellen");
     });
-    test("if dialog buttons and inputfields", () => {
+
+    test("if dialog has buttons and inputfields", async () => {
         const result = openDialog();
 
-        const textfield = result.getByTestId("groupName");
-        expect(textfield).toBeTruthy;
+        const textfield = (await result).getByTestId("groupName");
+        expect(textfield).toBeInTheDocument();
 
-        const createButton = result.getByTestId("createGroup");
-        expect(createButton).toBeTruthy;
-
-        const cancelButton = result.getByTestId("cancelCreateGroup");
-        expect(cancelButton).toBeTruthy;
+        const button = (await result).getAllByRole("button");
+        expect(button[1]).toHaveTextContent("Gruppe erstellen");
+        expect(button[0]).toHaveTextContent("Abbrechen");
     });
-    test("if buttons and textfields are enabled", () => {
+
+    test("if buttons and textfields are enabled", async () => {
         const result = openDialog();
 
-        const textfield = result.getByTestId("groupName");
+        const textfield = (await result).getByTestId("groupName");
         expect(textfield).toBeEnabled;
 
-        const createButton = result.getByTestId("createGroup");
-        expect(createButton).toBeEnabled;
-
-        const cancelButton = result.getByTestId("cancelCreateGroup");
-        expect(cancelButton).toBeEnabled;
+        const button = (await result).getAllByRole("button");
+        expect(button[0]).toBeEnabled;
+        expect(button[1]).toBeEnabled;
     });
-    test("if cancel button works", () => {
+
+    test("if cancel button works", async () => {
         const result = openDialog();
 
-        const cancelButton = result.getByTestId("cancelCreateGroup");
-        fireEvent.click(cancelButton);
+        const button = (await result).getAllByRole("button");
+        fireEvent.click(button[0]);
 
-        expect(screen.getByRole("dialog").getAttribute("open")).toBeFalsy;
+        const addGroupDialog = screen.getByRole("dialog");
+        await waitForElementToBeRemoved(addGroupDialog);
+        expect(addGroupDialog).not.toBeInTheDocument();
     });
-    test("if there is an error when groupname is empty", () => {
+
+    test("if there is an error when groupname is empty", async () => {
         const result = openDialog();
 
-        const createButton = result.getByTestId("createGroup");
-        fireEvent.click(createButton);
+        const button = (await result).getAllByRole("button");
+        fireEvent.click(button[1]);
 
-        expect(screen.getByRole("dialog").getAttribute("open")).toBeTruthy;
-        expect(result.getByTestId("groupName").getAttribute("error")).toBeTruthy;
+        expect((await result).getByTestId("groupName")).toHaveTextContent("Ungültiger Gruppenname!");
     });
 });
 
-function openDialog() {
+async function openDialog() {
     const result = render(
-        <Router>
-            <AddGroupDialog onReload={handleReload} />
-        </Router>
+        <SnackbarProvider>
+            <Router>
+                <AddGroupDialog onReload={handleReload} />
+            </Router>
+        </SnackbarProvider>
     );
-    const button = result.getByTestId("openGroupDialogButton");
-    fireEvent.click(button);
-    const newGroup = result.getByTestId("newGroup");
-    fireEvent.click(newGroup);
+    const button = result.getAllByRole("button");
+    fireEvent.click(button[1]);
+
+    const menu = await screen.findByRole("menu");
+    const menuItems = getAllByRole(menu, "menuitem");
+    fireEvent.click(menuItems[0]);
 
     return result;
 }

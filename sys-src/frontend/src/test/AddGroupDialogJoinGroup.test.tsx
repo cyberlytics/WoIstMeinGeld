@@ -3,15 +3,18 @@ import { describe, expect, test } from "vitest";
 import AddGroupDialog from "../components/AddGroupDialog";
 import { BrowserRouter as Router } from "react-router-dom";
 import { vi } from "vitest";
+import { SnackbarProvider } from "notistack";
 
 const handleReload = vi.fn();
 
 describe("AddGroupDialog", () => {
     test("if dialog opens correctly, has buttons and a input textfield", async () => {
         const result = render(
-            <Router>
-                <AddGroupDialog onReload={handleReload} />
-            </Router>
+            <SnackbarProvider>
+                <Router>
+                    <AddGroupDialog onReload={handleReload} />
+                </Router>
+            </SnackbarProvider>
         );
 
         //opens Selection for joining group odr creating a new one
@@ -31,22 +34,22 @@ describe("AddGroupDialog", () => {
         expect(joinGroupDialog.getAttribute("openJoin")).toBeTruthy;
 
         const buttons = screen.getAllByRole("button");
-        console.log(buttons);
-        console.log(buttons.length);
 
         // make sure it was rendered
         expect(await getByTestId(joinGroupDialog, "groupnameJoin")).toBeTruthy();
         expect(await buttons[0]).toBeTruthy();
-        expect(await buttons[0]).toHaveTextContent("Gruppe beitreten");
+        expect(await buttons[0]).toHaveTextContent("Abbrechen");
         expect(await buttons[1]).toBeTruthy();
-        expect(await buttons[1]).toHaveTextContent("Abbrechen");
+        expect(await buttons[1]).toHaveTextContent("Gruppe beitreten");
     });
 
     test("buttons are clickable", async () => {
         const result = render(
-            <Router>
-                <AddGroupDialog onReload={handleReload} />
-            </Router>
+            <SnackbarProvider>
+                <Router>
+                    <AddGroupDialog onReload={handleReload} />
+                </Router>
+            </SnackbarProvider>
         );
 
         //opens Selection for joining group odr creating a new one
@@ -68,9 +71,11 @@ describe("AddGroupDialog", () => {
 
     test("if dialog validates user-input", async () => {
         const result = render(
-            <Router>
-                <AddGroupDialog onReload={handleReload} />
-            </Router>
+            <SnackbarProvider>
+                <Router>
+                    <AddGroupDialog onReload={handleReload} />
+                </Router>
+            </SnackbarProvider>
         );
 
         //opens Selection for joining group odr creating a new one

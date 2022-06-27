@@ -74,7 +74,6 @@ const renderCustomizedLabel = (props: any) => {
     const { x, y, width, height, value: payload } = props;
     const padding = 5;
 
-    console.log(height);
     const hanging =
         (height < 0 && Math.abs(height) + 2 * padding < payload.fontSize) ||
         (0 < height && payload.fontSize < height + 2 * padding);

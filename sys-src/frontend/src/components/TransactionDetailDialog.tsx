@@ -27,7 +27,7 @@ export function TransactionDetailDialog(props: Props) {
     const { open, transaction, onClose, onDelete } = props;
 
     return (
-        <Dialog open={open} onClose={onClose}>
+        <Dialog open={open} onClose={onClose} data-testid="transactionDetailDialog">
             <DialogTitle>{transaction?.description}</DialogTitle>
             <DialogContent>
                 <List dense>
@@ -74,7 +74,7 @@ export function TransactionDetailDialog(props: Props) {
                 <Button variant="contained" color="error" startIcon={<Delete />} onClick={onDelete}>
                     Entfernen
                 </Button>
-                <Button variant="contained" onClick={onClose}>
+                <Button autoFocus variant="contained" onClick={onClose}>
                     Schließen
                 </Button>
             </DialogActions>

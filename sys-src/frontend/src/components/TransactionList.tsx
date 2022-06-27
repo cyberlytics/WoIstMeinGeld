@@ -14,7 +14,6 @@ interface Props {
 
 export function TransactionList(props: Props) {
     const { groupId, transactions, onReload } = props;
-    console.log(transactions);
 
     const [detailsOpen, setDetailsOpen] = useState(false);
     const [openedTransaction, setOpenedTransaction] = useState<Transaction | null>(null);
@@ -30,7 +29,8 @@ export function TransactionList(props: Props) {
 
     function deleteOpenedTransaction() {
         if (openedTransaction) {
-            FetchService.delete("http://localhost:8080/deleteTransaction", { id: openedTransaction.id })
+            const jsonBody = { transactionId: openedTransaction.id };
+            FetchService.delete("http://localhost:8080/deleteTransaction", jsonBody)
                 .then(() => onReload())
                 .catch((reason) => console.error(reason));
             setDetailsOpen(false);

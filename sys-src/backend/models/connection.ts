@@ -1,16 +1,11 @@
-import mysql from "mysql";
+import { Sequelize } from "sequelize";
 import dbCfg from "../config/db.config";
 
-const connection = mysql.createConnection({
+const connection = new Sequelize(dbCfg.DB, dbCfg.USER, dbCfg.PASSWORD, {
     host: dbCfg.HOST,
-    user: dbCfg.USER,
-    password: dbCfg.PASSWORD,
-    database: dbCfg.DB,
-});
-
-connection.connect((error) => {
-    if (error) throw error;
-    console.log("Successfully connected with database");
+    port: Number(dbCfg.PORT) || 3306,
+    pool: dbCfg.pool,
+    dialect: "mysql",
 });
 
 export default connection;

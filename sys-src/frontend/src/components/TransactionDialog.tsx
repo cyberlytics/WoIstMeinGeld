@@ -70,6 +70,10 @@ export default function TransactionDialog(props: IProps) {
         onReload();
         setOpen(false);
     };
+
+    /**
+     * creates Transaction if all input fields are filled and valid
+     */
     const handleSave = () => {
         //check if all information is present
         if (!(creditor && debtors.length > 0 && date && description && amount)) {
@@ -94,11 +98,17 @@ export default function TransactionDialog(props: IProps) {
             .catch((reason) => console.error(reason));
     };
 
+    /**
+     * add debtors correctly by filtering the listbox
+     */
     const switchDebtor = (person: Person) => {
         if (debtors.includes(person)) setDebtors(debtors.filter((d) => d !== person));
         else setDebtors([...debtors, person]);
     };
 
+    /**
+     * resetting all input fields and errors on open
+     */
     useEffect(() => {
         setError(false);
         setDescription("");
@@ -192,7 +202,13 @@ export default function TransactionDialog(props: IProps) {
                         )}
                     />
 
-                    <FormControl fullWidth sx={{ mb: 1.5 }} data-testid="Schuldner" required error={error && debtors.length <= 0}>
+                    <FormControl
+                        fullWidth
+                        sx={{ mb: 1.5 }}
+                        data-testid="Schuldner"
+                        required
+                        error={error && debtors.length <= 0}
+                    >
                         <FormLabel>Schuldner</FormLabel>
                         <FormGroup>
                             <List
